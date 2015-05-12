@@ -1,0 +1,74 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#0099cc" tools:context=".MainActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay" android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/tasks_button"
+            android:onClick="onTasksClick"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
+            android:text="@string/tasks_button"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:layout_marginTop="100dp"
+            android:elegantTextHeight="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:longClickable="true"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/inventory_button"
+            android:onClick="onInventoryClick"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="157dp" android:layout_height="wrap_content"
+            android:text="@string/inventory_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="200dp"
+            android:clickable="true"
+            android:elegantTextHeight="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textStyle="bold"
+            android:longClickable="true" />
+
+        <Button
+            android:id="@+id/settings_button"
+            android:onClick="onSettingsClick"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="300dp"
+            android:clickable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:textStyle="bold"
+            android:longClickable="true"
+            android:focusableInTouchMode="true"
+            android:elegantTextHeight="true" />
+
+    </FrameLayout>
+
+</FrameLayout>

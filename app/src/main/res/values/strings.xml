@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Hospital Inventory</string>
+    <string name="inventory_button">Inventory</string>
+    <string name="tasks_button">Tasks</string>
+    <string name="settings_button">Settings</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
+    <string name="action_search">Search</string>
+    <string name="menu_add">Add item</string>
+    <string name="search_hint">Search items</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_revert">Revert Changes</string>
+
+</resources>
