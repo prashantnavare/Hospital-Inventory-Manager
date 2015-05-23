@@ -88,6 +88,12 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private Button mBtnChangeMaintenanceDate;
     private TextView mTextMaintenanceInstructions;
 
+    private CheckBox mContractCheckBox;
+    private LinearLayout mLayoutContract;
+    private TextView mTextContractFrequency;
+    private Button mBtnChangeContractDate;
+    private TextView mTextContractInstructions;
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -276,6 +282,36 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mTextMaintenanceInstructions = (TextView) rootView.findViewById(R.id.textMaintenanceInstructions);
         mTextMaintenanceInstructions.addTextChangedListener(this);
+
+        // Contract
+        mContractCheckBox = (CheckBox) rootView.findViewById(R.id.chkContract);
+        mContractCheckBox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    mLayoutContract.setVisibility(View.VISIBLE);
+                }
+                else {
+                    mLayoutContract.setVisibility(View.GONE);
+                }
+                enableRevertAndSaveButtons();
+            }
+        });
+        mLayoutContract = (LinearLayout) rootView.findViewById(R.id.layoutContract);
+
+        mTextContractFrequency = (TextView) rootView.findViewById(R.id.textContractFrequency);
+        mTextContractFrequency.addTextChangedListener(this);
+
+        mBtnChangeContractDate = (Button) rootView.findViewById(R.id.btnChangeContractDate);
+        mBtnChangeContractDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showDatePicker(DatePickerType.CONTRACT);
+            }
+        });
+
+        mTextContractInstructions = (TextView) rootView.findViewById(R.id.textContractInstructions);
+        mTextContractInstructions.addTextChangedListener(this);
 
         return rootView;
     }
@@ -510,6 +546,30 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             else {
                 mItem.mMaintenanceReminders = 0;
             }
+
+            // Contract related
+            if (mContractCheckBox.isChecked()) {
+                mItem.mContractReminders = 1;
+                if (mTextContractFrequency.getText().toString().isEmpty() == false)
+                    mItem.mContractFrequency = Long.valueOf(mTextContractFrequency.getText().toString());
+
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                Calendar contractDate = Calendar.getInstance();
+                String uiContractDate = mBtnChangeContractDate.getText().toString();
+                if (uiContractDate.compareToIgnoreCase("Set") != 0) {
+                    try {
+                        contractDate.setTime(dateFormatter.parse(uiContractDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    mItem.mContractDate = contractDate.getTimeInMillis();
+                }
+
+                mItem.mContractInstructions = mTextContractInstructions.getText().toString();
+            }
+            else {
+                mItem.mContractReminders = 0;
+            }
         }
         else {
             // Consummable
@@ -572,6 +632,28 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mMaintenanceCheckBox.setChecked(false);
                 mLayoutMaintenance.setVisibility(View.GONE);
             }
+
+            // Set the contract UI elements
+            if (mItem.mContractReminders > 0) {
+                mContractCheckBox.setChecked(true);
+                mLayoutContract.setVisibility(View.VISIBLE);
+                if (mItem.mContractFrequency > 0)
+                    mTextContractFrequency.setText(String.valueOf(mItem.mContractFrequency));
+                if (mItem.mContractDate > 0) {
+                    Calendar contractDate = Calendar.getInstance();
+                    contractDate.setTimeInMillis(mItem.mMaintenanceDate);
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                    mBtnChangeContractDate.setText(dateFormatter.format(contractDate.getTime()));
+                }
+                else {
+                    mBtnChangeContractDate.setText("Set");
+                }
+                mTextContractInstructions.setText(mItem.mContractInstructions);
+            }
+            else {
+                mContractCheckBox.setChecked(false);
+                mLayoutContract.setVisibility(View.GONE);
+            }
         }
         else if (mItem.mType == Item.ConsummableType) {
             mSpinnerPosition = 1;
@@ -594,5 +676,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mMaintenanceCheckBox.setChecked(false);
         mLayoutMaintenance.setVisibility(View.GONE);
+
+        mContractCheckBox.setChecked(false);
+        mLayoutContract.setVisibility(View.GONE);
     }
 }

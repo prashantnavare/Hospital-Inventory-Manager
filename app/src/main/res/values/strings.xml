@@ -18,6 +18,8 @@
     <string name="instructions">Instructions :</string>
     <string name="calibration_frequency">Frequency (in days)</string>
     <string name="maintenance_frequency">Frequency (in days)</string>
+    <string name="contract_frequency">Renewal Frequency (in months)</string>
     <string name="last_maintenance_date">Last Maintenance Date : </string>
+    <string name="last_contract_date">Last Renewal Date : </string>
 
 </resources>

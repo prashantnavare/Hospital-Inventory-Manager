@@ -39,6 +39,10 @@ public class Item {
     public static final String COL_LAST_MAINTENANCE_DATE = "lastMaintenanceDate";
     public static final String COL_MAINTENANCE_INSTRUCTIONS = "maintenanceInstructions";
 
+    public static final String COL_CONTRACT_REMINDERS = "contractReminders";
+    public static final String COL_CONTRACT_FREQUENCY = "contractFrequency";
+    public static final String COL_LAST_CONTRACT_DATE = "lastContractDate";
+    public static final String COL_CONTRACT_INSTRUCTIONS = "contractInstructions";
 
     // Defines related to item type
     public static final long InstrumentType = 1;
@@ -54,14 +58,21 @@ public class Item {
             COL_NAME,
             COL_DESCRIPTION,
             COL_TYPE,
+
             COL_CALIBRATION_REMINDERS,
             COL_CALIBRATION_FREQUENCY,
             COL_LAST_CALIBRATION_DATE,
             COL_CALIBRATION_INSTRUCTIONS,
+
             COL_MAINTENANCE_REMINDERS,
             COL_MAINTENANCE_FREQUENCY,
             COL_LAST_MAINTENANCE_DATE,
-            COL_MAINTENANCE_INSTRUCTIONS
+            COL_MAINTENANCE_INSTRUCTIONS,
+
+            COL_CONTRACT_REMINDERS,
+            COL_CONTRACT_FREQUENCY,
+            COL_LAST_CONTRACT_DATE,
+            COL_CONTRACT_INSTRUCTIONS
     };
 
     public static final HashMap<String, String> mColumnMap = buildColumnMap();
@@ -90,6 +101,11 @@ public class Item {
         map.put(COL_LAST_MAINTENANCE_DATE, COL_LAST_MAINTENANCE_DATE);
         map.put(COL_MAINTENANCE_INSTRUCTIONS, COL_MAINTENANCE_INSTRUCTIONS);
 
+        map.put(COL_CONTRACT_REMINDERS, COL_CONTRACT_REMINDERS);
+        map.put(COL_CONTRACT_FREQUENCY, COL_CONTRACT_FREQUENCY);
+        map.put(COL_LAST_CONTRACT_DATE, COL_LAST_CONTRACT_DATE);
+        map.put(COL_CONTRACT_INSTRUCTIONS, COL_CONTRACT_INSTRUCTIONS);
+
         return map;
     }
 
@@ -114,7 +130,12 @@ public class Item {
                     + COL_MAINTENANCE_REMINDERS + " INTEGER,"
                     + COL_MAINTENANCE_FREQUENCY + " INTEGER,"
                     + COL_LAST_MAINTENANCE_DATE + " INTEGER,"
-                    + COL_MAINTENANCE_INSTRUCTIONS + " TEXT DEFAULT '' "
+                    + COL_MAINTENANCE_INSTRUCTIONS + " TEXT DEFAULT '',"
+
+                    + COL_CONTRACT_REMINDERS + " INTEGER,"
+                    + COL_CONTRACT_FREQUENCY + " INTEGER,"
+                    + COL_LAST_CONTRACT_DATE + " INTEGER,"
+                    + COL_CONTRACT_INSTRUCTIONS + " TEXT DEFAULT '' "
 
                     + ")";
 
@@ -134,6 +155,11 @@ public class Item {
     public long mMaintenanceFrequency = 0;
     public long mMaintenanceDate = 0;
     public String mMaintenanceInstructions = "";
+
+    public long mContractReminders = 0;
+    public long mContractFrequency = 0;
+    public long mContractDate = 0;
+    public String mContractInstructions = "";
 
     /**
      * No need to do anything, fields are already set to default values above
@@ -162,6 +188,11 @@ public class Item {
         this.mMaintenanceDate = cursor.getLong(10);
         this.mMaintenanceInstructions = cursor.getString(11);
 
+        this.mContractReminders = cursor.getLong(12);
+        this.mContractFrequency = cursor.getLong(13);
+        this.mContractDate = cursor.getLong(14);
+        this.mContractInstructions = cursor.getString(15);
+
     }
 
     // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -186,6 +217,11 @@ public class Item {
         values.put(COL_LAST_MAINTENANCE_DATE, mMaintenanceDate);
         values.put(COL_MAINTENANCE_INSTRUCTIONS, mMaintenanceInstructions);
 
+        values.put(COL_CONTRACT_REMINDERS, mContractReminders);
+        values.put(COL_CONTRACT_FREQUENCY, mContractFrequency);
+        values.put(COL_LAST_CONTRACT_DATE, mContractDate);
+        values.put(COL_CONTRACT_INSTRUCTIONS, mContractInstructions);
+
         return values;
     }
 
@@ -208,6 +244,11 @@ public class Item {
         mMaintenanceFrequency = values.getAsLong(COL_MAINTENANCE_FREQUENCY);
         mMaintenanceDate = values.getAsLong(COL_LAST_MAINTENANCE_DATE);
         mMaintenanceInstructions = values.getAsString(COL_MAINTENANCE_INSTRUCTIONS);
+
+        mContractReminders = values.getAsLong(COL_CONTRACT_REMINDERS);
+        mContractFrequency = values.getAsLong(COL_CONTRACT_FREQUENCY);
+        mContractDate = values.getAsLong(COL_LAST_CONTRACT_DATE);
+        mContractInstructions = values.getAsString(COL_CONTRACT_INSTRUCTIONS);
 
         return values;
     }
