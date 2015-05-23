@@ -76,6 +76,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 Item item = new Item();
                 item.mName = strings[0].trim();
                 item.mDescription = strings[1].trim();
+                String type = strings[2].trim();
+                if (type.compareToIgnoreCase("Instrument")== 0)
+                    item.mType = Item.InstrumentType;
+                else if (type.compareToIgnoreCase("Consummable")==0)
+                    item.mType = Item.ConsummableType;
                 long newID = addItem(item);
                 if (newID == -1) {
                     Log.e(TAG, "unable to add item: " + strings[0].trim());

@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
+import java.sql.Date;
 import java.util.HashMap;
 
 /**
@@ -19,21 +20,52 @@ public class Item {
 
     // Item table
     public static final String TABLE_NAME = "ItemTable";
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // TODO: Add other fields here.
+    // TODO: When you add a field, make sure you add corresponding entries in the FIELDS array, the CREATE_TABLE string
+    // TODO: and declare a member and so on. See all ++++++++ comment lines below.
     // These fields can be anything you want.
     public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
-    // TODO: Add other fields here.
-    // TODO: When you add a field, make sure you add corresponding entries in the FIELDS array, the CREATE_TABLE string
-    // TODO: and declare a member and so on. See below.
+    public static final String COL_TYPE = "type";
 
+    public static final String COL_CALIBRATION_REMINDERS = "calibrationReminders";
+    public static final String COL_CALIBRATION_FREQUENCY = "calibrationFrequency";
+    public static final String COL_LAST_CALIBRATION_DATE = "lastCalibrationDate";
+    public static final String COL_CALIBRATION_INSTRUCTIONS = "calibrationInstructions";
+
+    public static final String COL_MAINTENANCE_REMINDERS = "maintenanceReminders";
+    public static final String COL_MAINTENANCE_FREQUENCY = "maintenanceFrequency";
+    public static final String COL_LAST_MAINTENANCE_DATE = "lastMaintenanceDate";
+    public static final String COL_MAINTENANCE_INSTRUCTIONS = "maintenanceInstructions";
+
+
+    // Defines related to item type
+    public static final long InstrumentType = 1;
+    public static final long ConsummableType = 2;
+    public static final String InstrumentString = "Instrument";
+    public static final String ConsummableString = "Consummable";
+
+
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // For database projection so order is consistent
     public static final String[] FIELDS = {
             BaseColumns._ID,
             COL_NAME,
-            COL_DESCRIPTION
+            COL_DESCRIPTION,
+            COL_TYPE,
+            COL_CALIBRATION_REMINDERS,
+            COL_CALIBRATION_FREQUENCY,
+            COL_LAST_CALIBRATION_DATE,
+            COL_CALIBRATION_INSTRUCTIONS,
+            COL_MAINTENANCE_REMINDERS,
+            COL_MAINTENANCE_FREQUENCY,
+            COL_LAST_MAINTENANCE_DATE,
+            COL_MAINTENANCE_INSTRUCTIONS
     };
 
     public static final HashMap<String, String> mColumnMap = buildColumnMap();
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Builds a map for all Item FTS table columns that may be requested, which will be given to the
      * SQLiteQueryBuilder. This is a good way to define aliases for column names, but must include
@@ -42,11 +74,26 @@ public class Item {
      */
     private static HashMap<String,String> buildColumnMap() {
         HashMap<String,String> map = new HashMap<String,String>();
+
         map.put(BaseColumns._ID, BaseColumns._ID);
         map.put(COL_NAME, COL_NAME);
         map.put(COL_DESCRIPTION, COL_DESCRIPTION);
+        map.put(COL_TYPE, COL_TYPE);
+
+        map.put(COL_CALIBRATION_REMINDERS, COL_CALIBRATION_REMINDERS);
+        map.put(COL_CALIBRATION_FREQUENCY, COL_CALIBRATION_FREQUENCY);
+        map.put(COL_LAST_CALIBRATION_DATE, COL_LAST_CALIBRATION_DATE);
+        map.put(COL_CALIBRATION_INSTRUCTIONS, COL_CALIBRATION_INSTRUCTIONS);
+
+        map.put(COL_MAINTENANCE_REMINDERS, COL_MAINTENANCE_REMINDERS);
+        map.put(COL_MAINTENANCE_FREQUENCY, COL_MAINTENANCE_FREQUENCY);
+        map.put(COL_LAST_MAINTENANCE_DATE, COL_LAST_MAINTENANCE_DATE);
+        map.put(COL_MAINTENANCE_INSTRUCTIONS, COL_MAINTENANCE_INSTRUCTIONS);
+
         return map;
     }
+
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /*
      * The SQL code that creates a Table for storing items.
      * Note that the last row does NOT end in a comma like the others.
@@ -56,13 +103,37 @@ public class Item {
             "CREATE TABLE " + TABLE_NAME + "("
                     + BaseColumns._ID + " INTEGER PRIMARY KEY,"
                     + COL_NAME + " TEXT NOT NULL DEFAULT '',"
-                    + COL_DESCRIPTION + " TEXT NOT NULL DEFAULT ''"
+                    + COL_DESCRIPTION + " TEXT NOT NULL DEFAULT '',"
+                    + COL_TYPE + " INTEGER, "
+
+                    + COL_CALIBRATION_REMINDERS + " INTEGER,"
+                    + COL_CALIBRATION_FREQUENCY + " INTEGER,"
+                    + COL_LAST_CALIBRATION_DATE + " INTEGER,"
+                    + COL_CALIBRATION_INSTRUCTIONS + " TEXT DEFAULT '',"
+
+                    + COL_MAINTENANCE_REMINDERS + " INTEGER,"
+                    + COL_MAINTENANCE_FREQUENCY + " INTEGER,"
+                    + COL_LAST_MAINTENANCE_DATE + " INTEGER,"
+                    + COL_MAINTENANCE_INSTRUCTIONS + " TEXT DEFAULT '' "
+
                     + ")";
 
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fields corresponding to ItemTable columns
     public long mID = -1;
     public String mName = "";
     public String mDescription = "";
+    public long mType = 0;
+
+    public long mCalibrationReminders = 0;
+    public long mCalibrationFrequency = 0;
+    public long mCalibrationDate = 0;
+    public String mCalibrationInstructions = "";
+
+    public long mMaintenanceReminders = 0;
+    public long mMaintenanceFrequency = 0;
+    public long mMaintenanceDate = 0;
+    public String mMaintenanceInstructions = "";
 
     /**
      * No need to do anything, fields are already set to default values above
@@ -70,39 +141,73 @@ public class Item {
     public Item() {
     }
 
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Convert information from the ItemTable into an Item object.
      */
     public void setContentFromCursor(final Cursor cursor) {
-        // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Indices expected to match order in FIELDS!
         this.mID = cursor.getLong(0);
         this.mName = cursor.getString(1);
         this.mDescription = cursor.getString(2);
+        this.mType = cursor.getLong(3);
+
+        this.mCalibrationReminders = cursor.getLong(4);
+        this.mCalibrationFrequency = cursor.getLong(5);
+        this.mCalibrationDate = cursor.getLong(6);
+        this.mCalibrationInstructions = cursor.getString(7);
+
+        this.mMaintenanceReminders = cursor.getLong(8);
+        this.mMaintenanceFrequency = cursor.getLong(9);
+        this.mMaintenanceDate = cursor.getLong(10);
+        this.mMaintenanceInstructions = cursor.getString(11);
+
     }
 
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Return the fields in a ContentValues object, suitable for insertion
      * into the database.
      */
     public ContentValues getContentValues() {
-        // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         final ContentValues values = new ContentValues();
         // Note that ID is NOT included here
         values.put(COL_NAME, mName);
         values.put(COL_DESCRIPTION, mDescription);
+        values.put(COL_TYPE, mType);
+
+        values.put(COL_CALIBRATION_REMINDERS, mCalibrationReminders);
+        values.put(COL_CALIBRATION_FREQUENCY, mCalibrationFrequency);
+        values.put(COL_LAST_CALIBRATION_DATE, mCalibrationDate);
+        values.put(COL_CALIBRATION_INSTRUCTIONS, mCalibrationInstructions);
+
+        values.put(COL_MAINTENANCE_REMINDERS, mMaintenanceReminders);
+        values.put(COL_MAINTENANCE_FREQUENCY, mMaintenanceFrequency);
+        values.put(COL_LAST_MAINTENANCE_DATE, mMaintenanceDate);
+        values.put(COL_MAINTENANCE_INSTRUCTIONS, mMaintenanceInstructions);
 
         return values;
     }
 
+    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * sets the fields from a ContentValues object
      */
     public ContentValues setContentFromCV(final ContentValues values) {
-        // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Note that ID is NOT included here
         mName = values.getAsString(COL_NAME);
         mDescription = values.getAsString(COL_DESCRIPTION);
+        mType = values.getAsLong(COL_TYPE);
+
+        mCalibrationReminders = values.getAsLong(COL_CALIBRATION_REMINDERS);
+        mCalibrationFrequency = values.getAsLong(COL_CALIBRATION_FREQUENCY);
+        mCalibrationDate = values.getAsLong(COL_LAST_CALIBRATION_DATE);
+        mCalibrationInstructions = values.getAsString(COL_CALIBRATION_INSTRUCTIONS);
+
+        mMaintenanceReminders = values.getAsLong(COL_MAINTENANCE_REMINDERS);
+        mMaintenanceFrequency = values.getAsLong(COL_MAINTENANCE_FREQUENCY);
+        mMaintenanceDate = values.getAsLong(COL_LAST_MAINTENANCE_DATE);
+        mMaintenanceInstructions = values.getAsString(COL_MAINTENANCE_INSTRUCTIONS);
 
         return values;
     }

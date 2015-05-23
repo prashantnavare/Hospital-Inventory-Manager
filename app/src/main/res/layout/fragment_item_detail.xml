@@ -10,21 +10,22 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:fontFamily="sans-serif-light"
             android:text="Item Name"
             android:textColor="#ff707070"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/textName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Item Name"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:textColor="#ff222222"
-            android:textSize="20sp" />
+            android:textSize="18sp"
+            android:cursorVisible="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,7 +34,7 @@
             android:fontFamily="sans-serif-light"
             android:text="Description"
             android:textColor="#ff707070"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/textDescription"
@@ -42,8 +43,221 @@
             android:hint="Item Description"
             android:inputType="textMultiLine|textAutoCorrect"
             android:textColor="#ff222222"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Type:      "
+                android:textColor="#ff707070"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerType"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawSelectorOnTop="true"
+                android:textSize="18sp"
+                android:layout_gravity="right"
+                android:clickable="true" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40px" />
+
+        <LinearLayout
+            android:id="@+id/layoutInstrument"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <CheckBox
+                android:id="@+id/chkCalibration"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Enable Calibration Reminders"
+                android:textSize="16sp"
+                android:checked="true"
+                android:layout_gravity="right" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20px" />
+
+            <LinearLayout
+                android:id="@+id/layoutCalibration"
+                android:layout_marginLeft="100px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/calibration_frequency"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/textCalibrationFrequency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textColor="#ff222222"
+                        android:minWidth="70sp"
+                        android:textSize="16sp"
+                        android:numeric="integer" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/last_calibration_date"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp"
+                    />
+                    <Button
+                        android:id="@+id/btnChangeCalibrationDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_date" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/instructions"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp"
+                        />
+                    <EditText
+                        android:id="@+id/textCalibrationInstructions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/chkMaintenance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Enable Maintenance Reminders"
+                android:textSize="16sp"
+                android:checked="true"
+                android:layout_gravity="right" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20px" />
+
+            <LinearLayout
+                android:id="@+id/layoutMaintenance"
+                android:layout_marginLeft="100px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/maintenance_frequency"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/textMaintenanceFrequency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:textColor="#ff222222"
+                        android:minWidth="70sp"
+                        android:textSize="16sp"
+                        android:numeric="integer" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/last_maintenance_date"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp"
+                        />
+                    <Button
+                        android:id="@+id/btnChangeMaintenanceDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_date" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/instructions"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp"
+                        />
+                    <EditText
+                        android:id="@+id/textMaintenanceInstructions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#ff707070"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

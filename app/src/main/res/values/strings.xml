@@ -13,5 +13,11 @@
     <string name="menu_save">Save</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_revert">Revert Changes</string>
+    <string name="last_calibration_date">Last Calibration Date : </string>
+    <string name="set_date">Set</string>
+    <string name="instructions">Instructions :</string>
+    <string name="calibration_frequency">Frequency (in days)</string>
+    <string name="maintenance_frequency">Frequency (in days)</string>
+    <string name="last_maintenance_date">Last Maintenance Date : </string>
 
 </resources>

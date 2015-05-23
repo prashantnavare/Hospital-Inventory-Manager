@@ -1,4 +1,7 @@
-Oscilloscope - In building 2
-MRI Machine - A costly machine
-Stethoscope - Many of these
-Toilet Paper - A much needed item!
+Oscilloscope - In building 2 - instrument
+MRI Machine - A costly machine - instrument
+Stethoscope - Many of these - instrument
+Toilet Paper - A much needed item! - consummable
+Blades - To Shave - consummable
+
+
