@@ -38,10 +38,12 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         mHelperContext = context;
     }
 
+    // TODO: ==========================When new table is added =========================================================
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Item.CREATE_TABLE);
         db.execSQL(Item.CREATE_FTS_TABLE);
+        db.execSQL(ServiceCall.CREATE_TABLE);
 
         // PNTODO: Delete this eventually
         loadInventory();
@@ -271,5 +273,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             long ftsRowsUpdated =  db.update(Item.FTS_TABLE_NAME, ftsValues, Item.COL_FTS_ITEM_REALID + " MATCH " + itemId, null);
         }
         return rowsUpdated;
+    }
+    public long insertServiceCall(ContentValues values) {
+        final SQLiteDatabase db = this.getWritableDatabase();
+        long realID = db.insert(ServiceCall.TABLE_NAME, null, values);
+        return realID;
     }
 }

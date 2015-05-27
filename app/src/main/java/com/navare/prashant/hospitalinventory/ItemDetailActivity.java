@@ -1,18 +1,18 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
+import com.navare.prashant.hospitalinventory.util.ServiceCallDialogFragment;
 
 
 /**
@@ -24,14 +24,24 @@ import android.widget.Toast;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ItemDetailFragment}.
  */
-public class ItemDetailActivity extends ActionBarActivity implements ItemDetailFragment.Callbacks {
+public class ItemDetailActivity extends ActionBarActivity
+        implements ItemDetailFragment.Callbacks, InventoryDialogFragment.InventoryDialogListener, ServiceCallDialogFragment.ServiceCallDialogListener {
 
     private MenuItem deleteMenuItem = null;
     private MenuItem revertMenuItem = null;
     private MenuItem saveMenuItem = null;
+
+    private MenuItem inventoryAddMenuItem = null;
+    private MenuItem inventorySubtractMenuItem = null;
+    private MenuItem serviceCallMenuItem = null;
+
     private boolean mbDeleteMenuEnable = false;
     private boolean mbRevertMenuEnable = false;
     private boolean mbSaveMenuEnable = false;
+
+    private boolean mbInventoryAddMenuEnable = false;
+    private boolean mbInventorySubtractMenuEnable = false;
+    private boolean mbServiceCallMenuEnable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +85,20 @@ public class ItemDetailActivity extends ActionBarActivity implements ItemDetailF
         deleteMenuItem = menu.getItem(1);
         revertMenuItem = menu.getItem(2);
 
+        inventoryAddMenuItem = menu.getItem(3);
+        inventorySubtractMenuItem = menu.getItem(4);
+        serviceCallMenuItem = menu.getItem(5);
+
         // Toggle the options menu buttons as per desired state
         // It is possible that the query has already finished loading before we get here
         // as it happens on a separate thread. Hence the boolean state keepers
         EnableSaveButton(mbSaveMenuEnable);
         EnableRevertButton(mbRevertMenuEnable);
         EnableDeleteButton(mbDeleteMenuEnable);
+
+        EnableInventoryAddButton(mbInventoryAddMenuEnable);
+        EnableInventorySubtractButton(mbInventorySubtractMenuEnable);
+        EnableServiceCallButton(mbServiceCallMenuEnable);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -100,9 +118,34 @@ public class ItemDetailActivity extends ActionBarActivity implements ItemDetailF
                 return true;
             case R.id.menu_save:
                 saveItem();
+                return true;
+            case R.id.menu_inventory_add:
+                showInventoryAddDialog();
+                return true;
+            case R.id.menu_inventory_subtract:
+                showInventorySubtractDialog();
+                return true;
+            case R.id.menu_service_call:
+                showServiceCallDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showServiceCallDialog() {
+        ((ItemDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.item_detail_container)).showServiceCallDialog();
+    }
+
+    private void showInventoryAddDialog() {
+        ((ItemDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.item_detail_container)).showInventoryAddDialog();
+    }
+
+    private void showInventorySubtractDialog() {
+        ((ItemDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.item_detail_container)).showInventorySubtractDialog();
     }
 
     private void saveItem() {
@@ -177,6 +220,33 @@ public class ItemDetailActivity extends ActionBarActivity implements ItemDetailF
     }
 
     @Override
+    public void EnableInventoryAddButton(boolean bEnable) {
+        mbInventoryAddMenuEnable = bEnable;
+        if (inventoryAddMenuItem != null) {
+            inventoryAddMenuItem.setEnabled(bEnable);
+            inventoryAddMenuItem.setVisible(bEnable);
+        }
+    }
+
+    @Override
+    public void EnableInventorySubtractButton(boolean bEnable) {
+        mbInventorySubtractMenuEnable = bEnable;
+        if (inventorySubtractMenuItem != null) {
+            inventorySubtractMenuItem.setEnabled(bEnable);
+            inventorySubtractMenuItem.setVisible(bEnable);
+        }
+    }
+
+    @Override
+    public void EnableServiceCallButton(boolean bEnable) {
+        mbServiceCallMenuEnable = bEnable;
+        if (serviceCallMenuItem != null) {
+            serviceCallMenuItem.setEnabled(bEnable);
+            serviceCallMenuItem.setVisible(bEnable);
+        }
+    }
+
+    @Override
     public void RedrawOptionsMenu() {
         invalidateOptionsMenu();
     }
@@ -187,5 +257,37 @@ public class ItemDetailActivity extends ActionBarActivity implements ItemDetailF
         toast.show();
 
         NavUtils.navigateUpTo(this, new Intent(this, ItemListActivity.class));
+    }
+
+    @Override
+    public void onInventoryDialogPositiveClick(InventoryDialogFragment dialog) {
+        String stringQuantity = dialog.getQuantity();
+        if ((stringQuantity != null) && (stringQuantity.isEmpty() == false)) {
+            long lQuantity = Long.valueOf(stringQuantity);
+            if (dialog.getDialogType() == InventoryDialogFragment.InventoryDialogType.ADD) {
+                ((ItemDetailFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.item_detail_container)).addToInventory(lQuantity);
+            }
+            else if (dialog.getDialogType() == InventoryDialogFragment.InventoryDialogType.SUBTRACT) {
+                ((ItemDetailFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.item_detail_container)).subtractFromInventory(lQuantity);
+            }
+        }
+    }
+
+    @Override
+    public void onInventoryDialogNegativeClick(InventoryDialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onServiceCallDialogReportClick(ServiceCallDialogFragment dialog) {
+        ((ItemDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.item_detail_container)).createServiceCall(dialog.getItemID(), dialog.getDescription());
+    }
+
+    @Override
+    public void onServiceCallDialogCancelClick(ServiceCallDialogFragment dialog) {
+
     }
 }

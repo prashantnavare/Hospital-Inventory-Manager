@@ -44,6 +44,10 @@ public class Item {
     public static final String COL_LAST_CONTRACT_DATE = "lastContractDate";
     public static final String COL_CONTRACT_INSTRUCTIONS = "contractInstructions";
 
+    public static final String COL_INVENTORY_REMINDERS = "inventoryReminders";
+    public static final String COL_MIN_REQUIRED_QUANTITY = "minRequiredQuantity";
+    public static final String COL_CURRENT_QUANTITY = "currentQuantity";
+
     // Defines related to item type
     public static final long InstrumentType = 1;
     public static final long ConsummableType = 2;
@@ -72,7 +76,11 @@ public class Item {
             COL_CONTRACT_REMINDERS,
             COL_CONTRACT_FREQUENCY,
             COL_LAST_CONTRACT_DATE,
-            COL_CONTRACT_INSTRUCTIONS
+            COL_CONTRACT_INSTRUCTIONS,
+
+            COL_INVENTORY_REMINDERS,
+            COL_MIN_REQUIRED_QUANTITY,
+            COL_CURRENT_QUANTITY
     };
 
     public static final HashMap<String, String> mColumnMap = buildColumnMap();
@@ -106,6 +114,10 @@ public class Item {
         map.put(COL_LAST_CONTRACT_DATE, COL_LAST_CONTRACT_DATE);
         map.put(COL_CONTRACT_INSTRUCTIONS, COL_CONTRACT_INSTRUCTIONS);
 
+        map.put(COL_INVENTORY_REMINDERS, COL_INVENTORY_REMINDERS);
+        map.put(COL_MIN_REQUIRED_QUANTITY, COL_MIN_REQUIRED_QUANTITY);
+        map.put(COL_CURRENT_QUANTITY, COL_CURRENT_QUANTITY);
+
         return map;
     }
 
@@ -135,7 +147,11 @@ public class Item {
                     + COL_CONTRACT_REMINDERS + " INTEGER,"
                     + COL_CONTRACT_FREQUENCY + " INTEGER,"
                     + COL_LAST_CONTRACT_DATE + " INTEGER,"
-                    + COL_CONTRACT_INSTRUCTIONS + " TEXT DEFAULT '' "
+                    + COL_CONTRACT_INSTRUCTIONS + " TEXT DEFAULT '',"
+
+                    + COL_INVENTORY_REMINDERS + " INTEGER,"
+                    + COL_MIN_REQUIRED_QUANTITY + " INTEGER,"
+                    + COL_CURRENT_QUANTITY + " INTEGER"
 
                     + ")";
 
@@ -160,6 +176,10 @@ public class Item {
     public long mContractFrequency = 0;
     public long mContractDate = 0;
     public String mContractInstructions = "";
+
+    public long mInventoryReminders = 0;
+    public long mMinRequiredQuantity = 0;
+    public long mCurrentQuantity = 0;
 
     /**
      * No need to do anything, fields are already set to default values above
@@ -193,6 +213,9 @@ public class Item {
         this.mContractDate = cursor.getLong(14);
         this.mContractInstructions = cursor.getString(15);
 
+        this.mInventoryReminders = cursor.getLong(16);
+        this.mMinRequiredQuantity = cursor.getLong(17);
+        this.mCurrentQuantity = cursor.getLong(18);
     }
 
     // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -222,6 +245,10 @@ public class Item {
         values.put(COL_LAST_CONTRACT_DATE, mContractDate);
         values.put(COL_CONTRACT_INSTRUCTIONS, mContractInstructions);
 
+        values.put(COL_INVENTORY_REMINDERS, mInventoryReminders);
+        values.put(COL_MIN_REQUIRED_QUANTITY, mMinRequiredQuantity);
+        values.put(COL_CURRENT_QUANTITY, mCurrentQuantity);
+
         return values;
     }
 
@@ -229,7 +256,7 @@ public class Item {
     /**
      * sets the fields from a ContentValues object
      */
-    public ContentValues setContentFromCV(final ContentValues values) {
+    public void setContentFromCV(final ContentValues values) {
         // Note that ID is NOT included here
         mName = values.getAsString(COL_NAME);
         mDescription = values.getAsString(COL_DESCRIPTION);
@@ -250,7 +277,10 @@ public class Item {
         mContractDate = values.getAsLong(COL_LAST_CONTRACT_DATE);
         mContractInstructions = values.getAsString(COL_CONTRACT_INSTRUCTIONS);
 
-        return values;
+        mInventoryReminders = values.getAsLong(COL_INVENTORY_REMINDERS);
+        mMinRequiredQuantity = values.getAsLong(COL_MIN_REQUIRED_QUANTITY);
+        mCurrentQuantity = values.getAsLong(COL_CURRENT_QUANTITY);
+
     }
 
     // Item FTS Table

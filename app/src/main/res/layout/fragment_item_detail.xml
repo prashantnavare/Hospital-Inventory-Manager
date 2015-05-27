@@ -62,7 +62,7 @@
 
             <Spinner
                 android:id="@+id/spinnerType"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawSelectorOnTop="true"
                 android:textSize="18sp"
@@ -88,7 +88,7 @@
                 android:layout_height="match_parent"
                 android:text="Enable Calibration Reminders"
                 android:textSize="16sp"
-                android:checked="true"
+                android:checked="false"
                 android:layout_gravity="right" />
 
             <Space
@@ -101,6 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 >
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -176,7 +177,7 @@
                 android:layout_height="match_parent"
                 android:text="Enable Maintenance Reminders"
                 android:textSize="16sp"
-                android:checked="true"
+                android:checked="false"
                 android:layout_gravity="right" />
 
             <Space
@@ -189,6 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 >
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -264,7 +266,7 @@
                 android:layout_height="match_parent"
                 android:text="Enable Contract Reminders"
                 android:textSize="16sp"
-                android:checked="true"
+                android:checked="false"
                 android:layout_gravity="right" />
 
             <Space
@@ -277,6 +279,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 >
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -346,6 +349,87 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40px" />
+
+    <LinearLayout
+        android:id="@+id/layoutConsummable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/current_quantity"
+                android:textColor="#ff707070"
+                android:textSize="16sp"
+                />
+            <EditText
+                android:id="@+id/textCurrentQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:textColor="#ff222222"
+                android:minWidth="70sp"
+                android:textSize="16sp"
+                android:numeric="integer" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/chkInventory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Enable Inventory Reminders"
+            android:textSize="16sp"
+            android:checked="false"
+            android:layout_gravity="right" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20px" />
+
+        <LinearLayout
+            android:id="@+id/layoutInventory"
+            android:layout_marginLeft="100px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/min_required_quantity"
+                    android:textColor="#ff707070"
+                    android:textSize="16sp" />
+                <EditText
+                    android:id="@+id/textMinRequiredQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:textColor="#ff222222"
+                    android:minWidth="70sp"
+                    android:textSize="16sp"
+                    android:numeric="integer" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

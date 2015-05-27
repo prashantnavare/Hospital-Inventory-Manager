@@ -31,6 +31,14 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     private static final int ITEMS = 3;
     private static final int ITEM_ID = 4;
 
+    // ServiceCall Table related
+    private static final String SERVICE_CALL_SUB_SCHEME = "/service_call";
+    static final String SERVICE_CALL_URL = SCHEME + PROVIDER_NAME + SERVICE_CALL_SUB_SCHEME;
+    public static final Uri SERVICE_CALL_URI = Uri.parse(SERVICE_CALL_URL);
+    // UriMatcher stuff
+    private static final int SERVICE_CALLS = 5;
+    private static final int SERVICE_CALL_ID = 6;
+
     private static final UriMatcher mURIMatcher = buildUriMatcher();
 
     /**
@@ -42,10 +50,13 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         // to get FTS items...
         matcher.addURI(PROVIDER_NAME, FTS_ITEMS_SUB_SCHEME, SEARCH_FTS_ITEMS);
 
-        // to get a specific item
+        // for item
         matcher.addURI(PROVIDER_NAME, ITEM_SUB_SCHEME , ITEMS);
         matcher.addURI(PROVIDER_NAME, ITEM_SUB_SCHEME + "/#", ITEM_ID);
 
+        // for serviceCall
+        matcher.addURI(PROVIDER_NAME, SERVICE_CALL_SUB_SCHEME , SERVICE_CALLS);
+        matcher.addURI(PROVIDER_NAME, SERVICE_CALL_SUB_SCHEME + "/#", SERVICE_CALL_ID);
 
         // to get suggestions...
         matcher.addURI(PROVIDER_NAME, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGEST_ITEMS);
@@ -149,6 +160,8 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         switch (mURIMatcher.match(uri)) {
             case ITEMS:
                 return insertItem(values);
+            case SERVICE_CALLS:
+                return insertServiceCall(values);
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
@@ -163,6 +176,19 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         {
             Uri newItemUri = ContentUris.withAppendedId(ITEM_URI, rowID);
             getContext().getContentResolver().notifyChange(FTS_ITEM_URI, null);
+            return newItemUri;
+        }
+        return null;
+    }
+
+    private Uri insertServiceCall(ContentValues values) {
+
+        // Add a new service call
+        long rowID = mInventoryDB.insertServiceCall(values);
+        // If record is added successfully
+        if (rowID > 0)
+        {
+            Uri newItemUri = ContentUris.withAppendedId(SERVICE_CALL_URI, rowID);
             return newItemUri;
         }
         return null;

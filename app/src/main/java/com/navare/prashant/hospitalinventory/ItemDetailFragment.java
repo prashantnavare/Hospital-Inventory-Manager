@@ -28,8 +28,13 @@ import android.app.DatePickerDialog;
 
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Item;
+import com.navare.prashant.hospitalinventory.Database.ServiceCall;
 import com.navare.prashant.hospitalinventory.util.CalibrationDatePickerFragment;
+import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
+import com.navare.prashant.hospitalinventory.util.ServiceCallDialogFragment;
+
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,6 +99,13 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private Button mBtnChangeContractDate;
     private TextView mTextContractInstructions;
 
+    private LinearLayout mLayoutConsummable;
+    private CheckBox mInventoryCheckBox;
+    private LinearLayout mLayoutInventory;
+    private TextView mTextMinRequiredQuantity;
+    private TextView mTextCurrentQuantity;
+
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -106,7 +118,10 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         public void EnableDeleteButton(boolean bEnable);
         public void EnableRevertButton(boolean bEnable);
         public void EnableSaveButton(boolean bEnable);
+        public void EnableInventoryAddButton(boolean bEnable);
+        public void EnableInventorySubtractButton(boolean bEnable);
         public void RedrawOptionsMenu();
+        public void EnableServiceCallButton(boolean bEnable);
         public void onItemDeleted();
     }
     /**
@@ -124,12 +139,19 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         public void EnableSaveButton(boolean bEnable) {
         }
         @Override
+        public void EnableInventoryAddButton(boolean bEnable) {
+        }
+        @Override
+        public void EnableInventorySubtractButton(boolean bEnable) {
+        }
+        @Override
+        public void EnableServiceCallButton(boolean bEnable) {
+        }
+        @Override
         public void RedrawOptionsMenu() {
         }
-
         @Override
         public void onItemDeleted() {
-
         }
     };
 
@@ -206,9 +228,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                     mSpinnerPosition = position;
                     if (position == 0) {
                         mLayoutInstrument.setVisibility(View.VISIBLE);
+                        mLayoutConsummable.setVisibility(View.GONE);
                     }
                     else {
                         mLayoutInstrument.setVisibility(View.GONE);
+                        mLayoutConsummable.setVisibility(View.VISIBLE);
                     }
                     mCallbacks.EnableRevertButton(true);
                     mCallbacks.EnableSaveButton(true);
@@ -312,6 +336,30 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mTextContractInstructions = (TextView) rootView.findViewById(R.id.textContractInstructions);
         mTextContractInstructions.addTextChangedListener(this);
+
+        // Consummable related
+        mLayoutConsummable = (LinearLayout) rootView.findViewById(R.id.layoutConsummable);
+
+        // Inventory related
+        mLayoutInventory = (LinearLayout) rootView.findViewById(R.id.layoutInventory);
+
+        mTextCurrentQuantity = (TextView) rootView.findViewById(R.id.textCurrentQuantity);
+        mTextCurrentQuantity.addTextChangedListener(this);
+
+        mInventoryCheckBox = (CheckBox) rootView.findViewById(R.id.chkInventory);
+        mInventoryCheckBox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    mLayoutInventory.setVisibility(View.VISIBLE);
+                } else {
+                    mLayoutInventory.setVisibility(View.GONE);
+                }
+                enableRevertAndSaveButtons();
+            }
+        });
+
+        mTextMinRequiredQuantity = (TextView) rootView.findViewById(R.id.textMinRequiredQuantity);
+        mTextMinRequiredQuantity.addTextChangedListener(this);
 
         return rootView;
     }
@@ -574,6 +622,17 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         else {
             // Consummable
             mItem.mType = Item.ConsummableType;
+            // Inventory related
+            if (mTextCurrentQuantity.getText().toString().isEmpty() == false)
+                mItem.mCurrentQuantity = Long.valueOf(mTextCurrentQuantity.getText().toString());
+            if (mInventoryCheckBox.isChecked()) {
+                mItem.mInventoryReminders = 1;
+                if (mTextMinRequiredQuantity.getText().toString().isEmpty() == false)
+                    mItem.mMinRequiredQuantity = Long.valueOf(mTextMinRequiredQuantity.getText().toString());
+            }
+            else {
+                mItem.mInventoryReminders = 0;
+            }
         }
     }
 
@@ -588,6 +647,14 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
             // Enable the instrument layout
             mLayoutInstrument.setVisibility(View.VISIBLE);
+            mLayoutConsummable.setVisibility(View.GONE);
+
+            // Turn on the Instrument action bar menu items
+            mCallbacks.EnableServiceCallButton(true);
+
+            // Turn off the Consummable action bar menu items
+            mCallbacks.EnableInventoryAddButton(false);
+            mCallbacks.EnableInventorySubtractButton(false);
 
             // Set the calibration UI elements
             if (mItem.mCalibrationReminders > 0) {
@@ -656,10 +723,34 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             }
         }
         else if (mItem.mType == Item.ConsummableType) {
+
             mSpinnerPosition = 1;
             mSpinnerType.setSelection(1, false);
             // Turn off the Instrument specific views
             mLayoutInstrument.setVisibility(View.GONE);
+            mLayoutConsummable.setVisibility(View.VISIBLE);
+
+            // Turn off the Instrument action bar menu items
+            mCallbacks.EnableServiceCallButton(false);
+
+            // Turn on the Consummable action bar menu items
+            mCallbacks.EnableInventoryAddButton(true);
+            mCallbacks.EnableInventorySubtractButton(true);
+
+            if (mItem.mCurrentQuantity > 0)
+                mTextCurrentQuantity.setText(String.valueOf(mItem.mCurrentQuantity));
+
+            // Set the Inventory UI elements
+            if (mItem.mInventoryReminders > 0) {
+                mInventoryCheckBox.setChecked(true);
+                mLayoutInventory.setVisibility(View.VISIBLE);
+                if (mItem.mMinRequiredQuantity > 0)
+                    mTextMinRequiredQuantity.setText(String.valueOf(mItem.mMinRequiredQuantity));
+            }
+            else {
+                mInventoryCheckBox.setChecked(false);
+                mLayoutInventory.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -679,5 +770,58 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mContractCheckBox.setChecked(false);
         mLayoutContract.setVisibility(View.GONE);
+
+        mLayoutConsummable.setVisibility(View.GONE);
+    }
+
+    public void showInventoryAddDialog() {
+        InventoryDialogFragment dialog = new InventoryDialogFragment();
+        dialog.setDialogType(InventoryDialogFragment.InventoryDialogType.ADD);
+        dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "InventoryDialogFragment");
+    }
+
+    public void showInventorySubtractDialog() {
+        InventoryDialogFragment dialog = new InventoryDialogFragment();
+        dialog.setDialogType(InventoryDialogFragment.InventoryDialogType.SUBTRACT);
+        dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "InventoryDialogFragment");
+    }
+
+    public void showServiceCallDialog() {
+        ServiceCallDialogFragment dialog = new ServiceCallDialogFragment();
+        dialog.setItem(mItem);
+        dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "ServiceCallDialogFragment");
+    }
+
+    public void addToInventory(long quantity) {
+        long newCurrrentQuantity =  mItem.mCurrentQuantity + quantity;
+        mTextCurrentQuantity.setText(String.valueOf(newCurrrentQuantity));
+        mCallbacks.EnableRevertButton(true);
+        mCallbacks.EnableSaveButton(true);
+        mCallbacks.RedrawOptionsMenu();
+    }
+
+    public void subtractFromInventory(long quantity) {
+        long newCurrrentQuantity =  mItem.mCurrentQuantity - quantity;
+        mTextCurrentQuantity.setText(String.valueOf(newCurrrentQuantity));
+        mCallbacks.EnableRevertButton(true);
+        mCallbacks.EnableSaveButton(true);
+        mCallbacks.RedrawOptionsMenu();
+    }
+    public void createServiceCall(long itemID, String description) {
+        ServiceCall sc = new ServiceCall();
+        sc.mItemID = itemID;
+        sc.mDescription = description;
+        sc.mStatus = ServiceCall.OpenStatus;
+        sc.mOpenTimeStamp = Calendar.getInstance().getTimeInMillis();
+        // a new service call is being inserted.
+        Uri uri = getActivity().getContentResolver().insert(HospitalInventoryContentProvider.SERVICE_CALL_URI, sc.getContentValues());
+        if (uri != null) {
+            Toast toast = Toast.makeText(mContext, "Problem report created.", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else {
+            Toast toast = Toast.makeText(mContext, "Failed to create problem report.", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

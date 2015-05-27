@@ -9,17 +9,33 @@
     <string name="title_item_detail">Item Detail</string>
     <string name="action_search">Search</string>
     <string name="menu_add">Add item</string>
+    <string name="menu_inventory_add">Add to inventory</string>
+    <string name="menu_inventory_subtract">Subtract from inventory</string>
+    <string name="menu_service_call">Create service call</string>
     <string name="search_hint">Search items</string>
     <string name="menu_save">Save</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_revert">Revert Changes</string>
-    <string name="last_calibration_date">Last Calibration Date : </string>
+    <string name="last_calibration_date">Last Calibration Date</string>
     <string name="set_date">Set</string>
-    <string name="instructions">Instructions :</string>
+    <string name="instructions">Instructions</string>
     <string name="calibration_frequency">Frequency (in days)</string>
     <string name="maintenance_frequency">Frequency (in days)</string>
     <string name="contract_frequency">Renewal Frequency (in months)</string>
-    <string name="last_maintenance_date">Last Maintenance Date : </string>
-    <string name="last_contract_date">Last Renewal Date : </string>
+    <string name="last_maintenance_date">Last Maintenance Date</string>
+    <string name="last_contract_date">Last Renewal Date</string>
+    <string name="min_required_quantity">Minimum Required Quantity</string>
+    <string name="current_quantity">Current Quantity</string>
+    <string name="add_quantity">Quantity to add : </string>
+    <string name="subtract_quantity">Quantity to subtract : </string>
+    <string name="inventory_add_title">Add Quantity</string>
+    <string name="inventory_subtract_title">Subtract Quantity</string>
+    <string name="add">Add</string>
+    <string name="subtract">Subtract</string>
+    <string name="cancel">Cancel</string>
+    <string name="instrument">Instrument</string>
+    <string name="description">Description</string>
+    <string name="report">Report</string>
+    <string name="dialog_service_call_title">Report a problem</string>
 
 </resources>
