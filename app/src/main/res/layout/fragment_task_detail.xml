@@ -1,0 +1,102 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/taskDetailScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        >
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/textItemType"
+                    android:text="@string/item"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/textItemName"
+                    android:text="@string/instrument"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+            </TableRow>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+            <TableRow>
+                <TextView
+                    android:text="@string/due_date"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/textDueDate"
+                    android:text="@string/none"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+            </TableRow>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+            <TableRow>
+                <TextView
+                    android:text="@string/assigned_to"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+                <EditText
+                    android:id="@+id/textAssignedTo"
+                    android:text="@string/none"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+            </TableRow>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+            <TableRow>
+                <TextView
+                    android:text="@string/task"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/textTaskType"
+                    android:text="@string/calibration"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+            </TableRow>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="2dp" />
+        </TableLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInstructionsLabel"
+            android:text="@string/instructions"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInstructions"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="false"
+            />
+    </LinearLayout>
+</ScrollView>

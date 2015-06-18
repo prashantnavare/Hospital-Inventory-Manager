@@ -37,5 +37,26 @@
     <string name="description">Description</string>
     <string name="report">Report</string>
     <string name="dialog_service_call_title">Report a problem</string>
+    <string name="title_task_list">Tasks</string>
+    <string name="title_task_detail">Task Detail</string>
+    <string name="menu_update_tasks">Update Tasks Table</string>
+    <string name="task_type">Task Type</string>
+    <string name="assigned_to">Assigned To</string>
+    <string name="due_date">Due Date</string>
+    <string name="type">Type</string>
+    <string name="none">None</string>
+    <string name="menu_mark_as_complete">Mark as complete</string>
+    <string name="item">Item</string>
+    <string name="task">Task</string>
+    <string name="consummable">Consummable</string>
+    <string name="calibration">Calibration</string>
+    <string name="unknown">Unknown</string>
+    <string name="service_call">Service Call</string>
+    <string name="maintenance">Maintenance</string>
+    <string name="contract">Contract</string>
+    <string name="inventory">Inventory</string>
+    <string name="completion_comments">Completion Comments</string>
+    <string name="task_done">Task Done</string>
+    <string name="comments">Comments</string>
 
 </resources>

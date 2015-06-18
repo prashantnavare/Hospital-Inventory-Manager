@@ -39,6 +39,23 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     private static final int SERVICE_CALLS = 5;
     private static final int SERVICE_CALL_ID = 6;
 
+    // FTS Tasks related
+    private static final String FTS_TASKS_SUB_SCHEME = "/fts_tasks";
+    static final String FTS_TASK_URL = SCHEME + PROVIDER_NAME + FTS_TASKS_SUB_SCHEME;
+    public static final Uri FTS_TASK_URI = Uri.parse(FTS_TASK_URL);
+    // UriMatcher stuff
+    private static final int SEARCH_FTS_TASKS = 7;
+    private static final int SEARCH_SUGGEST_TASKS = 8;
+
+    // Actual TaskTable related
+    // get_task related
+    private static final String TASK_SUB_SCHEME = "/task";
+    static final String TASK_URL = SCHEME + PROVIDER_NAME + TASK_SUB_SCHEME;
+    public static final Uri TASK_URI = Uri.parse(TASK_URL);
+    // UriMatcher stuff
+    private static final int TASKS = 9;
+    private static final int TASK_ID = 10;
+
     private static final UriMatcher mURIMatcher = buildUriMatcher();
 
     /**
@@ -57,6 +74,13 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         // for serviceCall
         matcher.addURI(PROVIDER_NAME, SERVICE_CALL_SUB_SCHEME , SERVICE_CALLS);
         matcher.addURI(PROVIDER_NAME, SERVICE_CALL_SUB_SCHEME + "/#", SERVICE_CALL_ID);
+
+        // to get FTS tasks...
+        matcher.addURI(PROVIDER_NAME, FTS_TASKS_SUB_SCHEME, SEARCH_FTS_TASKS);
+
+        // for task
+        matcher.addURI(PROVIDER_NAME, TASK_SUB_SCHEME , TASKS);
+        matcher.addURI(PROVIDER_NAME, TASK_SUB_SCHEME + "/#", TASK_ID);
 
         // to get suggestions...
         matcher.addURI(PROVIDER_NAME, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGEST_ITEMS);
@@ -107,6 +131,17 @@ public class HospitalInventoryContentProvider extends ContentProvider {
                 }
                 resultCursor = getSuggestionsFTSForItems(selectionArgs[0]);
                 break;
+            case SEARCH_FTS_TASKS:
+                if (selectionArgs == null) {
+                    resultCursor = getAllFTSTasks();
+                }
+                else {
+                    resultCursor =  searchFTSTasks(selectionArgs[0]);
+                }
+                break;
+            case TASK_ID:
+                resultCursor =  getTask(uri);
+                break;
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
@@ -134,11 +169,27 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         return mInventoryDB.getFTSItemMatches(query, Item.FTS_FIELDS);
     }
 
+    private Cursor getAllFTSTasks() {
+        return mInventoryDB.getAllFTSTasks(Task.FTS_FIELDS);
+    }
+
+    private Cursor searchFTSTasks(String query) {
+        query = query.toLowerCase();
+        return mInventoryDB.getFTSTaskMatches(query, Task.FTS_FIELDS);
+    }
+
+    private Cursor getTask(Uri uri) {
+        String rowId = uri.getLastPathSegment();
+        return mInventoryDB.getTask(rowId, Task.FIELDS);
+    }
+
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         switch (mURIMatcher.match(uri)) {
             case ITEM_ID:
                 return deleteItem(uri);
+            case TASK_ID:
+                return deleteTask(uri);
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
@@ -154,6 +205,16 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         return rowsDeleted;
     }
 
+    private int deleteTask(Uri uri) {
+        String rowId = uri.getLastPathSegment();
+        int rowsDeleted = mInventoryDB.deleteTask(rowId);
+        if (rowsDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(FTS_TASK_URI, null);
+        }
+        return rowsDeleted;
+    }
+
     @Override
     public Uri insert(Uri uri, ContentValues values) {
 
@@ -162,6 +223,8 @@ public class HospitalInventoryContentProvider extends ContentProvider {
                 return insertItem(values);
             case SERVICE_CALLS:
                 return insertServiceCall(values);
+            case TASKS:
+                return insertTask(values);
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
@@ -194,12 +257,28 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         return null;
     }
 
+    private Uri insertTask(ContentValues values) {
+
+        // Add a new task
+        long rowID = mInventoryDB.insertTask(values);
+        // If record is added successfully
+        if (rowID > 0)
+        {
+            Uri newTaskUri = ContentUris.withAppendedId(TASK_URI, rowID);
+            getContext().getContentResolver().notifyChange(FTS_TASK_URI, null);
+            return newTaskUri;
+        }
+        return null;
+    }
+
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         switch (mURIMatcher.match(uri)) {
             case ITEM_ID:
                 return updateItem(uri, values, selection, selectionArgs);
+            case TASK_ID:
+                return updateTask(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
@@ -211,6 +290,20 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         if (rowsUpdated > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
             getContext().getContentResolver().notifyChange(FTS_ITEM_URI, null);
+        }
+        return rowsUpdated;
+    }
+
+    private int updateTask(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        String taskId = uri.getLastPathSegment();
+        int rowsUpdated = mInventoryDB.updateTask(taskId, values, selection, selectionArgs);
+        if (rowsUpdated > 0) {
+            long status = values.getAsLong(Task.COL_STATUS);
+            if (status == Task.CompletedStatus) {
+                mInventoryDB.completeTask(taskId);
+            }
+            getContext().getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(FTS_TASK_URI, null);
         }
         return rowsUpdated;
     }

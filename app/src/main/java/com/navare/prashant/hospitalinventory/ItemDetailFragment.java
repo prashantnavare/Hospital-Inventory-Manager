@@ -113,7 +113,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
      */
     public interface Callbacks {
         /**
-         * Callback for when an item has been selected.
+         * Callbacks for when an item has been selected.
          */
         public void EnableDeleteButton(boolean bEnable);
         public void EnableRevertButton(boolean bEnable);
@@ -172,10 +172,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-
             mItemID = getArguments().getString(ARG_ITEM_ID);
         }
     }
@@ -186,7 +182,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+            throw new IllegalStateException("Activity must implement item detail fragment's callbacks.");
         }
 
         mCallbacks = (Callbacks) activity;

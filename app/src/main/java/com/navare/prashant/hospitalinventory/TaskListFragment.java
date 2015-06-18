@@ -9,24 +9,28 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Item;
+import com.navare.prashant.hospitalinventory.Database.Task;
+import com.navare.prashant.hospitalinventory.dummy.DummyContent;
+import com.navare.prashant.hospitalinventory.util.TaskListCursorAdapter;
 
 /**
- * A list fragment representing a list of Items. This fragment
+ * A list fragment representing a list of Tasks. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link ItemDetailFragment}.
+ * currently being viewed in a {@link TaskDetailFragment}.
  * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ItemListFragment extends ListFragment {
+public class TaskListFragment extends ListFragment {
 
-    public static final int LOADER_ID_ITEM_LIST = 1;
+    public static final int LOADER_ID_TASK_LIST = 11;
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -51,9 +55,9 @@ public class ItemListFragment extends ListFragment {
      */
     public interface Callbacks {
         /**
-         * Callback for when an task has been selected.
+         * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onTaskSelected(String id);
         public String getQuery();
     }
 
@@ -63,7 +67,7 @@ public class ItemListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onTaskSelected(String id) {
         }
 
         @Override
@@ -76,18 +80,29 @@ public class ItemListFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemListFragment() {
+    public TaskListFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setListAdapter(new SimpleCursorAdapter(getActivity(),
-                R.layout.item_list_row, null, new String[] {
-                Item.COL_FTS_ITEM_NAME, Item.COL_FTS_ITEM_DESCRIPTION}, new int[] { R.id.textName, R.id.textDescription}, 0));
+        String[] columns = new String[] {
+                Task.COL_FTS_ITEM_NAME,
+                Task.COL_FTS_TASK_TYPE,
+                Task.COL_FTS_ASSIGNED_TO,
+                Task.COL_FTS_DUE_DATE
+        };
+        int[] views = new int[] {
+                R.id.textItemName,
+                R.id.textTaskType,
+                R.id.textAssignedTo,
+                R.id.textDueDate
+        };
+        setListAdapter(new TaskListCursorAdapter(getActivity(),
+                R.layout.task_list_row, null, columns, views, 0));
 
-        getNewItemList(null);
+        getNewTaskList(null);
     }
 
     @Override
@@ -126,11 +141,11 @@ public class ItemListFragment extends ListFragment {
         super.onListItemClick(listView, view, position, id);
 
         Cursor cursor = (Cursor) getListAdapter().getItem(position);
-        Item item = new Item();
-        item.setFTSContent(cursor);
+        Task task = new Task();
+        task.setFTSContent(cursor);
         // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(item.mFTSRealID);
+        // fragment is attached to one) that a task has been selected.
+        mCallbacks.onTaskSelected(task.mFTSRealID);
     }
 
     @Override
@@ -164,10 +179,10 @@ public class ItemListFragment extends ListFragment {
         mActivatedPosition = position;
     }
 
-    public void getNewItemList(final String searchString){
+    public void getNewTaskList(final String searchString){
 
         // Load the content
-        getLoaderManager().restartLoader(LOADER_ID_ITEM_LIST, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+        getLoaderManager().restartLoader(LOADER_ID_TASK_LIST, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 String [] selectionArgs = null;
@@ -176,7 +191,7 @@ public class ItemListFragment extends ListFragment {
                 }
 
                 return new CursorLoader(getActivity(),
-                        HospitalInventoryContentProvider.FTS_ITEM_URI, Item.FTS_FIELDS, null, selectionArgs,
+                        HospitalInventoryContentProvider.FTS_TASK_URI, Task.FTS_FIELDS, null, selectionArgs,
                         null);
             }
 
@@ -190,6 +205,5 @@ public class ItemListFragment extends ListFragment {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
             }
         });
-
     }
 }

@@ -186,9 +186,7 @@ public class MainActivity extends Activity {
     }
 
     public void onTasksClick(View view) {
-        //startActivity(new Intent(“net.learn2develop.SecondActivity”));
-        Toast toast = Toast.makeText(getApplicationContext(), "Clicked the Tasks Button", Toast.LENGTH_SHORT);
-        toast.show();
+        startActivity(new Intent(this, TaskListActivity.class));
     }
 
     public void onInventoryClick(View view) {

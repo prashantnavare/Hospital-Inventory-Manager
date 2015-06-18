@@ -38,12 +38,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.MainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
 
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".ItemDetailActivity"
@@ -52,6 +54,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.ItemListActivity" />
+        </activity>
+        <activity
+            android:name=".TaskListActivity"
+            android:label="@string/title_task_list"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.navare.prashant.hospitalinventory.MainActivity" />
+        </activity>
+        <activity
+            android:name=".TaskDetailActivity"
+            android:label="@string/title_task_detail"
+            android:parentActivityName=".TaskListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.navare.prashant.hospitalinventory.TaskListActivity" />
         </activity>
     </application>
 
