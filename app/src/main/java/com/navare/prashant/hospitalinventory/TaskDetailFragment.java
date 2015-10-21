@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;import android.support.v4.app.LoaderManager;import android.support.v4.content.CursorLoader;import android.support.v4.content.Loader;import android.text.Editable;import android.text.TextWatcher;import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
@@ -34,6 +37,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     public static final String ARG_TASK_ID = "task_id";
 
     private Context mContext = null;
+    private int mSpinnerPosition = -1;
 
     /**
      * The task this fragment is presenting.
@@ -51,16 +55,17 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextTaskType;
     private TextView mTextInstructionsLabel;
     private TextView mTextInstructions;
+    private Spinner mSpinnerPriority;
 
     public interface Callbacks {
         /**
          * Callbacks for when a task has been selected.
          */
-        public void EnableTaskDoneButton(boolean bEnable);
-        public void EnableRevertButton(boolean bEnable);
-        public void EnableSaveButton(boolean bEnable);
-        public void RedrawOptionsMenu();
-        public void onTaskDone();
+        void EnableTaskDoneButton(boolean bEnable);
+        void EnableRevertButton(boolean bEnable);
+        void EnableSaveButton(boolean bEnable);
+        void RedrawOptionsMenu();
+        void onTaskDone();
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -121,7 +126,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         }
 
         mCallbacks = (Callbacks) activity;
-        mContext = (Context)activity;
+        mContext = activity;
     }
 
     @Override
@@ -151,6 +156,26 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTextInstructionsLabel = ((TextView) rootView.findViewById(R.id.textInstructionsLabel));
         mTextInstructions = ((TextView) rootView.findViewById(R.id.textInstructions));
 
+        mSpinnerPriority = (Spinner) rootView.findViewById(R.id.spinnerPriority);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, getResources().getStringArray(R.array.priorities_array));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerPriority.setAdapter(adapter);
+        mSpinnerPosition = 0;
+        mSpinnerPriority.setSelection(0, false);
+        mSpinnerPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int position, long arg3) {
+                if (position != mSpinnerPosition) {
+                    mSpinnerPosition = position;
+                    mCallbacks.EnableRevertButton(true);
+                    mCallbacks.EnableSaveButton(true);
+                    mCallbacks.RedrawOptionsMenu();
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
         return rootView;
     }
 
@@ -286,6 +311,12 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mTask = new Task();
 
         mTask.mAssignedTo = mTextAssignedTo.getText().toString();
+        if (mSpinnerPriority.getSelectedItemId() == 0) {
+            mTask.mPriority = Task.NormalPriority;
+        }
+        else {
+            mTask.mPriority = Task.UrgentPriority;
+        }
     }
 
     // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -319,6 +350,15 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         if (mServiceCall != null) {
             mTextInstructionsLabel.setText(getResources().getText(R.string.description));
             mTextInstructions.setText(mServiceCall.mDescription);
+        }
+
+        if (mTask.mPriority == Task.NormalPriority) {
+            mSpinnerPosition = 0;
+            mSpinnerPriority.setSelection(0, false);
+        }
+        else if (mTask.mPriority == Task.UrgentPriority) {
+            mSpinnerPosition = 1;
+            mSpinnerPriority.setSelection(1, false);
         }
         // Toggle the action bar buttons appropriately
         mCallbacks.EnableTaskDoneButton(true);

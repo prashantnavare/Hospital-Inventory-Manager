@@ -29,6 +29,7 @@ import android.app.DatePickerDialog;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Item;
 import com.navare.prashant.hospitalinventory.Database.ServiceCall;
+import com.navare.prashant.hospitalinventory.Database.Task;
 import com.navare.prashant.hospitalinventory.util.CalibrationDatePickerFragment;
 import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
 import com.navare.prashant.hospitalinventory.util.ServiceCallDialogFragment;
@@ -65,11 +66,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
      */
     private String mItemID;
     private Item mItem = null;
-
-    String [] mItemTypes = {
-            "Instrument",
-            "Consummable"
-    };
 
     // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
@@ -115,14 +111,14 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         /**
          * Callbacks for when an item has been selected.
          */
-        public void EnableDeleteButton(boolean bEnable);
-        public void EnableRevertButton(boolean bEnable);
-        public void EnableSaveButton(boolean bEnable);
-        public void EnableInventoryAddButton(boolean bEnable);
-        public void EnableInventorySubtractButton(boolean bEnable);
-        public void RedrawOptionsMenu();
-        public void EnableServiceCallButton(boolean bEnable);
-        public void onItemDeleted();
+        void EnableDeleteButton(boolean bEnable);
+        void EnableRevertButton(boolean bEnable);
+        void EnableSaveButton(boolean bEnable);
+        void EnableInventoryAddButton(boolean bEnable);
+        void EnableInventorySubtractButton(boolean bEnable);
+        void RedrawOptionsMenu();
+        void EnableServiceCallButton(boolean bEnable);
+        void onItemDeleted();
     }
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
@@ -186,7 +182,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         }
 
         mCallbacks = (Callbacks) activity;
-        mContext = (Context)activity;
+        mContext = activity;
     }
 
     @Override
@@ -212,7 +208,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextDescription.addTextChangedListener(this);
 
         mSpinnerType = (Spinner) rootView.findViewById(R.id.spinnerType);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, mItemTypes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, getResources().getStringArray(R.array.item_type_array));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerType.setAdapter(adapter);
         mSpinnerPosition = 0;
         mSpinnerType.setSelection(0, false);
@@ -803,10 +800,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mCallbacks.EnableSaveButton(true);
         mCallbacks.RedrawOptionsMenu();
     }
-    public void createServiceCall(long itemID, String description) {
+    public void createServiceCall(long itemID, String description, long priority) {
         ServiceCall sc = new ServiceCall();
         sc.mItemID = itemID;
         sc.mDescription = description;
+        sc.mPriority = priority;
         sc.mStatus = ServiceCall.OpenStatus;
         sc.mOpenTimeStamp = Calendar.getInstance().getTimeInMillis();
         // a new service call is being inserted.
@@ -814,6 +812,16 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         if (uri != null) {
             Toast toast = Toast.makeText(mContext, "Problem report created.", Toast.LENGTH_SHORT);
             toast.show();
+
+            // Also create a corresponding task
+            Task task = new Task();
+            task.mTaskType = Task.ServiceCall;
+            task.mItemID = Long.valueOf(uri.getLastPathSegment());
+            task.mItemName = mItem.mName;
+            task.mStatus = Task.OpenStatus;
+            task.mPriority = priority;
+
+            Uri taskUri = getActivity().getContentResolver().insert(HospitalInventoryContentProvider.TASK_URI, task.getContentValues());
         }
         else {
             Toast toast = Toast.makeText(mContext, "Failed to create problem report.", Toast.LENGTH_SHORT);

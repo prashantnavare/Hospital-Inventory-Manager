@@ -58,5 +58,7 @@
     <string name="completion_comments">Completion Comments</string>
     <string name="task_done">Task Done</string>
     <string name="comments">Comments</string>
+    <string name="priority">Priority</string>
+    <string name="task_priority">Task Priority?</string>
 
 </resources>

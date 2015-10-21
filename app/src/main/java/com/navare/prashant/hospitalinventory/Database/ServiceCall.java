@@ -25,6 +25,7 @@ public class ServiceCall {
     // These fields can be anything you want.
     public static final String COL_ITEMID = "itemid";
     public static final String COL_DESCRIPTION = "description";
+    public static final String COL_PRIORITY = "priority";
     public static final String COL_STATUS = "status";
     public static final String COL_OPEN_TIME_STAMP = "openTimeStamp";
     public static final String COL_CLOSED_TIME_STAMP = "closedTimeStamp";
@@ -39,6 +40,7 @@ public class ServiceCall {
             BaseColumns._ID,
             COL_ITEMID,
             COL_DESCRIPTION,
+            COL_PRIORITY,
             COL_STATUS,
             COL_OPEN_TIME_STAMP,
             COL_CLOSED_TIME_STAMP
@@ -57,6 +59,7 @@ public class ServiceCall {
         map.put(BaseColumns._ID, BaseColumns._ID);
         map.put(COL_ITEMID, COL_ITEMID);
         map.put(COL_DESCRIPTION, COL_DESCRIPTION);
+        map.put(COL_PRIORITY, COL_PRIORITY);
         map.put(COL_STATUS, COL_STATUS);
         map.put(COL_OPEN_TIME_STAMP, COL_OPEN_TIME_STAMP);
         map.put(COL_CLOSED_TIME_STAMP, COL_CLOSED_TIME_STAMP);
@@ -74,6 +77,7 @@ public class ServiceCall {
                     + BaseColumns._ID + " INTEGER PRIMARY KEY,"
                     + COL_ITEMID + " INTEGER,"
                     + COL_DESCRIPTION + " TEXT NOT NULL DEFAULT '',"
+                    + COL_PRIORITY + " INTEGER, "
                     + COL_STATUS + " INTEGER, "
                     + COL_OPEN_TIME_STAMP + " INTEGER,"
                     + COL_CLOSED_TIME_STAMP + " INTEGER "
@@ -83,6 +87,7 @@ public class ServiceCall {
     public long mID = -1;
     public long mItemID = -1;
     public String mDescription = "";
+    public long mPriority = 0;
     public long mStatus = 0;
     public long mOpenTimeStamp = 0;
     public long mClosedTimeStamp = 0;
@@ -101,10 +106,11 @@ public class ServiceCall {
         this.mID = cursor.getLong(0);
         this.mItemID = cursor.getLong(1);
         this.mDescription = cursor.getString(2);
-        this.mStatus = cursor.getLong(3);
+        this.mPriority = cursor.getLong(3);
+        this.mStatus = cursor.getLong(4);
 
-        this.mOpenTimeStamp = cursor.getLong(4);
-        this.mClosedTimeStamp = cursor.getLong(5);
+        this.mOpenTimeStamp = cursor.getLong(5);
+        this.mClosedTimeStamp = cursor.getLong(6);
     }
 
     /**
@@ -116,6 +122,7 @@ public class ServiceCall {
         // Note that ID is NOT included here
         values.put(COL_ITEMID, mItemID);
         values.put(COL_DESCRIPTION, mDescription);
+        values.put(COL_PRIORITY, mPriority);
         values.put(COL_STATUS, mStatus);
         values.put(COL_OPEN_TIME_STAMP, mOpenTimeStamp);
         values.put(COL_CLOSED_TIME_STAMP, mClosedTimeStamp);
@@ -130,6 +137,7 @@ public class ServiceCall {
         // Note that ID is NOT included here
         mItemID = values.getAsLong(COL_ITEMID);
         mDescription = values.getAsString(COL_DESCRIPTION);
+        mPriority = values.getAsLong(COL_PRIORITY);
         mStatus = values.getAsLong(COL_STATUS);
         mOpenTimeStamp = values.getAsLong(COL_OPEN_TIME_STAMP);
         mClosedTimeStamp = values.getAsLong(COL_CLOSED_TIME_STAMP);

@@ -162,7 +162,7 @@ public class TaskListActivity extends ActionBarActivity
     @Override
     public boolean onQueryTextChange(String s) {
         // handles a search query
-        mQuery = !TextUtils.isEmpty(s) ? s : null;;
+        mQuery = !TextUtils.isEmpty(s) ? s : null;
         ((TaskListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.task_list)).getNewTaskList(mQuery);
         return true;

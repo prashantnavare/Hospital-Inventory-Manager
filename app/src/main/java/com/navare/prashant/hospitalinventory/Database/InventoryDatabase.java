@@ -22,9 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by prashant on 13-Apr-15.
- */
 public class InventoryDatabase extends SQLiteOpenHelper {
     private static final String TAG = "InventoryDatabase";
     private static final String DATABASE_NAME = "HospitalInventory";
@@ -136,6 +133,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 task.mAssignedTo = strings[4].trim();
                 task.mAssignedToContact = strings[5].trim();
                 task.mDueDate = Long.valueOf(strings[6].trim());
+                task.mPriority = Long.valueOf(strings[7].trim());
                 long newID = addTask(task);
                 if (newID == -1) {
                     Log.e(TAG, "unable to add task: " + strings[0].trim());
@@ -351,6 +349,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 ftsValues.put(Task.COL_FTS_DUE_DATE, dueDateString);
             }
             ftsValues.put(Task.COL_FTS_TASK_REALID, Long.toString(realID));
+            ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
 
             long ftsID =  db.insert(Task.FTS_TABLE_NAME, null, ftsValues);
             if (ftsID == -1) {
@@ -402,6 +401,34 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(Task.TABLE_NAME);
         builder.setProjectionMap(Task.mColumnMap);
+
+        Cursor cursor = builder.query(this.getReadableDatabase(),
+                columns, selection, selectionArgs, null, null, null);
+
+        if (cursor == null) {
+            return null;
+        }
+        else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return cursor;
+    }
+
+    public Cursor getServiceCall(String rowID, String[] columns) {
+        String selection = BaseColumns._ID + " = ?";
+        String[] selectionArgs = new String[] {rowID};
+
+        /* This builds a query that looks like:
+         *     SELECT <columns> FROM <table> WHERE _id = <rowID>
+         */
+        /* The SQLiteBuilder provides a map for all possible columns requested to
+         * actual columns in the database, creating a simple column alias mechanism
+         * by which the ContentProvider does not need to know the real column names
+         */
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(ServiceCall.TABLE_NAME);
+        builder.setProjectionMap(ServiceCall.mColumnMap);
 
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, null);
@@ -504,7 +531,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         int rowsUpdated = db.update(Task.TABLE_NAME, values, BaseColumns._ID + "=" + taskId, null);
         if (rowsUpdated > 0) {
             ContentValues ftsValues = new ContentValues();
+            Task task = new Task();
+            task.setContentFromCV(values);
             ftsValues.put(Task.COL_FTS_ASSIGNED_TO, values.getAsString(Task.COL_ASSIGNED_TO));
+            ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
 
             long ftsRowsUpdated =  db.update(Task.FTS_TABLE_NAME, ftsValues, Task.COL_FTS_TASK_REALID + " MATCH " + taskId, null);
         }

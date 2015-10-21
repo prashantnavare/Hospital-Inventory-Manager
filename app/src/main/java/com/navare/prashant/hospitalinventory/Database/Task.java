@@ -25,6 +25,7 @@ public class Task {
     public static final String COL_ITEM_ID = "itemID";
     public static final String COL_ITEM_NAME = "itemName";
     public static final String COL_STATUS = "status";
+    public static final String COL_PRIORITY = "priority";
     public static final String COL_ASSIGNED_TO = "assignedTo";
     public static final String COL_ASSIGNED_TO_CONTACT = "assignedToContact";
     public static final String COL_DUE_DATE = "dueDate";
@@ -40,6 +41,9 @@ public class Task {
     public static final long OpenStatus = 1;
     public static final long CompletedStatus = 2;
 
+    public static final int NormalPriority = 1;
+    public static final int UrgentPriority = 2;
+
     // For database projection so order is consistent
     public static final String[] FIELDS = {
             BaseColumns._ID,
@@ -47,6 +51,7 @@ public class Task {
             COL_ITEM_ID,
             COL_ITEM_NAME,
             COL_STATUS,
+            COL_PRIORITY,
             COL_ASSIGNED_TO,
             COL_ASSIGNED_TO_CONTACT,
             COL_DUE_DATE,
@@ -57,13 +62,14 @@ public class Task {
     public static final HashMap<String, String> mColumnMap = buildColumnMap();
     private static HashMap<String,String> buildColumnMap() {
 
-        HashMap<String,String> map = new HashMap<String,String>();
+        HashMap<String,String> map = new HashMap<>();
 
         map.put(BaseColumns._ID, BaseColumns._ID);
         map.put(COL_TASK_TYPE, COL_TASK_TYPE);
         map.put(COL_ITEM_ID, COL_ITEM_ID);
         map.put(COL_ITEM_NAME, COL_ITEM_NAME);
         map.put(COL_STATUS, COL_STATUS);
+        map.put(COL_PRIORITY, COL_PRIORITY);
         map.put(COL_ASSIGNED_TO, COL_ASSIGNED_TO);
         map.put(COL_ASSIGNED_TO_CONTACT, COL_ASSIGNED_TO_CONTACT);
         map.put(COL_DUE_DATE, COL_DUE_DATE);
@@ -85,6 +91,7 @@ public class Task {
                     + COL_ITEM_ID + " INTEGER,"
                     + COL_ITEM_NAME + " TEXT NOT NULL DEFAULT '',"
                     + COL_STATUS + " INTEGER,"
+                    + COL_PRIORITY + " INTEGER,"
                     + COL_ASSIGNED_TO + " TEXT NOT NULL DEFAULT '',"
                     + COL_ASSIGNED_TO_CONTACT + " TEXT NOT NULL DEFAULT '',"
                     + COL_DUE_DATE + " INTEGER,"
@@ -98,6 +105,7 @@ public class Task {
     public long mItemID = -1;
     public String mItemName = "";
     public long mStatus = 0;
+    public long mPriority = 0;
     public String mAssignedTo = "";
     public String mAssignedToContact = "";
     public long mDueDate = 0;
@@ -120,11 +128,12 @@ public class Task {
         this.mItemID = cursor.getLong(2);
         this.mItemName = cursor.getString(3);
         this.mStatus = cursor.getLong(4);
-        this.mAssignedTo = cursor.getString(5);
-        this.mAssignedToContact = cursor.getString(6);
-        this.mDueDate = cursor.getLong(7);
-        this.mCompletedTimeStamp = cursor.getLong(8);
-        this.mCompletionComments = cursor.getString(9);
+        this.mPriority = cursor.getLong(5);
+        this.mAssignedTo = cursor.getString(6);
+        this.mAssignedToContact = cursor.getString(7);
+        this.mDueDate = cursor.getLong(8);
+        this.mCompletedTimeStamp = cursor.getLong(9);
+        this.mCompletionComments = cursor.getString(10);
     }
 
     /**
@@ -139,6 +148,7 @@ public class Task {
         values.put(COL_ITEM_ID, mItemID);
         values.put(COL_ITEM_NAME, mItemName);
         values.put(COL_STATUS, mStatus);
+        values.put(COL_PRIORITY, mPriority);
         values.put(COL_ASSIGNED_TO, mAssignedTo);
         values.put(COL_ASSIGNED_TO_CONTACT, mAssignedToContact);
         values.put(COL_DUE_DATE, mDueDate);
@@ -157,6 +167,7 @@ public class Task {
         mItemID = values.getAsLong(COL_ITEM_ID);
         mItemName = values.getAsString(COL_ITEM_NAME);
         mStatus = values.getAsLong(COL_STATUS);
+        mPriority = values.getAsLong(COL_PRIORITY);
         mAssignedTo = values.getAsString(COL_ASSIGNED_TO);
         mAssignedToContact = values.getAsString(COL_ASSIGNED_TO_CONTACT);
         mDueDate= values.getAsLong(COL_DUE_DATE);
@@ -170,6 +181,7 @@ public class Task {
     public static final String COL_FTS_ASSIGNED_TO = "assignedTo";
     public static final String COL_FTS_DUE_DATE = "ftsDueDate";
     public static final String COL_FTS_TASK_REALID = "realID";
+    public static final String COL_FTS_TASK_PRIORITY = "priority";
 
     // For database projection so order is consistent
     public static final String[] FTS_FIELDS = {
@@ -178,7 +190,8 @@ public class Task {
             COL_FTS_TASK_TYPE,
             COL_FTS_ASSIGNED_TO,
             COL_FTS_DUE_DATE,
-            COL_FTS_TASK_REALID
+            COL_FTS_TASK_REALID,
+            COL_FTS_TASK_PRIORITY
     };
 
     /* Note that FTS3 does not support column constraints and thus, you cannot
@@ -192,7 +205,8 @@ public class Task {
                     COL_FTS_TASK_TYPE + "," +
                     COL_FTS_ASSIGNED_TO + "," +
                     COL_FTS_DUE_DATE + "," +
-                    COL_FTS_TASK_REALID +
+                    COL_FTS_TASK_REALID + "," +
+                    COL_FTS_TASK_PRIORITY +
                     ");";
 
     // Fields corresponding to FTSItemTable columns
@@ -202,6 +216,7 @@ public class Task {
     public String mFTSAssignedTo = "";
     public String mFTSDueDate = "";
     public String mFTSRealID = "";
+    public String mFTSPriority = "";
 
     /**
      * Set information from the FTSItemTable into an Item object.
@@ -214,6 +229,7 @@ public class Task {
         this.mFTSAssignedTo = cursor.getString(3);
         this.mFTSDueDate = cursor.getString(4);
         this.mFTSRealID = cursor.getString(5);
+        this.mFTSPriority = cursor.getString(6);
     }
 
     public static final HashMap<String, String> mFTSColumnMap = buildFTSColumnMap();
@@ -224,12 +240,13 @@ public class Task {
      * columns w/o the need to know real column names and create the alias itself.
      */
     private static HashMap<String,String> buildFTSColumnMap() {
-        HashMap<String,String> map = new HashMap<String,String>();
+        HashMap<String,String> map = new HashMap<>();
         map.put(COL_FTS_ITEM_NAME, COL_FTS_ITEM_NAME);
         map.put(COL_FTS_TASK_TYPE, COL_FTS_TASK_TYPE);
         map.put(COL_FTS_ASSIGNED_TO, COL_FTS_ASSIGNED_TO);
         map.put(COL_FTS_DUE_DATE, COL_FTS_DUE_DATE);
         map.put(COL_FTS_TASK_REALID, COL_FTS_TASK_REALID);
+        map.put(COL_FTS_TASK_PRIORITY, COL_FTS_TASK_PRIORITY);
         map.put(BaseColumns._ID, "rowid AS " +
                 BaseColumns._ID);
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid AS " +
@@ -251,6 +268,16 @@ public class Task {
                 return "Maintenance";
             case ServiceCall:
                 return "Service Call";
+        }
+        return "Unknown";
+    }
+
+    public String getTaskPriority() {
+        switch ((int)mPriority) {
+            case NormalPriority:
+                return "Normal";
+            case UrgentPriority:
+                return "Urgent";
         }
         return "Unknown";
     }

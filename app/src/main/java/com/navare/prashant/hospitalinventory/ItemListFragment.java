@@ -53,8 +53,8 @@ public class ItemListFragment extends ListFragment {
         /**
          * Callback for when an task has been selected.
          */
-        public void onItemSelected(String id);
-        public String getQuery();
+        void onItemSelected(String id);
+        String getQuery();
     }
 
     /**

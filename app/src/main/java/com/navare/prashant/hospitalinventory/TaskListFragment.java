@@ -9,7 +9,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
@@ -57,8 +56,8 @@ public class TaskListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onTaskSelected(String id);
-        public String getQuery();
+        void onTaskSelected(String id);
+        String getQuery();
     }
 
     /**
@@ -91,13 +90,15 @@ public class TaskListFragment extends ListFragment {
                 Task.COL_FTS_ITEM_NAME,
                 Task.COL_FTS_TASK_TYPE,
                 Task.COL_FTS_ASSIGNED_TO,
-                Task.COL_FTS_DUE_DATE
+                Task.COL_FTS_DUE_DATE,
+                Task.COL_FTS_TASK_PRIORITY
         };
         int[] views = new int[] {
                 R.id.textItemName,
                 R.id.textTaskType,
                 R.id.textAssignedTo,
-                R.id.textDueDate
+                R.id.textDueDate,
+                R.id.textPriority
         };
         setListAdapter(new TaskListCursorAdapter(getActivity(),
                 R.layout.task_list_row, null, columns, views, 0));

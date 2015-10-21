@@ -13,9 +13,6 @@ import android.widget.TextView;
 
 import com.navare.prashant.hospitalinventory.R;
 
-/**
- * Created by prashant on 24-May-15.
- */
 public class TaskDoneDialogFragment extends DialogFragment {
 
     private TextView mTextCompletionComments;
@@ -26,8 +23,8 @@ public class TaskDoneDialogFragment extends DialogFragment {
     // implement this interface in order to receive event callbacks.
     // Each method passes the DialogFragment in case the host needs to query it.
     public interface TaskDoneDialogListener {
-        public void onTaskDoneClick(TaskDoneDialogFragment dialog);
-        public void onCancelClick(TaskDoneDialogFragment dialog);
+        void onTaskDoneClick(TaskDoneDialogFragment dialog);
+        void onCancelClick(TaskDoneDialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events

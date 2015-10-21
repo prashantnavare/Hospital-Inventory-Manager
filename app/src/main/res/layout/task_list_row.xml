@@ -82,4 +82,24 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
     </TableRow>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textPriority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/none"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+    </TableRow>
 </TableLayout>

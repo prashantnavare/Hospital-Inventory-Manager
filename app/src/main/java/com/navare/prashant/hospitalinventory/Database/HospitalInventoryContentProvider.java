@@ -142,6 +142,9 @@ public class HospitalInventoryContentProvider extends ContentProvider {
             case TASK_ID:
                 resultCursor =  getTask(uri);
                 break;
+            case SERVICE_CALL_ID:
+                resultCursor =  getServiceCall(uri);
+                break;
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
@@ -181,6 +184,11 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     private Cursor getTask(Uri uri) {
         String rowId = uri.getLastPathSegment();
         return mInventoryDB.getTask(rowId, Task.FIELDS);
+    }
+
+    private Cursor getServiceCall(Uri uri) {
+        String rowId = uri.getLastPathSegment();
+        return mInventoryDB.getServiceCall(rowId, ServiceCall.FIELDS);
     }
 
     @Override

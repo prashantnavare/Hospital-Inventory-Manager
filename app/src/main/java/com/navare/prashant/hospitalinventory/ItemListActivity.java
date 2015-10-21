@@ -163,7 +163,7 @@ public class ItemListActivity extends ActionBarActivity
     @Override
     public boolean onQueryTextChange(String s) {
         // handles a search query
-        mQuery = !TextUtils.isEmpty(s) ? s : null;;
+        mQuery = !TextUtils.isEmpty(s) ? s : null;
         ((ItemListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.item_list)).getNewItemList(mQuery);
         return true;
