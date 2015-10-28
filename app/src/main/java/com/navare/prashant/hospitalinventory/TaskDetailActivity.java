@@ -9,7 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.navare.prashant.hospitalinventory.util.ContractTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
+import com.navare.prashant.hospitalinventory.util.InventoryTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.TaskDoneDialogFragment;
 
 
@@ -23,7 +25,9 @@ import com.navare.prashant.hospitalinventory.util.TaskDoneDialogFragment;
  * more than a {@link TaskDetailFragment}.
  */
 public class TaskDetailActivity extends ActionBarActivity
-        implements TaskDetailFragment.Callbacks, TaskDoneDialogFragment.TaskDoneDialogListener {
+        implements  TaskDetailFragment.Callbacks, TaskDoneDialogFragment.TaskDoneDialogListener,
+                    ContractTaskDoneDialogFragment.ContractTaskDoneDialogListener,
+                    InventoryTaskDoneDialogFragment.InventoryTaskDoneDialogListener {
 
     private MenuItem doneMenuItem = null;
     private MenuItem revertMenuItem = null;
@@ -169,6 +173,34 @@ public class TaskDetailActivity extends ActionBarActivity
 
     @Override
     public void onCancelClick(TaskDoneDialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onContractTaskDoneClick(ContractTaskDoneDialogFragment dialog) {
+        long contractValidTillDate = dialog.getContractValidTillDate();
+        String completionComments = dialog.getCompletionComments();
+        ((TaskDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.task_detail_container)).markContractTaskAsDone(contractValidTillDate, completionComments);
+
+    }
+
+    @Override
+    public void onContractTaskCancelClick(ContractTaskDoneDialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onInventoryTaskDoneClick(InventoryTaskDoneDialogFragment dialog) {
+        long addedQuantity = dialog.getAddedQuantity();
+        String completionComments = dialog.getCompletionComments();
+        ((TaskDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.task_detail_container)).markInventoryTaskAsDone(addedQuantity, completionComments);
+
+    }
+
+    @Override
+    public void onInventoryTaskCancelClick(InventoryTaskDoneDialogFragment dialog) {
 
     }
 }

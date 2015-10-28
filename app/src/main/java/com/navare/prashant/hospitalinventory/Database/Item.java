@@ -40,8 +40,7 @@ public class Item {
     public static final String COL_MAINTENANCE_INSTRUCTIONS = "maintenanceInstructions";
 
     public static final String COL_CONTRACT_REMINDERS = "contractReminders";
-    public static final String COL_CONTRACT_FREQUENCY = "contractFrequency";
-    public static final String COL_LAST_CONTRACT_DATE = "lastContractDate";
+    public static final String COL_CONTRACT_VALID_TILL_DATE = "contractValidTillDate";
     public static final String COL_CONTRACT_INSTRUCTIONS = "contractInstructions";
 
     public static final String COL_INVENTORY_REMINDERS = "inventoryReminders";
@@ -74,8 +73,7 @@ public class Item {
             COL_MAINTENANCE_INSTRUCTIONS,
 
             COL_CONTRACT_REMINDERS,
-            COL_CONTRACT_FREQUENCY,
-            COL_LAST_CONTRACT_DATE,
+            COL_CONTRACT_VALID_TILL_DATE,
             COL_CONTRACT_INSTRUCTIONS,
 
             COL_INVENTORY_REMINDERS,
@@ -110,8 +108,7 @@ public class Item {
         map.put(COL_MAINTENANCE_INSTRUCTIONS, COL_MAINTENANCE_INSTRUCTIONS);
 
         map.put(COL_CONTRACT_REMINDERS, COL_CONTRACT_REMINDERS);
-        map.put(COL_CONTRACT_FREQUENCY, COL_CONTRACT_FREQUENCY);
-        map.put(COL_LAST_CONTRACT_DATE, COL_LAST_CONTRACT_DATE);
+        map.put(COL_CONTRACT_VALID_TILL_DATE, COL_CONTRACT_VALID_TILL_DATE);
         map.put(COL_CONTRACT_INSTRUCTIONS, COL_CONTRACT_INSTRUCTIONS);
 
         map.put(COL_INVENTORY_REMINDERS, COL_INVENTORY_REMINDERS);
@@ -145,8 +142,7 @@ public class Item {
                     + COL_MAINTENANCE_INSTRUCTIONS + " TEXT DEFAULT '',"
 
                     + COL_CONTRACT_REMINDERS + " INTEGER,"
-                    + COL_CONTRACT_FREQUENCY + " INTEGER,"
-                    + COL_LAST_CONTRACT_DATE + " INTEGER,"
+                    + COL_CONTRACT_VALID_TILL_DATE + " INTEGER,"
                     + COL_CONTRACT_INSTRUCTIONS + " TEXT DEFAULT '',"
 
                     + COL_INVENTORY_REMINDERS + " INTEGER,"
@@ -173,8 +169,7 @@ public class Item {
     public String mMaintenanceInstructions = "";
 
     public long mContractReminders = 0;
-    public long mContractFrequency = 0;
-    public long mContractDate = 0;
+    public long mContractValidTillDate = 0;
     public String mContractInstructions = "";
 
     public long mInventoryReminders = 0;
@@ -209,13 +204,12 @@ public class Item {
         this.mMaintenanceInstructions = cursor.getString(11);
 
         this.mContractReminders = cursor.getLong(12);
-        this.mContractFrequency = cursor.getLong(13);
-        this.mContractDate = cursor.getLong(14);
-        this.mContractInstructions = cursor.getString(15);
+        this.mContractValidTillDate = cursor.getLong(13);
+        this.mContractInstructions = cursor.getString(14);
 
-        this.mInventoryReminders = cursor.getLong(16);
-        this.mMinRequiredQuantity = cursor.getLong(17);
-        this.mCurrentQuantity = cursor.getLong(18);
+        this.mInventoryReminders = cursor.getLong(15);
+        this.mMinRequiredQuantity = cursor.getLong(16);
+        this.mCurrentQuantity = cursor.getLong(17);
     }
 
     // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -241,8 +235,7 @@ public class Item {
         values.put(COL_MAINTENANCE_INSTRUCTIONS, mMaintenanceInstructions);
 
         values.put(COL_CONTRACT_REMINDERS, mContractReminders);
-        values.put(COL_CONTRACT_FREQUENCY, mContractFrequency);
-        values.put(COL_LAST_CONTRACT_DATE, mContractDate);
+        values.put(COL_CONTRACT_VALID_TILL_DATE, mContractValidTillDate);
         values.put(COL_CONTRACT_INSTRUCTIONS, mContractInstructions);
 
         values.put(COL_INVENTORY_REMINDERS, mInventoryReminders);
@@ -273,8 +266,7 @@ public class Item {
         mMaintenanceInstructions = values.getAsString(COL_MAINTENANCE_INSTRUCTIONS);
 
         mContractReminders = values.getAsLong(COL_CONTRACT_REMINDERS);
-        mContractFrequency = values.getAsLong(COL_CONTRACT_FREQUENCY);
-        mContractDate = values.getAsLong(COL_LAST_CONTRACT_DATE);
+        mContractValidTillDate = values.getAsLong(COL_CONTRACT_VALID_TILL_DATE);
         mContractInstructions = values.getAsString(COL_CONTRACT_INSTRUCTIONS);
 
         mInventoryReminders = values.getAsLong(COL_INVENTORY_REMINDERS);

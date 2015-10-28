@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;import com.navare.prashant.hospitalinventory.Database.Item;
 import com.navare.prashant.hospitalinventory.Database.ServiceCall;
 import com.navare.prashant.hospitalinventory.Database.Task;
+import com.navare.prashant.hospitalinventory.util.ContractTaskDoneDialogFragment;
+import com.navare.prashant.hospitalinventory.util.InventoryTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.TaskDoneDialogFragment;
 
 import java.text.ParseException;import java.text.SimpleDateFormat;import java.util.Calendar;
@@ -56,6 +59,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextInstructionsLabel;
     private TextView mTextInstructions;
     private Spinner mSpinnerPriority;
+
+    private TableRow mContractExpiryDateRow;
+    private TextView mTextContractExpiryDate;
+    private TableRow mRequiredQuantityRow;
+    private TextView mTextRequiredQuantity;
 
     public interface Callbacks {
         /**
@@ -176,6 +184,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        mContractExpiryDateRow = (TableRow) rootView.findViewById(R.id.contractExpiryDateRow);
+        mTextContractExpiryDate = ((TextView) rootView.findViewById(R.id.textContractExpiryDate));
+        mRequiredQuantityRow = (TableRow) rootView.findViewById(R.id.requiredQuantityRow);
+        mTextRequiredQuantity = ((TextView) rootView.findViewById(R.id.textRequiredQuantity));
+
         return rootView;
     }
 
@@ -293,6 +306,41 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mCallbacks.onTaskDone();
     }
 
+    public void markContractTaskAsDone(long contractValidTillDate, String completionComments) {
+        mTask.mCompletionComments = completionComments;
+        mTask.mCompletedTimeStamp = Calendar.getInstance().getTimeInMillis();
+        mTask.mStatus = Task.CompletedStatus;
+        Uri taskURI = Uri.withAppendedPath(HospitalInventoryContentProvider.TASK_URI,
+                mTaskID);
+        int result = getActivity().getContentResolver().update(taskURI, mTask.getContentValues(), null, null);
+
+        // Next update the item with the new contractValidTillDate
+        mItem.mContractValidTillDate = contractValidTillDate;
+        Uri itemURI = Uri.withAppendedPath(HospitalInventoryContentProvider.ITEM_URI,
+                String.valueOf(mItem.mID));
+        result = getActivity().getContentResolver().update(itemURI, mItem.getContentValues(), null, null);
+        if (result > 0)
+            mCallbacks.onTaskDone();
+    }
+
+    public void markInventoryTaskAsDone(long addedQuantity, String completionComments) {
+        mTask.mCompletionComments = completionComments;
+        mTask.mCompletedTimeStamp = Calendar.getInstance().getTimeInMillis();
+        mTask.mStatus = Task.CompletedStatus;
+        Uri taskURI = Uri.withAppendedPath(HospitalInventoryContentProvider.TASK_URI,
+                mTaskID);
+        int result = getActivity().getContentResolver().update(taskURI, mTask.getContentValues(), null, null);
+
+        // Next update the item with the new added quantity
+        long newCurrentQuantity = mItem.mCurrentQuantity + addedQuantity;
+        mItem.mCurrentQuantity = newCurrentQuantity;
+        Uri itemURI = Uri.withAppendedPath(HospitalInventoryContentProvider.ITEM_URI,
+                String.valueOf(mItem.mID));
+        result = getActivity().getContentResolver().update(itemURI, mItem.getContentValues(), null, null);
+        if (result > 0)
+            mCallbacks.onTaskDone();
+    }
+
     public void saveTask() {
         updateTaskFromUI();
         Uri taskURI = Uri.withAppendedPath(HospitalInventoryContentProvider.TASK_URI,
@@ -339,6 +387,26 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         String taskType = getTaskTypeString(mTask);
         mTextTaskType.setText(taskType);
 
+        // The following table rows are visible only if task is contract or inventory
+        mContractExpiryDateRow.setVisibility(View.GONE);
+        mRequiredQuantityRow.setVisibility(View.GONE);
+        if (mTask.mTaskType == Task.Inventory) {
+            if (mItem != null) {
+                mRequiredQuantityRow.setVisibility(View.VISIBLE);
+                long requiredQuantity = mItem.mMinRequiredQuantity - mItem.mCurrentQuantity;
+                mTextRequiredQuantity.setText(String.valueOf(requiredQuantity));
+            }
+        }
+        if (mTask.mTaskType == Task.Contract) {
+            if (mItem != null) {
+                mContractExpiryDateRow.setVisibility(View.VISIBLE);
+                Calendar contractDate = Calendar.getInstance();
+                contractDate.setTimeInMillis(mItem.mContractValidTillDate);
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                mTextContractExpiryDate.setText(dateFormatter.format(contractDate.getTime()));
+            }
+        }
+
         if (mItem != null) {
             if (mTask.mTaskType == Task.Calibration)
                 mTextInstructions.setText(mItem.mCalibrationInstructions);
@@ -373,7 +441,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         else if (task.mTaskType == Task.Inventory)
             return getResources().getString(R.string.inventory);
         else if (task.mTaskType == Task.Contract)
-            return getResources().getString(R.string.contract);
+            return getResources().getString(R.string.contract_renewal);
         else if (task.mTaskType == Task.Maintenance)
             return getResources().getString(R.string.maintenance);
         else if (task.mTaskType == Task.ServiceCall)
@@ -383,7 +451,17 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
     public void showTaskDoneDialog() {
-        TaskDoneDialogFragment dialog = new TaskDoneDialogFragment();
-        dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "TaskDoneDialogFragment");
+        if (mTask.mTaskType == Task.Contract) {
+            ContractTaskDoneDialogFragment dialog = new ContractTaskDoneDialogFragment();
+            dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "ContractTaskDoneDialogFragment");
+        }
+        else if (mTask.mTaskType == Task.Inventory) {
+            InventoryTaskDoneDialogFragment dialog = new InventoryTaskDoneDialogFragment();
+            dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "InventoryTaskDoneDialogFragment");
+        }
+        else {
+            TaskDoneDialogFragment dialog = new TaskDoneDialogFragment();
+            dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "TaskDoneDialogFragment");
+        }
     }
 }

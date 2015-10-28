@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -75,29 +76,32 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextDescription;
     private Spinner mSpinnerType;
 
-    private LinearLayout mLayoutInstrument;
+    private TableRow mCalibrationRemindersRow;
+    private TableRow mCalibrationDetailsRow;
+    private TableRow mMaintenanceRemindersRow;
+    private TableRow mMaintenanceDetailsRow;
+    private TableRow mContractRemindersRow;
+    private TableRow mContractDetailsRow;
+
+    private TableRow mCurrentQuantityRow;
+    private TableRow mInventoryRemindersRow;
+    private TableRow mInventoryDetailsRow;
 
     private CheckBox mCalibrationCheckBox;
-    private LinearLayout mLayoutCalibration;
     private TextView mTextCalibrationFrequency;
     private Button mBtnChangeCalibrationDate;
     private TextView mTextCalibrationInstructions;
 
     private CheckBox mMaintenanceCheckBox;
-    private LinearLayout mLayoutMaintenance;
     private TextView mTextMaintenanceFrequency;
     private Button mBtnChangeMaintenanceDate;
     private TextView mTextMaintenanceInstructions;
 
     private CheckBox mContractCheckBox;
-    private LinearLayout mLayoutContract;
-    private TextView mTextContractFrequency;
-    private Button mBtnChangeContractDate;
+    private Button mBtnContractValidTillDate;
     private TextView mTextContractInstructions;
 
-    private LinearLayout mLayoutConsummable;
     private CheckBox mInventoryCheckBox;
-    private LinearLayout mLayoutInventory;
     private TextView mTextMinRequiredQuantity;
     private TextView mTextCurrentQuantity;
 
@@ -194,6 +198,46 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
 
+    private void showInstrumentLayout() {
+        mCalibrationRemindersRow.setVisibility(View.VISIBLE);
+        if (mCalibrationCheckBox.isChecked())
+            mCalibrationDetailsRow.setVisibility(View.VISIBLE);
+        else
+            mCalibrationDetailsRow.setVisibility(View.GONE);
+
+        mMaintenanceRemindersRow.setVisibility(View.VISIBLE);
+        if (mMaintenanceCheckBox.isChecked())
+            mMaintenanceDetailsRow.setVisibility(View.VISIBLE);
+        else
+            mMaintenanceDetailsRow.setVisibility(View.GONE);
+
+        mContractRemindersRow.setVisibility(View.VISIBLE);
+        if (mContractCheckBox.isChecked())
+            mContractDetailsRow.setVisibility(View.VISIBLE);
+        else
+            mContractDetailsRow.setVisibility(View.GONE);
+
+        mCurrentQuantityRow.setVisibility(View.GONE);
+        mInventoryRemindersRow.setVisibility(View.GONE);
+        mInventoryDetailsRow.setVisibility(View.GONE);
+    }
+
+    private void showConsummableLayout() {
+        mCalibrationRemindersRow.setVisibility(View.GONE);
+        mCalibrationDetailsRow.setVisibility(View.GONE);
+        mMaintenanceRemindersRow.setVisibility(View.GONE);
+        mMaintenanceDetailsRow.setVisibility(View.GONE);
+        mContractRemindersRow.setVisibility(View.GONE);
+        mContractDetailsRow.setVisibility(View.GONE);
+
+        mCurrentQuantityRow.setVisibility(View.VISIBLE);
+        mInventoryRemindersRow.setVisibility(View.VISIBLE);
+        if (mInventoryCheckBox.isChecked())
+            mInventoryDetailsRow.setVisibility(View.VISIBLE);
+        else
+            mInventoryDetailsRow.setVisibility(View.GONE);
+
+    }
     // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -217,15 +261,12 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long arg3) {
                 if (position != mSpinnerPosition) {
-                    // If it is an instrument, show the instrument layout
+                    // If it is an instrument, show the instrument layout rows
                     mSpinnerPosition = position;
                     if (position == 0) {
-                        mLayoutInstrument.setVisibility(View.VISIBLE);
-                        mLayoutConsummable.setVisibility(View.GONE);
-                    }
-                    else {
-                        mLayoutInstrument.setVisibility(View.GONE);
-                        mLayoutConsummable.setVisibility(View.VISIBLE);
+                        showInstrumentLayout();
+                    } else {
+                        showConsummableLayout();
                     }
                     mCallbacks.EnableRevertButton(true);
                     mCallbacks.EnableSaveButton(true);
@@ -238,23 +279,25 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         });
 
         // Instrument related
-        mLayoutInstrument = (LinearLayout) rootView.findViewById(R.id.layoutInstrument);
+        mCalibrationRemindersRow = (TableRow) rootView.findViewById(R.id.calibrationRemindersRow);
+        mCalibrationDetailsRow = (TableRow) rootView.findViewById(R.id.calibrationDetailsRow);
+        mMaintenanceRemindersRow = (TableRow) rootView.findViewById(R.id.maintenanceRemindersRow);
+        mMaintenanceDetailsRow = (TableRow) rootView.findViewById(R.id.maintenanceDetailsRow);
+        mContractRemindersRow = (TableRow) rootView.findViewById(R.id.contractRemindersRow);
+        mContractDetailsRow = (TableRow) rootView.findViewById(R.id.contractDetailsRow);
 
         // Calibration
         mCalibrationCheckBox = (CheckBox) rootView.findViewById(R.id.chkCalibration);
         mCalibrationCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
-                    mLayoutCalibration.setVisibility(View.VISIBLE);
-                }
-                else {
-                    mLayoutCalibration.setVisibility(View.GONE);
+                    mCalibrationDetailsRow.setVisibility(View.VISIBLE);
+                } else {
+                    mCalibrationDetailsRow.setVisibility(View.GONE);
                 }
                 enableRevertAndSaveButtons();
             }
         });
-        mLayoutCalibration = (LinearLayout) rootView.findViewById(R.id.layoutCalibration);
-
         mTextCalibrationFrequency = (TextView) rootView.findViewById(R.id.textCalibrationFrequency);
         mTextCalibrationFrequency.addTextChangedListener(this);
 
@@ -275,15 +318,13 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mMaintenanceCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
-                    mLayoutMaintenance.setVisibility(View.VISIBLE);
-                }
-                else {
-                    mLayoutMaintenance.setVisibility(View.GONE);
+                    mMaintenanceDetailsRow.setVisibility(View.VISIBLE);
+                } else {
+                    mMaintenanceDetailsRow.setVisibility(View.GONE);
                 }
                 enableRevertAndSaveButtons();
             }
         });
-        mLayoutMaintenance = (LinearLayout) rootView.findViewById(R.id.layoutMaintenance);
 
         mTextMaintenanceFrequency = (TextView) rootView.findViewById(R.id.textMaintenanceFrequency);
         mTextMaintenanceFrequency.addTextChangedListener(this);
@@ -305,21 +346,16 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mContractCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
-                    mLayoutContract.setVisibility(View.VISIBLE);
-                }
-                else {
-                    mLayoutContract.setVisibility(View.GONE);
+                    mContractDetailsRow.setVisibility(View.VISIBLE);
+                } else {
+                    mContractDetailsRow.setVisibility(View.GONE);
                 }
                 enableRevertAndSaveButtons();
             }
         });
-        mLayoutContract = (LinearLayout) rootView.findViewById(R.id.layoutContract);
 
-        mTextContractFrequency = (TextView) rootView.findViewById(R.id.textContractFrequency);
-        mTextContractFrequency.addTextChangedListener(this);
-
-        mBtnChangeContractDate = (Button) rootView.findViewById(R.id.btnChangeContractDate);
-        mBtnChangeContractDate.setOnClickListener(new View.OnClickListener() {
+        mBtnContractValidTillDate = (Button) rootView.findViewById(R.id.btnContractValidTillDate);
+        mBtnContractValidTillDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -331,11 +367,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextContractInstructions.addTextChangedListener(this);
 
         // Consummable related
-        mLayoutConsummable = (LinearLayout) rootView.findViewById(R.id.layoutConsummable);
+        mCurrentQuantityRow = (TableRow) rootView.findViewById(R.id.currentQuantityRow);
+        mInventoryRemindersRow = (TableRow) rootView.findViewById(R.id.inventoryRemindersRow);
+        mInventoryDetailsRow = (TableRow) rootView.findViewById(R.id.inventoryDetailsRow);
 
         // Inventory related
-        mLayoutInventory = (LinearLayout) rootView.findViewById(R.id.layoutInventory);
-
         mTextCurrentQuantity = (TextView) rootView.findViewById(R.id.textCurrentQuantity);
         mTextCurrentQuantity.addTextChangedListener(this);
 
@@ -343,9 +379,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mInventoryCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
-                    mLayoutInventory.setVisibility(View.VISIBLE);
+                    mInventoryDetailsRow.setVisibility(View.VISIBLE);
                 } else {
-                    mLayoutInventory.setVisibility(View.GONE);
+                    mInventoryDetailsRow.setVisibility(View.GONE);
                 }
                 enableRevertAndSaveButtons();
             }
@@ -374,6 +410,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                     }
                     break;
                 case CONTRACT:
+                    if (mItem.mContractValidTillDate > 0) {
+                        dateToShow.setTimeInMillis(mItem.mContractValidTillDate);
+                    }
                     break;
             }
         }
@@ -403,6 +442,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                         mBtnChangeMaintenanceDate.setText(dateFormatter.format(newDate.getTime()));
                         break;
                     case CONTRACT:
+                        mItem.mContractValidTillDate = newDate.getTimeInMillis();
+                        mBtnContractValidTillDate.setText(dateFormatter.format(newDate.getTime()));
                         break;
                 }
                 enableRevertAndSaveButtons();
@@ -591,19 +632,16 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Contract related
             if (mContractCheckBox.isChecked()) {
                 mItem.mContractReminders = 1;
-                if (mTextContractFrequency.getText().toString().isEmpty() == false)
-                    mItem.mContractFrequency = Long.valueOf(mTextContractFrequency.getText().toString());
-
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
                 Calendar contractDate = Calendar.getInstance();
-                String uiContractDate = mBtnChangeContractDate.getText().toString();
+                String uiContractDate = mBtnContractValidTillDate.getText().toString();
                 if (uiContractDate.compareToIgnoreCase("Set") != 0) {
                     try {
                         contractDate.setTime(dateFormatter.parse(uiContractDate));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    mItem.mContractDate = contractDate.getTimeInMillis();
+                    mItem.mContractValidTillDate = contractDate.getTimeInMillis();
                 }
 
                 mItem.mContractInstructions = mTextContractInstructions.getText().toString();
@@ -635,12 +673,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextDescription.setText(mItem.mDescription);
         if (mItem.mType == Item.InstrumentType) {
 
+            // Enable the instrument layout
+            showInstrumentLayout();
+
             mSpinnerPosition = 0;
             mSpinnerType.setSelection(0, false);
-
-            // Enable the instrument layout
-            mLayoutInstrument.setVisibility(View.VISIBLE);
-            mLayoutConsummable.setVisibility(View.GONE);
 
             // Turn on the Instrument action bar menu items
             mCallbacks.EnableServiceCallButton(true);
@@ -652,7 +689,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Set the calibration UI elements
             if (mItem.mCalibrationReminders > 0) {
                 mCalibrationCheckBox.setChecked(true);
-                mLayoutCalibration.setVisibility(View.VISIBLE);
+                mCalibrationDetailsRow.setVisibility(View.VISIBLE);
                 if (mItem.mCalibrationFrequency > 0)
                     mTextCalibrationFrequency.setText(String.valueOf(mItem.mCalibrationFrequency));
                 if (mItem.mCalibrationDate > 0) {
@@ -668,13 +705,13 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             }
             else {
                 mCalibrationCheckBox.setChecked(false);
-                mLayoutCalibration.setVisibility(View.GONE);
+                mCalibrationDetailsRow.setVisibility(View.GONE);
             }
 
             // Set the maintenance UI elements
             if (mItem.mMaintenanceReminders > 0) {
                 mMaintenanceCheckBox.setChecked(true);
-                mLayoutMaintenance.setVisibility(View.VISIBLE);
+                mMaintenanceDetailsRow.setVisibility(View.VISIBLE);
                 if (mItem.mMaintenanceFrequency > 0)
                     mTextMaintenanceFrequency.setText(String.valueOf(mItem.mMaintenanceFrequency));
                 if (mItem.mMaintenanceDate > 0) {
@@ -690,38 +727,36 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             }
             else {
                 mMaintenanceCheckBox.setChecked(false);
-                mLayoutMaintenance.setVisibility(View.GONE);
+                mMaintenanceDetailsRow.setVisibility(View.GONE);
             }
 
             // Set the contract UI elements
             if (mItem.mContractReminders > 0) {
                 mContractCheckBox.setChecked(true);
-                mLayoutContract.setVisibility(View.VISIBLE);
-                if (mItem.mContractFrequency > 0)
-                    mTextContractFrequency.setText(String.valueOf(mItem.mContractFrequency));
-                if (mItem.mContractDate > 0) {
+                mContractDetailsRow.setVisibility(View.VISIBLE);
+                if (mItem.mContractValidTillDate > 0) {
                     Calendar contractDate = Calendar.getInstance();
-                    contractDate.setTimeInMillis(mItem.mMaintenanceDate);
+                    contractDate.setTimeInMillis(mItem.mContractValidTillDate);
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-                    mBtnChangeContractDate.setText(dateFormatter.format(contractDate.getTime()));
+                    mBtnContractValidTillDate.setText(dateFormatter.format(contractDate.getTime()));
                 }
                 else {
-                    mBtnChangeContractDate.setText("Set");
+                    mBtnContractValidTillDate.setText("Set");
                 }
                 mTextContractInstructions.setText(mItem.mContractInstructions);
             }
             else {
                 mContractCheckBox.setChecked(false);
-                mLayoutContract.setVisibility(View.GONE);
+                mContractDetailsRow.setVisibility(View.GONE);
             }
         }
         else if (mItem.mType == Item.ConsummableType) {
 
+            // Turn off the Instrument specific views
+            showConsummableLayout();
+
             mSpinnerPosition = 1;
             mSpinnerType.setSelection(1, false);
-            // Turn off the Instrument specific views
-            mLayoutInstrument.setVisibility(View.GONE);
-            mLayoutConsummable.setVisibility(View.VISIBLE);
 
             // Turn off the Instrument action bar menu items
             mCallbacks.EnableServiceCallButton(false);
@@ -736,13 +771,13 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Set the Inventory UI elements
             if (mItem.mInventoryReminders > 0) {
                 mInventoryCheckBox.setChecked(true);
-                mLayoutInventory.setVisibility(View.VISIBLE);
+                mInventoryDetailsRow.setVisibility(View.VISIBLE);
                 if (mItem.mMinRequiredQuantity > 0)
                     mTextMinRequiredQuantity.setText(String.valueOf(mItem.mMinRequiredQuantity));
             }
             else {
                 mInventoryCheckBox.setChecked(false);
-                mLayoutInventory.setVisibility(View.GONE);
+                mInventoryDetailsRow.setVisibility(View.GONE);
             }
         }
     }
@@ -753,18 +788,16 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextDescription.setText("");
         mSpinnerPosition = 0;
         mSpinnerType.setSelection(0, false);
-        mLayoutInstrument.setVisibility(View.VISIBLE);
+        showInstrumentLayout();
 
         mCalibrationCheckBox.setChecked(false);
-        mLayoutCalibration.setVisibility(View.GONE);
+        mCalibrationDetailsRow.setVisibility(View.GONE);
 
         mMaintenanceCheckBox.setChecked(false);
-        mLayoutMaintenance.setVisibility(View.GONE);
+        mMaintenanceDetailsRow.setVisibility(View.GONE);
 
         mContractCheckBox.setChecked(false);
-        mLayoutContract.setVisibility(View.GONE);
-
-        mLayoutConsummable.setVisibility(View.GONE);
+        mContractDetailsRow.setVisibility(View.GONE);
     }
 
     public void showInventoryAddDialog() {

@@ -23,8 +23,8 @@
     <string name="maintenance_frequency">Frequency (in days)</string>
     <string name="contract_frequency">Renewal Frequency (in months)</string>
     <string name="last_maintenance_date">Last Maintenance Date</string>
-    <string name="last_contract_date">Last Renewal Date</string>
-    <string name="min_required_quantity">Minimum Required Quantity</string>
+    <string name="contract_valid_till_date">Contract Valid Till</string>
+    <string name="min_required_quantity">Minimum Quantity</string>
     <string name="current_quantity">Current Quantity</string>
     <string name="add_quantity">Quantity to add : </string>
     <string name="subtract_quantity">Quantity to subtract : </string>
@@ -60,5 +60,6 @@
     <string name="comments">Comments</string>
     <string name="priority">Priority</string>
     <string name="task_priority">Task Priority?</string>
+    <string name="contract_renewal">Contract Renewal</string>
 
 </resources>

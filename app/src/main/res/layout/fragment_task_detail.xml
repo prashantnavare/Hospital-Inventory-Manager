@@ -3,121 +3,158 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1"
         >
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:shrinkColumns="1"
+            android:padding="5dip"
             >
-
-            <TableRow>
-                <TextView
-                    android:id="@+id/textItemType"
-                    android:text="@string/item"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <Space
-                    android:layout_width="5dp"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/textItemName"
-                    android:text="@string/instrument"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
-            </TableRow>
+            <TextView
+                android:id="@+id/textItemType"
+                android:text="@string/item"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
             <Space
-                android:layout_width="match_parent"
-                android:layout_height="2dp" />
-            <TableRow>
-                <TextView
-                    android:text="@string/due_date"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <Space
-                    android:layout_width="5dp"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/textDueDate"
-                    android:text="@string/none"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
-            </TableRow>
+                android:layout_width="3dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/textItemName"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
+            <TextView
+                android:text="@string/due_date"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
             <Space
-                android:layout_width="match_parent"
-                android:layout_height="2dp" />
-            <TableRow>
-                <TextView
-                    android:text="@string/assigned_to"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <Space
-                    android:layout_width="5dp"
-                    android:layout_height="match_parent" />
-                <EditText
-                    android:id="@+id/textAssignedTo"
-                    android:text="@string/none"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
-            </TableRow>
+                android:layout_width="3dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/textDueDate"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
+            <TextView
+                android:text="@string/assigned_to"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
             <Space
-                android:layout_width="match_parent"
-                android:layout_height="2dp" />
-            <TableRow>
-                <TextView
-                    android:text="@string/task"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <Space
-                    android:layout_width="5dp"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/textTaskType"
-                    android:text="@string/calibration"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
-            </TableRow>
+                android:layout_width="3dp"
+                android:layout_height="match_parent" />
+            <EditText
+                android:id="@+id/textAssignedTo"
+                android:text="@string/none"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
+            <TextView
+                android:text="@string/task"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
             <Space
-                android:layout_width="match_parent"
-                android:layout_height="2dp" />
-            <TableRow>
-                <TextView
-                    android:text="@string/priority"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <Space
-                    android:layout_width="5dp"
-                    android:layout_height="match_parent" />
-                <Spinner
-                    android:id="@+id/spinnerPriority"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold"
-                    android:spinnerMode="dropdown"
-                    android:clickable="true" />
-            </TableRow>
+                android:layout_width="3dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/textTaskType"
+                android:text="@string/calibration"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+        </TableRow>
+        <TableRow
+            android:id="@+id/contractExpiryDateRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
+            <TextView
+                android:text="Contract Expiry:"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
             <Space
-                android:layout_width="match_parent"
-                android:layout_height="2dp" />
-        </TableLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+                android:layout_width="3dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/textContractExpiryDate"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+        </TableRow>
+        <TableRow
+            android:id="@+id/requiredQuantityRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
+            <TextView
+                android:text="Required Quantity:"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+            <Space
+                android:layout_width="3dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/textRequiredQuantity"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
+            <TextView
+                android:text="@string/priority"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+            <Space
+                android:layout_width="3dp"
+                android:layout_height="match_parent" />
+            <Spinner
+                android:id="@+id/spinnerPriority"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:spinnerMode="dropdown"
+                android:clickable="true" />
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
             <TextView
                 android:id="@+id/textInstructionsLabel"
                 android:text="@string/instructions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
             <Space
-                android:layout_width="7dp"
+                android:layout_width="3dp"
                 android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textInstructions"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
                 android:singleLine="false"
                 />
-        </LinearLayout>
-    </LinearLayout>
+        </TableRow>
+    </TableLayout>
 </ScrollView>
