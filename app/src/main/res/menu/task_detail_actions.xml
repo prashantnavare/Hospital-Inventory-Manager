@@ -13,4 +13,8 @@
         android:icon="@drawable/ic_menu_revert"
         hospitalinventory:showAsAction="ifRoom|collapseActionView"
         android:title="@string/menu_revert"/>
+    <item android:id="@+id/menu_assign"
+        android:icon="@drawable/ic_menu_assign_task"
+        hospitalinventory:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/menu_assign_task"/>
 </menu>

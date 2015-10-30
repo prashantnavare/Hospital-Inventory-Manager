@@ -61,5 +61,6 @@
     <string name="priority">Priority</string>
     <string name="task_priority">Task Priority?</string>
     <string name="contract_renewal">Contract Renewal</string>
+    <string name="menu_assign_task">Assign Task</string>
 
 </resources>

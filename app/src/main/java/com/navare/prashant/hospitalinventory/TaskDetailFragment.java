@@ -1,6 +1,10 @@
 package com.navare.prashant.hospitalinventory;
 
-import android.app.Activity;import android.content.Context;import android.database.Cursor;import android.net.Uri;import android.os.Bundle;
+import android.app.ActionBar;
+import android.app.Activity;import android.content.Context;import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;import android.support.v4.app.LoaderManager;import android.support.v4.content.CursorLoader;import android.support.v4.content.Loader;import android.text.Editable;import android.text.TextWatcher;import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +32,7 @@ import java.util.Date;
  * in two-pane mode (on tablets) or a {@link TaskDetailActivity}
  * on handsets.
  */
-public class TaskDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher {
+public class TaskDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int LOADER_ID_TASK_DETAILS = 12;
     public static final int LOADER_ID_ITEM_DETAILS = 13;
@@ -157,7 +161,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTextDueDate = ((TextView) rootView.findViewById(R.id.textDueDate));
 
         mTextAssignedTo = ((TextView) rootView.findViewById(R.id.textAssignedTo));
-        mTextAssignedTo.addTextChangedListener(this);
 
         mTextTaskType = ((TextView) rootView.findViewById(R.id.textTaskType));
 
@@ -270,25 +273,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        enableRevertAndSaveButtons();
-    }
 
     private void enableRevertAndSaveButtons() {
         mCallbacks.EnableRevertButton(true);
         mCallbacks.EnableSaveButton(true);
         mCallbacks.RedrawOptionsMenu();
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
     }
 
     public void revertUI() {
@@ -351,6 +340,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mCallbacks.EnableRevertButton(false);
             mCallbacks.RedrawOptionsMenu();
         }
+    }
+
+    public void assignTask(String assigneeName) {
+        mTextAssignedTo.setText(assigneeName);
+        enableRevertAndSaveButtons();
     }
 
     // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
