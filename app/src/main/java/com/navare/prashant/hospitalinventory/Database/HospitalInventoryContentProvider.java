@@ -8,6 +8,8 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
 
 public class HospitalInventoryContentProvider extends ContentProvider {
 
@@ -56,6 +58,13 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     private static final int TASKS = 9;
     private static final int TASK_ID = 10;
 
+    // computeNewTasks related
+    private static final String COMPUTE_NEW_TASKS_SUB_SCHEME = "/computeNewTasks";
+    static final String COMPUTE_NEW_TASKS_URL = SCHEME + PROVIDER_NAME + TASK_SUB_SCHEME;
+    public static final Uri COMPUTE_NEW_TASKS_URI = Uri.parse(COMPUTE_NEW_TASKS_URL);
+    // UriMatcher stuff
+    private static final int COMPUTE_NEW_TASKS = 11;
+
     private static final UriMatcher mURIMatcher = buildUriMatcher();
 
     /**
@@ -81,6 +90,9 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         // for task
         matcher.addURI(PROVIDER_NAME, TASK_SUB_SCHEME , TASKS);
         matcher.addURI(PROVIDER_NAME, TASK_SUB_SCHEME + "/#", TASK_ID);
+
+        // for compute new tasks
+        matcher.addURI(PROVIDER_NAME, COMPUTE_NEW_TASKS_SUB_SCHEME , COMPUTE_NEW_TASKS);
 
         // to get suggestions...
         matcher.addURI(PROVIDER_NAME, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGEST_ITEMS);
@@ -332,4 +344,17 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         }
     }
 
+    @Override
+    public Bundle call(String method, String arg, Bundle extras) {
+        if(method.equals("computeNewTasks")) {
+            computeNewTasks();
+        }
+        return null;
+    }
+
+    private void computeNewTasks() {
+        Log.d("HIContentProvider", "starting computeNewTasks queries...");
+        mInventoryDB.computeNewTasks();
+        getContext().getContentResolver().notifyChange(FTS_TASK_URI, null);
+    }
 }

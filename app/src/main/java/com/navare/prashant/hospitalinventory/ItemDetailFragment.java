@@ -833,13 +833,15 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mCallbacks.EnableSaveButton(true);
         mCallbacks.RedrawOptionsMenu();
     }
-    public void createServiceCall(long itemID, String description, long priority) {
+    public void createServiceCall(long itemID, String description, long priority, String itemName) {
         ServiceCall sc = new ServiceCall();
         sc.mItemID = itemID;
         sc.mDescription = description;
         sc.mPriority = priority;
         sc.mStatus = ServiceCall.OpenStatus;
         sc.mOpenTimeStamp = Calendar.getInstance().getTimeInMillis();
+        sc.mItemName = itemName;
+
         // a new service call is being inserted.
         Uri uri = getActivity().getContentResolver().insert(HospitalInventoryContentProvider.SERVICE_CALL_URI, sc.getContentValues());
         if (uri != null) {

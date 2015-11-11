@@ -1,8 +1,13 @@
 package com.navare.prashant.hospitalinventory;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +16,10 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
+import com.navare.prashant.hospitalinventory.util.ComputeNewTasksService;
 
 
 /**
@@ -115,11 +124,27 @@ public class TaskListActivity extends ActionBarActivity
             case R.id.menu_search:
                 return true;
             case R.id.menu_update_tasks:
-                // TODO: implement this
+                computeNewTasks();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void computeNewTasks() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+            ComponentName componentName = new ComponentName(getApplicationContext(), ComputeNewTasksService.class);
+            JobInfo jobInfo = new JobInfo.Builder(1, componentName).setOverrideDeadline(1000).setRequiresCharging(true).setRequiresDeviceIdle(true).build();
+            jobScheduler.schedule(jobInfo);
+        }
+        else {
+            // TODO: Add code to schedule the task using the Alarm Manager
+        }
+        Toast toast = Toast.makeText(getApplicationContext(), "New tasks are being computed. This may take a while. Please check back after a few minutes.", Toast.LENGTH_LONG);
+        toast.show();
     }
 
     /**

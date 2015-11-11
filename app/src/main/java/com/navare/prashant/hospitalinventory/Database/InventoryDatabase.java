@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 
 import com.navare.prashant.hospitalinventory.R;
 
@@ -20,7 +22,15 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class InventoryDatabase extends SQLiteOpenHelper {
     private static final String TAG = "InventoryDatabase";
@@ -50,7 +60,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
 
         // PNTODO: Delete this eventually
         loadInventory();
-        loadTasksTable();
+        // TODO: delete this: loadTasksTable();
     }
 
     /**
@@ -543,8 +553,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
     }
 
     public void completeTask(String taskId) {
-        // This task has been completed. Delete it from the FTS table of open tasks
+        // This task has been completed. Delete it from the regular and FTS tables of open tasks
         final SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete(Task.TABLE_NAME,
+                BaseColumns._ID + " IS ? ", new String[]{taskId});
         int ftsResult = db.delete(Task.FTS_TABLE_NAME,
                 Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskId});
         notifyProviderOnTaskChange();
@@ -559,4 +571,219 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void computeNewTasks() {
+
+        Map<Pair<Long, Long>, Task> taskMap = new HashMap<Pair<Long, Long>, Task>();
+
+        // First get all the items to see which ones have pending tasks.
+        SQLiteQueryBuilder itemBuilder = new SQLiteQueryBuilder();
+        itemBuilder.setTables(Item.TABLE_NAME);
+        Cursor itemCursor = itemBuilder.query(this.getReadableDatabase(), Item.FIELDS, null, null, null, null, null);
+
+        Item item = new Item();
+        for (itemCursor.moveToFirst(); !itemCursor.isAfterLast(); itemCursor.moveToNext()) {
+            item.setContentFromCursor(itemCursor);
+            if (item.mType == Item.InstrumentType) {
+                if (item.mCalibrationReminders > 0) {
+                    if (item.mCalibrationFrequency > 0) {
+                        boolean bCreateTask = false;
+                        long dueDate = 0;
+                        long priority = Task.NormalPriority;
+                        // Check the last calibration date.
+                        if (item.mCalibrationDate > 0) {
+                            // If it is set, then see when the next calibration is due.
+                            Calendar nextCalibrationDate = Calendar.getInstance();
+                            nextCalibrationDate.setTimeInMillis(item.mCalibrationDate + TimeUnit.MILLISECONDS.convert(item.mCalibrationFrequency, TimeUnit.DAYS));
+                            Calendar todayDate = Calendar.getInstance();
+                            if (todayDate.compareTo(nextCalibrationDate) >= 0) {
+                                // Calibration is overdue
+                                bCreateTask = true;
+                                dueDate = nextCalibrationDate.getTimeInMillis();
+                                priority = Task.UrgentPriority;
+                            }
+                            else {
+                                // Calibration reminders are generated 1 week before the actual due date.
+                                long numberOfDaysTillNextCalibration = TimeUnit.DAYS.convert((nextCalibrationDate.getTimeInMillis() - todayDate.getTimeInMillis()), TimeUnit.MILLISECONDS);
+                                if (numberOfDaysTillNextCalibration < 7) {
+                                    bCreateTask = true;
+                                    dueDate = nextCalibrationDate.getTimeInMillis();
+                                }
+                            }
+                        }
+                        else {
+                            // If it is not set, this instrument needs calibration with a due date of today.
+                            bCreateTask = true;
+                            dueDate = Calendar.getInstance().getTimeInMillis();
+                        }
+                        if (bCreateTask) {
+                            Task newTask = createItemTempTask(item, Task.Calibration, dueDate, priority);
+                            taskMap.put(Pair.create(item.mID, Long.valueOf(Task.Calibration)), newTask);
+                        }
+                    }
+                }
+                if (item.mContractReminders > 0) {
+                    boolean bCreateTask = false;
+                    long dueDate = 0;
+                    long priority = Task.NormalPriority;
+                    if (item.mContractValidTillDate > 0) {
+                        Calendar todayDate = Calendar.getInstance();
+                        if (todayDate.getTimeInMillis() > item.mContractValidTillDate ) {
+                            // Contract has already expired.
+                            bCreateTask = true;
+                            dueDate = item.mContractValidTillDate;
+                            priority = Task.UrgentPriority;
+                        }
+                        else {
+                            Calendar contractValidTillDate = Calendar.getInstance();
+                            contractValidTillDate.setTimeInMillis(item.mContractValidTillDate);
+                            // Contract reminders should be given 1 month before the actual contract end, unless the user has set the conract reminder interval.
+                            long numberOfDaysbeforeExpiry = TimeUnit.DAYS.convert((contractValidTillDate.getTimeInMillis() - todayDate.getTimeInMillis()), TimeUnit.MILLISECONDS);
+                            // TODO: check if the user has set the conract reminder interval.
+                            if (numberOfDaysbeforeExpiry <= 30) {
+                                bCreateTask = true;
+                                dueDate = item.mContractValidTillDate;
+                                // If there are less than 7 days left, then bump up the priority to urgent
+                                if (numberOfDaysbeforeExpiry <= 7) {
+                                    priority = Task.UrgentPriority;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        // Contract valid date has not been set. The due date for the task should be today.
+                        bCreateTask = true;
+                        dueDate = Calendar.getInstance().getTimeInMillis();
+                    }
+                    if (bCreateTask) {
+                        Task newTask = createItemTempTask(item, Task.Contract, dueDate, priority);
+                        taskMap.put(Pair.create(item.mID, Long.valueOf(Task.Contract)), newTask);
+                    }
+                }
+                if (item.mMaintenanceReminders > 0) {
+                    if (item.mMaintenanceFrequency > 0) {
+                        boolean bCreateTask = false;
+                        long dueDate = 0;
+                        long priority = Task.NormalPriority;
+                        // Check the last Maintenance date.
+                        if (item.mMaintenanceDate > 0) {
+                            // If it is set, then see when the next Maintenance is due.
+                            Calendar nextMaintenanceDate = Calendar.getInstance();
+                            nextMaintenanceDate.setTimeInMillis(item.mMaintenanceDate + TimeUnit.MILLISECONDS.convert(item.mMaintenanceFrequency, TimeUnit.DAYS));
+                            Calendar todayDate = Calendar.getInstance();
+                            if (todayDate.compareTo(nextMaintenanceDate) >= 0) {
+                                // Maintenance is overdue
+                                bCreateTask = true;
+                                dueDate = nextMaintenanceDate.getTimeInMillis();
+                                priority = Task.UrgentPriority;
+                            }
+                            else {
+                                // Maintenance reminders are generated 1 week before the actual due date.
+                                long numberOfDaysTillNextMaintenance = TimeUnit.DAYS.convert((nextMaintenanceDate.getTimeInMillis() - todayDate.getTimeInMillis()), TimeUnit.MILLISECONDS);
+                                if (numberOfDaysTillNextMaintenance < 7) {
+                                    bCreateTask = true;
+                                    dueDate = nextMaintenanceDate.getTimeInMillis();
+                                }
+                            }
+                        }
+                        else {
+                            // If it is not set, this instrument needs Maintenance with a due date of today.
+                            bCreateTask = true;
+                            dueDate = Calendar.getInstance().getTimeInMillis();
+                        }
+                        if (bCreateTask) {
+                            Task newTask = createItemTempTask(item, Task.Maintenance, dueDate, priority);
+                            taskMap.put(Pair.create(item.mID, Long.valueOf(Task.Maintenance)), newTask);
+                        }
+                    }
+                }
+            }
+            else if (item.mType == Item.ConsummableType) {
+                if (item.mInventoryReminders > 0) {
+                    if (item.mCurrentQuantity < item.mMinRequiredQuantity) {
+                        // There is no due date for Inventory tasks
+                        Task newTask = createItemTempTask(item, Task.Inventory, 0, Task.NormalPriority);
+                        taskMap.put(Pair.create(item.mID, Long.valueOf(Task.Inventory)), newTask);
+                    }
+                }
+            }
+        }
+
+        // Next get all the current open service calls
+        Map<Long, ServiceCall> serviceCallMap = new HashMap<Long, ServiceCall>();
+
+        String serviceCallSelection = ServiceCall.COL_STATUS + " = ?";
+        String[] serviceCallSelectionArgs = new String[] {String.valueOf(ServiceCall.OpenStatus)};
+
+        /* This builds a query that looks like:
+         *     SELECT <columns> FROM <ServiceCallTable> WHERE status = 1
+         */
+        SQLiteQueryBuilder serviceCallbuilder = new SQLiteQueryBuilder();
+        serviceCallbuilder.setTables(ServiceCall.TABLE_NAME);
+
+        Cursor serviceCallCursor = serviceCallbuilder.query(this.getReadableDatabase(),
+                ServiceCall.FIELDS, serviceCallSelection, serviceCallSelectionArgs, null, null, null);
+
+        for (serviceCallCursor.moveToFirst(); !serviceCallCursor.isAfterLast(); serviceCallCursor.moveToNext()) {
+            ServiceCall serviceCall = new ServiceCall();
+            serviceCall.setContentFromCursor(serviceCallCursor);
+            serviceCallMap.put(serviceCall.mID, serviceCall);
+        }
+
+        // Lastly, iterate through all the current open tasks in the database and eliminate all the temp tasks or service calls that we
+        // have collected above if the corresponding task already exists in the database.
+        String taskSelection = Task.COL_STATUS + " = ?";
+        String[] taskSelectionArgs = new String[] {String.valueOf(Task.OpenStatus)};
+
+        /* This builds a query that looks like:
+         *     SELECT <columns> FROM <TaskTable> WHERE status = 1
+         */
+        SQLiteQueryBuilder taskbuilder = new SQLiteQueryBuilder();
+        taskbuilder.setTables(Task.TABLE_NAME);
+
+        Cursor taskCursor = taskbuilder.query(this.getReadableDatabase(),
+                Task.FIELDS, taskSelection, taskSelectionArgs, null, null, null);
+
+        Task currentOpenTask = new Task();
+        for (taskCursor.moveToFirst(); !taskCursor.isAfterLast(); taskCursor.moveToNext()) {
+            currentOpenTask.setContentFromCursor(taskCursor);
+            if (currentOpenTask.mTaskType == Task.ServiceCall) {
+                serviceCallMap.remove(currentOpenTask.mItemID);
+            }
+            else {
+                taskMap.remove(Pair.create(currentOpenTask.mItemID, currentOpenTask.mTaskType));
+            }
+        }
+
+        // At this point, what is left in the taskMap and the serviceCallMap are all new tasks that need to be added to the db.
+        for (Task task : taskMap.values()) {
+            addTask(task);
+        }
+        for (ServiceCall serviceCall : serviceCallMap.values()) {
+            Task serviceCallTask = createServiceCallTempTask(serviceCall);
+            addTask(serviceCallTask);
+        }
+    }
+
+    private Task createItemTempTask(Item item, int taskType, long dueDate, long priority) {
+        Task task = new Task();
+        task.mTaskType = taskType;
+        task.mItemID = item.mID;
+        task.mItemName = item.mName;
+        task.mDueDate = dueDate;
+        task.mStatus = Task.OpenStatus;
+        task.mPriority = priority;
+        return task;
+    }
+
+    private Task createServiceCallTempTask(ServiceCall serviceCall) {
+        Task task = new Task();
+        task.mTaskType = Task.ServiceCall;
+        task.mItemID = serviceCall.mID;
+        task.mItemName = serviceCall.mItemName;
+        // No due date for service call tasks.
+        task.mDueDate = 0;
+        task.mStatus = Task.OpenStatus;
+        task.mPriority = serviceCall.mPriority;
+        return task;
+    }
 }

@@ -291,6 +291,32 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         Uri taskURI = Uri.withAppendedPath(HospitalInventoryContentProvider.TASK_URI,
                 mTaskID);
         int result = getActivity().getContentResolver().update(taskURI, mTask.getContentValues(), null, null);
+
+        // if this is a calibration task, then set the calibration date in the item.
+        boolean bUpdateItem = false;
+        if (mTask.mTaskType == Task.Calibration) {
+            bUpdateItem = true;
+            mItem.mCalibrationDate = Calendar.getInstance().getTimeInMillis();
+        }
+        // if this is a maintenance task, then set the maintenance date in the item.
+        if (mTask.mTaskType == Task.Maintenance) {
+            bUpdateItem = true;
+            mItem.mMaintenanceDate = Calendar.getInstance().getTimeInMillis();
+        }
+        if (bUpdateItem) {
+            Uri itemURI = Uri.withAppendedPath(HospitalInventoryContentProvider.ITEM_URI,
+                    String.valueOf(mItem.mID));
+            result = getActivity().getContentResolver().update(itemURI, mItem.getContentValues(), null, null);
+        }
+
+        // if this is a service call task, then mark the service call as closed.
+        if (mTask.mTaskType == Task.ServiceCall) {
+            mServiceCall.mStatus = ServiceCall.ClosedStatus;
+            mServiceCall.mClosedTimeStamp = Calendar.getInstance().getTimeInMillis();
+            Uri serviceCallURI = Uri.withAppendedPath(HospitalInventoryContentProvider.SERVICE_CALL_URI,
+                    String.valueOf(mServiceCall.mID));
+            result = getActivity().getContentResolver().update(serviceCallURI, mServiceCall.getContentValues(), null, null);
+        }
         if (result > 0)
             mCallbacks.onTaskDone();
     }
@@ -370,11 +396,13 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
         mTextItemName.setText(mTask.mItemName);
 
-        Date dueDate = new Date();
-        dueDate.setTime(mTask.mDueDate);
-        SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd MMMM, yyyy");
-        String dueDateString = dueDateFormat.format(dueDate);
-        mTextDueDate.setText(dueDateString);
+        if (mTask.mDueDate > 0) {
+            Date dueDate = new Date();
+            dueDate.setTime(mTask.mDueDate);
+            SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd MMMM, yyyy");
+            String dueDateString = dueDateFormat.format(dueDate);
+            mTextDueDate.setText(dueDateString);
+        }
 
         mTextAssignedTo.setText(mTask.mAssignedTo);
 
@@ -396,7 +424,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 mContractExpiryDateRow.setVisibility(View.VISIBLE);
                 Calendar contractDate = Calendar.getInstance();
                 contractDate.setTimeInMillis(mItem.mContractValidTillDate);
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMMM, yyyy");
                 mTextContractExpiryDate.setText(dateFormatter.format(contractDate.getTime()));
             }
         }

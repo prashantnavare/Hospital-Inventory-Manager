@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.navare.prashant.hospitalinventory" >
-
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="22" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_hospital_inventory"
@@ -71,6 +71,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.TaskListActivity" />
         </activity>
+        <service
+            android:name="com.navare.prashant.hospitalinventory.util.ComputeNewTasksService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true" />
+
     </application>
 
 </manifest>
