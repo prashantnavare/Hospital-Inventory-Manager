@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +68,29 @@ public class InventoryDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.dialog_inventory_add_subtract, container, false);
         mTextMessage = ((TextView) rootView.findViewById(R.id.textMessage));
         mTextQuantity = ((TextView) rootView.findViewById(R.id.textQuantity));
+        mTextQuantity.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (mTextQuantity.getText().toString().isEmpty())
+                    mBtnYes.setEnabled(false);
+                else
+                    mBtnYes.setEnabled(true);
+            }
+        });
         mBtnYes = ((Button) rootView.findViewById(R.id.btnYes));
         mBtnYes.setOnClickListener(onYes);
+        // By default, disable the Yes button till Quamtity is non empty.
+        mBtnYes.setEnabled(false);
+
         mBtnCancel = ((Button) rootView.findViewById(R.id.btnCancel));
         mBtnCancel.setOnClickListener(onCancel);
 

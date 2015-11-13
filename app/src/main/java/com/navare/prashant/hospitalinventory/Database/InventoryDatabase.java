@@ -49,7 +49,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         mHelperContext = context;
     }
 
-    // TODO: ==========================When new table is added =========================================================
+    // ++++++++++++++++++++++++++ When new table is added +++++++++++++++++++++++++++++
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Item.CREATE_TABLE);
@@ -560,6 +560,13 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         int ftsResult = db.delete(Task.FTS_TABLE_NAME,
                 Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskId});
         notifyProviderOnTaskChange();
+    }
+
+    public int updateServiceCall(String serviceCallId, ContentValues values, String selection, String[] selectionArgs) {
+        final SQLiteDatabase db = this.getWritableDatabase();
+        int rowsUpdated = db.update(ServiceCall.TABLE_NAME, values, BaseColumns._ID + "=" + serviceCallId, null);
+        notifyProviderOnTaskChange();
+        return rowsUpdated;
     }
 
     @Override

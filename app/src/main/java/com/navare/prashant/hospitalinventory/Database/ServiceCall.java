@@ -19,9 +19,9 @@ public class ServiceCall {
 
     // ServiceCall table
     public static final String TABLE_NAME = "ServiceCallTable";
-    // TODO: Add other fields here.
-    // TODO: When you add a field, make sure you add corresponding entries in the FIELDS array, the CREATE_TABLE string
-    // TODO: and declare a member and so on. See all ++++++++ comment lines below.
+    // ++++++++++++++++++++++++++++++++++++++++++++++++Add other fields here.
+    // When you add a field, make sure you add corresponding entries in the FIELDS array, the CREATE_TABLE string
+    // and declare a member and so on. See all ++++++++ comment lines below.
     // These fields can be anything you want.
     public static final String COL_ITEMID = "itemid";
     public static final String COL_DESCRIPTION = "description";

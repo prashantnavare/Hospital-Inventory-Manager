@@ -1,7 +1,9 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -68,7 +70,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private String mItemID;
     private Item mItem = null;
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * The UI elements showing the details of the item
      */
@@ -238,7 +240,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             mInventoryDetailsRow.setVisibility(View.GONE);
 
     }
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -545,7 +547,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
     public void saveItem() {
-        updateItemFromUI();
+        boolean bAllDataOK = updateItemFromUI();
+        if (bAllDataOK == false)
+            return;
         boolean bSuccess = false;
         if ((mItemID == null) || (mItemID.isEmpty())) {
             // a new item is being inserted.
@@ -570,12 +574,41 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    private void updateItemFromUI() {
+    private void showAlertDialog(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Incomplete Data");
+
+        // Setting Dialog Message
+        alertDialog.setMessage(message);
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.ic_hospital_inventory);
+
+        // Setting OK Button
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    private boolean updateItemFromUI() {
         if (mItem == null)
             mItem = new Item();
 
-        mItem.mName = mTextName.getText().toString();
+        if (mTextName.getText().toString().isEmpty()) {
+            showAlertDialog("Item name cannot be empty.");
+            return false;
+        }
+        else {
+            mItem.mName = mTextName.getText().toString();
+        }
         mItem.mDescription = mTextDescription.getText().toString();
         if (mSpinnerType.getSelectedItemId() == 0) {
             // Instrument
@@ -584,8 +617,13 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Calibration related
             if (mCalibrationCheckBox.isChecked()) {
                 mItem.mCalibrationReminders = 1;
-                if (mTextCalibrationFrequency.getText().toString().isEmpty() == false)
+                if (mTextCalibrationFrequency.getText().toString().isEmpty()) {
+                    showAlertDialog("Calibration frequency cannot be empty.");
+                    return false;
+                }
+                else {
                     mItem.mCalibrationFrequency = Long.valueOf(mTextCalibrationFrequency.getText().toString());
+                }
 
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
                 Calendar calibrationDate = Calendar.getInstance();
@@ -608,8 +646,13 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Maintenance related
             if (mMaintenanceCheckBox.isChecked()) {
                 mItem.mMaintenanceReminders = 1;
-                if (mTextMaintenanceFrequency.getText().toString().isEmpty() == false)
+                if (mTextMaintenanceFrequency.getText().toString().isEmpty()) {
+                    showAlertDialog("Maintenance frequency cannot be empty.");
+                    return false;
+                }
+                else {
                     mItem.mMaintenanceFrequency = Long.valueOf(mTextMaintenanceFrequency.getText().toString());
+                }
 
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
                 Calendar maintenanceDate = Calendar.getInstance();
@@ -658,16 +701,22 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mItem.mCurrentQuantity = Long.valueOf(mTextCurrentQuantity.getText().toString());
             if (mInventoryCheckBox.isChecked()) {
                 mItem.mInventoryReminders = 1;
-                if (mTextMinRequiredQuantity.getText().toString().isEmpty() == false)
+                if (mTextMinRequiredQuantity.getText().toString().isEmpty()) {
+                    showAlertDialog("Minimum quantity cannot be empty.");
+                    return false;
+                }
+                else {
                     mItem.mMinRequiredQuantity = Long.valueOf(mTextMinRequiredQuantity.getText().toString());
+                }
             }
             else {
                 mItem.mInventoryReminders = 0;
             }
         }
+        return true;
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void updateUIFromItem() {
         mTextName.setText(mItem.mName);
         mTextDescription.setText(mItem.mDescription);
@@ -782,7 +831,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void displayUIForNewItem() {
         mTextName.setText("");
         mTextDescription.setText("");
@@ -833,6 +882,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mCallbacks.EnableSaveButton(true);
         mCallbacks.RedrawOptionsMenu();
     }
+
     public void createServiceCall(long itemID, String description, long priority, String itemName) {
         ServiceCall sc = new ServiceCall();
         sc.mItemID = itemID;

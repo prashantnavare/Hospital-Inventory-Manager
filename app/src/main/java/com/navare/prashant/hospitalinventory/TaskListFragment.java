@@ -16,9 +16,7 @@ import android.widget.ListView;
 
 
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
-import com.navare.prashant.hospitalinventory.Database.Item;
 import com.navare.prashant.hospitalinventory.Database.Task;
-import com.navare.prashant.hospitalinventory.dummy.DummyContent;
 import com.navare.prashant.hospitalinventory.util.TaskListCursorAdapter;
 
 /**

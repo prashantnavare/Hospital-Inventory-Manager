@@ -299,6 +299,8 @@ public class HospitalInventoryContentProvider extends ContentProvider {
                 return updateItem(uri, values, selection, selectionArgs);
             case TASK_ID:
                 return updateTask(uri, values, selection, selectionArgs);
+            case SERVICE_CALL_ID:
+                return updateServiceCall(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
@@ -322,6 +324,16 @@ public class HospitalInventoryContentProvider extends ContentProvider {
             if (status == Task.CompletedStatus) {
                 mInventoryDB.completeTask(taskId);
             }
+            getContext().getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(FTS_TASK_URI, null);
+        }
+        return rowsUpdated;
+    }
+
+    private int updateServiceCall(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        String serviceCallId = uri.getLastPathSegment();
+        int rowsUpdated = mInventoryDB.updateServiceCall(serviceCallId, values, selection, selectionArgs);
+        if (rowsUpdated > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
             getContext().getContentResolver().notifyChange(FTS_TASK_URI, null);
         }

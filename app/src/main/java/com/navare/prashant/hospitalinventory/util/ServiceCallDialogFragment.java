@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +78,24 @@ public class ServiceCallDialogFragment extends DialogFragment {
         mTextInstrument.setText(mItem.mName);
 
         mTextDescription = ((TextView) rootView.findViewById(R.id.textDescription));
+        mTextDescription.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (mTextDescription.getText().toString().isEmpty())
+                    mBtnReport.setEnabled(false);
+                else
+                    mBtnReport.setEnabled(true);
+            }
+        });
 
         mSpinnerPriority = (Spinner) rootView.findViewById(R.id.spinnerPriority);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, getResources().getStringArray(R.array.priorities_array));
@@ -84,11 +105,18 @@ public class ServiceCallDialogFragment extends DialogFragment {
 
         mBtnReport = ((Button) rootView.findViewById(R.id.btnReport));
         mBtnReport.setOnClickListener(onReport);
+        // By default, disable the Report button till Description is non empty.
+        mBtnReport.setEnabled(false);
+
         mBtnCancel = ((Button) rootView.findViewById(R.id.btnCancel));
         mBtnCancel.setOnClickListener(onCancel);
 
-        Dialog myDialog = getDialog();
-        myDialog.setTitle(getResources().getText(R.string.dialog_service_call_title));
+        TextView titleTextView = (TextView) this.getDialog().findViewById(android.R.id.title);
+        if(titleTextView != null)
+        {
+            titleTextView.setGravity(Gravity.CENTER);
+            titleTextView.setText(getResources().getText(R.string.dialog_service_call_title));
+        }
         return rootView;
     }
 

@@ -54,7 +54,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private Item mItem = null;
     private ServiceCall mServiceCall = null;
 
-    // TODO - add all the views on the task detail page
     private TextView mTextItemType;
     private TextView mTextItemName;
     private TextView mTextDueDate;
@@ -150,7 +149,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
 
-    // TODO
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -373,7 +371,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         enableRevertAndSaveButtons();
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void updateTaskFromUI() {
         if (mTask == null)
             mTask = new Task();
@@ -387,7 +385,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void updateUIFromTask() {
         if (mTask.mTaskType == Task.Inventory)
             mTextItemType.setText(getResources().getText(R.string.consummable));
@@ -422,10 +420,15 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         if (mTask.mTaskType == Task.Contract) {
             if (mItem != null) {
                 mContractExpiryDateRow.setVisibility(View.VISIBLE);
-                Calendar contractDate = Calendar.getInstance();
-                contractDate.setTimeInMillis(mItem.mContractValidTillDate);
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMMM, yyyy");
-                mTextContractExpiryDate.setText(dateFormatter.format(contractDate.getTime()));
+                if (mItem.mContractValidTillDate > 0) {
+                    Calendar contractDate = Calendar.getInstance();
+                    contractDate.setTimeInMillis(mItem.mContractValidTillDate);
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMMM, yyyy");
+                    mTextContractExpiryDate.setText(dateFormatter.format(contractDate.getTime()));
+                }
+                else {
+                    mTextContractExpiryDate.setText("No date set");
+                }
             }
         }
 

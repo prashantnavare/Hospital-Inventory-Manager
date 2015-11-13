@@ -20,10 +20,10 @@ public class Item {
 
     // Item table
     public static final String TABLE_NAME = "ItemTable";
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // TODO: Add other fields here.
-    // TODO: When you add a field, make sure you add corresponding entries in the FIELDS array, the CREATE_TABLE string
-    // TODO: and declare a member and so on. See all ++++++++ comment lines below.
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Add other fields here.
+    // When you add a field, make sure you add corresponding entries in the FIELDS array, the CREATE_TABLE string
+    // and declare a member and so on. See all ++++++++ comment lines below.
     // These fields can be anything you want.
     public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
@@ -54,7 +54,7 @@ public class Item {
     public static final String ConsummableString = "Consummable";
 
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // For database projection so order is consistent
     public static final String[] FIELDS = {
             BaseColumns._ID,
@@ -82,7 +82,7 @@ public class Item {
     };
 
     public static final HashMap<String, String> mColumnMap = buildColumnMap();
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Builds a map for all Item FTS table columns that may be requested, which will be given to the
      * SQLiteQueryBuilder. This is a good way to define aliases for column names, but must include
@@ -118,7 +118,7 @@ public class Item {
         return map;
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /*
      * The SQL code that creates a Table for storing items.
      * Note that the last row does NOT end in a comma like the others.
@@ -151,7 +151,7 @@ public class Item {
 
                     + ")";
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Fields corresponding to ItemTable columns
     public long mID = -1;
     public String mName = "";
@@ -182,7 +182,7 @@ public class Item {
     public Item() {
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Convert information from the ItemTable into an Item object.
      */
@@ -212,7 +212,7 @@ public class Item {
         this.mCurrentQuantity = cursor.getLong(17);
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Return the fields in a ContentValues object, suitable for insertion
      * into the database.
@@ -245,7 +245,7 @@ public class Item {
         return values;
     }
 
-    // TODO: ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * sets the fields from a ContentValues object
      */

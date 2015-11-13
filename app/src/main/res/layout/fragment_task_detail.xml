@@ -20,9 +20,6 @@
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textItemName"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -37,9 +34,6 @@
                 android:text="@string/due_date"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textDueDate"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -54,9 +48,6 @@
                 android:text="@string/assigned_to"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textAssignedTo"
                 android:text="@string/none"
@@ -72,9 +63,6 @@
                 android:text="@string/task"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textTaskType"
                 android:text="@string/calibration"
@@ -91,9 +79,6 @@
                 android:text="Contract Expiry:"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textContractExpiryDate"
                 android:textStyle="bold"
@@ -110,9 +95,6 @@
                 android:text="Required Quantity:"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textRequiredQuantity"
                 android:textStyle="bold"
@@ -128,9 +110,6 @@
                 android:text="@string/priority"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <Spinner
                 android:id="@+id/spinnerPriority"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -147,13 +126,11 @@
                 android:text="@string/instructions"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Space
-                android:layout_width="3dp"
-                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/textInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:singleLine="false"
                 />
         </TableRow>
     </TableLayout>
