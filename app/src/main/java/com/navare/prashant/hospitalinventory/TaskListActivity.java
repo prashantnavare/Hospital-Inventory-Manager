@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.navare.prashant.hospitalinventory.util.ComputeNewTasksAlarmReceiver;
 import com.navare.prashant.hospitalinventory.util.ComputeNewTasksJobService;
 
 
@@ -130,17 +131,17 @@ public class TaskListActivity extends ActionBarActivity
     }
 
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void computeNewTasks() {
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
             ComponentName componentName = new ComponentName(getApplicationContext(), ComputeNewTasksJobService.class);
             JobInfo jobInfo = new JobInfo.Builder(1, componentName).setOverrideDeadline(1000).setRequiresCharging(true).setRequiresDeviceIdle(true).build();
             jobScheduler.schedule(jobInfo);
         }
-        else {
-            // TODO: Add code to schedule the task using the Alarm Manager
-        }
+        */
+        ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
+        alarmReceiver.setAlarm(this, false);
         Toast toast = Toast.makeText(getApplicationContext(), "New tasks are being computed. This may take a while. Please check back after a few minutes.", Toast.LENGTH_LONG);
         toast.show();
     }

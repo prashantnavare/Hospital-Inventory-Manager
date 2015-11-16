@@ -9,19 +9,19 @@
         android:layout_height="wrap_content"
         android:padding="5dip"
         >
-
         <TextView
                 android:id="@+id/textItemType"
                 android:text="@string/item"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         <Space
-            android:layout_width="2dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent" />
-            <TextView
-                android:id="@+id/textItemName"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textItemName"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
     </TableRow>
+
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,13 +31,14 @@
             android:text="@string/type"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <Space
-            android:layout_width="2dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/textTaskType"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
     </TableRow>
+
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,13 +48,14 @@
             android:text="@string/assigned_to"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <Space
-            android:layout_width="2dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/textAssignedTo"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
     </TableRow>
+
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,13 +65,15 @@
             android:text="@string/due_date"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <Space
-            android:layout_width="2dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/textDueDate"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
+
     </TableRow>
+
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,11 +83,12 @@
             android:text="@string/priority"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <Space
-            android:layout_width="2dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/textPriority"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
     </TableRow>
+
 </TableLayout>

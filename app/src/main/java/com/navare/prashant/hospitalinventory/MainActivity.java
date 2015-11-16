@@ -1,5 +1,6 @@
 package com.navare.prashant.hospitalinventory;
 
+import com.navare.prashant.hospitalinventory.util.ComputeNewTasksAlarmReceiver;
 import com.navare.prashant.hospitalinventory.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -54,6 +55,8 @@ public class MainActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
+
+    ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,17 +133,8 @@ public class MainActivity extends Activity {
         buttonTasks.setOnTouchListener(mDelayHideTouchListener);
         buttonSettings.setOnTouchListener(mDelayHideTouchListener);
 
-        // Create the DB from the asset file, if needed.
-        String destDir = "/data/data/" + getPackageName() + "/databases/";
-        String destPath = destDir + "HospitalInventoryDB";
-        File f = new File(destPath);
-
-        // TODO: To be deleted ultimately. This is purely for development
-        if (f.exists())
-        {
-            f.delete();
-        }
-
+        // Set up the daily alarm for computing new tasks
+        alarmReceiver.setAlarm(this, true);
     }
 
     @Override

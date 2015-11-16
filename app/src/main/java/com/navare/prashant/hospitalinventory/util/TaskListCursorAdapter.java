@@ -41,6 +41,9 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
         if (priority.equalsIgnoreCase("Urgent")) {
             textPriority.setTextColor(Color.RED);
         }
+        else {
+            textPriority.setTextColor(Color.BLACK);
+        }
         return view;
     }
 }

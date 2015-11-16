@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.navare.prashant.hospitalinventory" >
+    package="com.navare.prashant.hospitalinventory"
+    android:versionCode="1"
+    android:versionName="1.0"
+    >
+
     <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="22" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_hospital_inventory"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -14,21 +22,14 @@
             android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-
-        <provider
-            android:name=".Database.HospitalInventoryContentProvider"
-            android:authorities="com.navare.prashant.HospitalInventory.provider"
-            android:enabled="true"
-            android:exported="true" >
-        </provider>
 
         <activity
             android:name=".ItemListActivity"
@@ -47,6 +48,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".ItemDetailActivity"
             android:label="@string/title_item_detail"
@@ -55,6 +57,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.ItemListActivity" />
         </activity>
+
         <activity
             android:name=".TaskListActivity"
             android:label="@string/title_task_list"
@@ -63,6 +66,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.MainActivity" />
         </activity>
+
         <activity
             android:name=".TaskDetailActivity"
             android:label="@string/title_task_detail"
@@ -71,10 +75,29 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.TaskListActivity" />
         </activity>
+
+        <provider
+            android:name=".Database.HospitalInventoryContentProvider"
+            android:authorities="com.navare.prashant.HospitalInventory.provider"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
+
         <service
             android:name=".util.ComputeNewTasksJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true" />
+
+        <receiver android:name=".util.ComputeNewTasksAlarmReceiver"></receiver>
+
+        <receiver android:name=".util.ComputeNewTasksBootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".util.ComputeNewTasksAlarmService" />
 
     </application>
 
