@@ -147,8 +147,8 @@ public class TaskDetailActivity extends ActionBarActivity
             Uri contactUri = data.getData();
             Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
             cursor.moveToFirst();
-            int column = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-            String assigneeName = cursor.getString(column);
+            int columnDisplayName = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+            String assigneeName = cursor.getString(columnDisplayName);
             ((TaskDetailFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.task_detail_container)).assignTask(assigneeName);
             cursor.close();

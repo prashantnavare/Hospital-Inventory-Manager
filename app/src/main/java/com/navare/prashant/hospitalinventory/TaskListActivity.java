@@ -18,8 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
-import com.navare.prashant.hospitalinventory.util.ComputeNewTasksService;
+import com.navare.prashant.hospitalinventory.util.ComputeNewTasksJobService;
 
 
 /**
@@ -135,7 +134,7 @@ public class TaskListActivity extends ActionBarActivity
     private void computeNewTasks() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-            ComponentName componentName = new ComponentName(getApplicationContext(), ComputeNewTasksService.class);
+            ComponentName componentName = new ComponentName(getApplicationContext(), ComputeNewTasksJobService.class);
             JobInfo jobInfo = new JobInfo.Builder(1, componentName).setOverrideDeadline(1000).setRequiresCharging(true).setRequiresDeviceIdle(true).build();
             jobScheduler.schedule(jobInfo);
         }

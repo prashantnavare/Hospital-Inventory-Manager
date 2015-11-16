@@ -13,7 +13,7 @@ import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentPr
  * Created by prashant on 05-Nov-15.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class ComputeNewTasksService extends JobService {
+public class ComputeNewTasksJobService extends JobService {
 
     JobParameters params;
     ComputeNewTasksTask computeNewTasksTask = new ComputeNewTasksTask();;
@@ -21,14 +21,14 @@ public class ComputeNewTasksService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         this.params = params;
-        Log.d("ComputeNewTasksService", "About to start the computeNewTasks job");
+        Log.d("NewTasksJobService", "starting the computeNewTasks job");
         computeNewTasksTask.execute();
         return true;
     }
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        Log.d("ComputeNewTasksService", "System calling to stop the computeNewTasks job");
+        Log.d("NewTasksJobService", "System calling to stop the computeNewTasks job");
         computeNewTasksTask.cancel(true);
         return false;
     }

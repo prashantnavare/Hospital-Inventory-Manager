@@ -72,7 +72,7 @@
                 android:value="com.navare.prashant.hospitalinventory.TaskListActivity" />
         </activity>
         <service
-            android:name="com.navare.prashant.hospitalinventory.util.ComputeNewTasksService"
+            android:name=".util.ComputeNewTasksJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true" />
 
