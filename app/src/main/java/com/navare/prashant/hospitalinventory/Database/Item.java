@@ -47,6 +47,8 @@ public class Item {
     public static final String COL_MIN_REQUIRED_QUANTITY = "minRequiredQuantity";
     public static final String COL_CURRENT_QUANTITY = "currentQuantity";
 
+    public static final String COL_IMAGE_PATH = "imagePath";
+
     // Defines related to item type
     public static final long InstrumentType = 1;
     public static final long ConsummableType = 2;
@@ -78,7 +80,8 @@ public class Item {
 
             COL_INVENTORY_REMINDERS,
             COL_MIN_REQUIRED_QUANTITY,
-            COL_CURRENT_QUANTITY
+            COL_CURRENT_QUANTITY,
+            COL_IMAGE_PATH
     };
 
     public static final HashMap<String, String> mColumnMap = buildColumnMap();
@@ -114,6 +117,7 @@ public class Item {
         map.put(COL_INVENTORY_REMINDERS, COL_INVENTORY_REMINDERS);
         map.put(COL_MIN_REQUIRED_QUANTITY, COL_MIN_REQUIRED_QUANTITY);
         map.put(COL_CURRENT_QUANTITY, COL_CURRENT_QUANTITY);
+        map.put(COL_IMAGE_PATH, COL_IMAGE_PATH);
 
         return map;
     }
@@ -147,7 +151,8 @@ public class Item {
 
                     + COL_INVENTORY_REMINDERS + " INTEGER,"
                     + COL_MIN_REQUIRED_QUANTITY + " INTEGER,"
-                    + COL_CURRENT_QUANTITY + " INTEGER"
+                    + COL_CURRENT_QUANTITY + " INTEGER,"
+                    + COL_IMAGE_PATH + " TEXT DEFAULT ''"
 
                     + ")";
 
@@ -175,6 +180,8 @@ public class Item {
     public long mInventoryReminders = 0;
     public long mMinRequiredQuantity = 0;
     public long mCurrentQuantity = 0;
+
+    public String mImagePath = "";
 
     /**
      * No need to do anything, fields are already set to default values above
@@ -210,6 +217,8 @@ public class Item {
         this.mInventoryReminders = cursor.getLong(15);
         this.mMinRequiredQuantity = cursor.getLong(16);
         this.mCurrentQuantity = cursor.getLong(17);
+
+        this.mImagePath = cursor.getString(18);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -242,6 +251,8 @@ public class Item {
         values.put(COL_MIN_REQUIRED_QUANTITY, mMinRequiredQuantity);
         values.put(COL_CURRENT_QUANTITY, mCurrentQuantity);
 
+        values.put(COL_IMAGE_PATH, mImagePath);
+
         return values;
     }
 
@@ -273,6 +284,7 @@ public class Item {
         mMinRequiredQuantity = values.getAsLong(COL_MIN_REQUIRED_QUANTITY);
         mCurrentQuantity = values.getAsLong(COL_CURRENT_QUANTITY);
 
+        mImagePath = values.getAsString(COL_IMAGE_PATH);
     }
 
     // Item FTS Table

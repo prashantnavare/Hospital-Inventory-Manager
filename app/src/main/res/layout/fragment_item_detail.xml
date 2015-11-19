@@ -407,6 +407,30 @@
 
         </TableRow>
 
+        <!-- Item Image -->
+        <TableRow
+            android:id="@+id/itemImageRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:background="#ECEFF1"
+            >
+
+            <TextView
+                android:text="Image"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+
+            <ImageView
+                android:id="@+id/imageItem"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:visibility="visible"
+                />
+
+        </TableRow>
+
     </TableLayout>
 
 </ScrollView>

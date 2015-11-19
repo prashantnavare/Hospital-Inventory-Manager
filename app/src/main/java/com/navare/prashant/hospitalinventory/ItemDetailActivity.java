@@ -3,7 +3,10 @@ package com.navare.prashant.hospitalinventory;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -35,6 +38,8 @@ public class ItemDetailActivity extends ActionBarActivity
     private MenuItem inventorySubtractMenuItem = null;
     private MenuItem serviceCallMenuItem = null;
 
+    private MenuItem cameraMenuItem = null;
+
     private boolean mbDeleteMenuEnable = false;
     private boolean mbRevertMenuEnable = false;
     private boolean mbSaveMenuEnable = false;
@@ -42,6 +47,8 @@ public class ItemDetailActivity extends ActionBarActivity
     private boolean mbInventoryAddMenuEnable = false;
     private boolean mbInventorySubtractMenuEnable = false;
     private boolean mbServiceCallMenuEnable = false;
+    private boolean mbCameraMenuEnable = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +88,13 @@ public class ItemDetailActivity extends ActionBarActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.item_detail_actions, menu);
 
-        saveMenuItem = menu.getItem(0);
-        deleteMenuItem = menu.getItem(1);
+        serviceCallMenuItem = menu.getItem(0);
+        saveMenuItem = menu.getItem(1);
         revertMenuItem = menu.getItem(2);
-
         inventoryAddMenuItem = menu.getItem(3);
         inventorySubtractMenuItem = menu.getItem(4);
-        serviceCallMenuItem = menu.getItem(5);
+        cameraMenuItem = menu.getItem(5);
+        deleteMenuItem = menu.getItem(6);
 
         // Toggle the options menu buttons as per desired state
         // It is possible that the query has already finished loading before we get here
@@ -100,6 +107,12 @@ public class ItemDetailActivity extends ActionBarActivity
         EnableInventorySubtractButton(mbInventorySubtractMenuEnable);
         EnableServiceCallButton(mbServiceCallMenuEnable);
 
+        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) == false) {
+            EnableCameraButton(false);
+        }
+        else {
+            EnableCameraButton(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -128,9 +141,17 @@ public class ItemDetailActivity extends ActionBarActivity
             case R.id.menu_service_call:
                 showServiceCallDialog();
                 return true;
+            case R.id.menu_camera:
+                handleCamera();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void handleCamera() {
+        ((ItemDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.item_detail_container)).handleCamera();
     }
 
     private void showServiceCallDialog() {
@@ -243,6 +264,14 @@ public class ItemDetailActivity extends ActionBarActivity
         if (serviceCallMenuItem != null) {
             serviceCallMenuItem.setEnabled(bEnable);
             serviceCallMenuItem.setVisible(bEnable);
+        }
+    }
+
+    public void EnableCameraButton(boolean bEnable) {
+        mbCameraMenuEnable = bEnable;
+        if (cameraMenuItem != null) {
+            cameraMenuItem.setEnabled(bEnable);
+            cameraMenuItem.setVisible(bEnable);
         }
     }
 

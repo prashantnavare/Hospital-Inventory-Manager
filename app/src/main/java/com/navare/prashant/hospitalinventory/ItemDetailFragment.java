@@ -4,9 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableRow;
@@ -40,6 +47,11 @@ import com.navare.prashant.hospitalinventory.util.ServiceCallDialogFragment;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -88,6 +100,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private TableRow mCurrentQuantityRow;
     private TableRow mInventoryRemindersRow;
     private TableRow mInventoryDetailsRow;
+    private TableRow mItemImageRow;
 
     private CheckBox mCalibrationCheckBox;
     private TextView mTextCalibrationFrequency;
@@ -107,6 +120,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextMinRequiredQuantity;
     private TextView mTextCurrentQuantity;
 
+    private ImageView mImageView;
+
+    String mImageFileName;
+    File mImageFile;
+    Uri mImageFileUri;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -392,7 +410,25 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextMinRequiredQuantity = (TextView) rootView.findViewById(R.id.textMinRequiredQuantity);
         mTextMinRequiredQuantity.addTextChangedListener(this);
 
+        // image related
+        mItemImageRow = (TableRow) rootView.findViewById(R.id.itemImageRow);
+        mImageView = ((ImageView) rootView.findViewById(R.id.imageItem));
+        if (mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) == false) {
+            mItemImageRow.setVisibility(View.INVISIBLE);
+        }
+
         return rootView;
+    }
+
+    @Override
+    public  void onDestroyView() {
+        // If we have an image file, then clean it up
+        // If an image has been captured, then delete the image file.
+        if (mImageFile != null) {
+            if (mImageFile.exists())
+                mImageFile.delete();
+        }
+        super.onDestroyView();
     }
 
     enum DatePickerType {CALIBRATION, MAINTENANCE, CONTRACT};
@@ -533,6 +569,12 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         else {
             updateUIFromItem();
         }
+        // If an image has been captured, then delete the image file.
+        if (mImageFile != null) {
+            if (mImageFile.exists())
+                mImageFile.delete();
+        }
+
         mCallbacks.EnableRevertButton(false);
         mCallbacks.EnableSaveButton(false);
         mCallbacks.RedrawOptionsMenu();
@@ -550,6 +592,10 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         boolean bAllDataOK = updateItemFromUI();
         if (bAllDataOK == false)
             return;
+
+        // If there is an image file, then move it to the app storage and save the path to the file.
+        moveImageFileToAppStorgaeAndUpdateItem();
+
         boolean bSuccess = false;
         if ((mItemID == null) || (mItemID.isEmpty())) {
             // a new item is being inserted.
@@ -829,6 +875,18 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mInventoryDetailsRow.setVisibility(View.GONE);
             }
         }
+
+        // TODO: reset the imageView
+        if (mItem.mImagePath.isEmpty()) {
+            mImageView.setImageBitmap(null);
+        }
+        else {
+            BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
+            bmpFactoryOptions.inJustDecodeBounds = false;
+            Bitmap imageBitmap = BitmapFactory.decodeFile(mItem.mImagePath, bmpFactoryOptions);
+            // Display it
+            mImageView.setImageBitmap(imageBitmap);
+        }
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -847,12 +905,14 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mContractCheckBox.setChecked(false);
         mContractDetailsRow.setVisibility(View.GONE);
+
+        mImageView.setImageBitmap(null);
     }
 
     public void showInventoryAddDialog() {
         InventoryDialogFragment dialog = new InventoryDialogFragment();
         dialog.setDialogType(InventoryDialogFragment.InventoryDialogType.ADD);
-        dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "InventoryDialogFragment");
+        dialog.show(((FragmentActivity) mContext).getSupportFragmentManager(), "InventoryDialogFragment");
     }
 
     public void showInventorySubtractDialog() {
@@ -864,7 +924,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     public void showServiceCallDialog() {
         ServiceCallDialogFragment dialog = new ServiceCallDialogFragment();
         dialog.setItem(mItem);
-        dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "ServiceCallDialogFragment");
+        dialog.show(((FragmentActivity) mContext).getSupportFragmentManager(), "ServiceCallDialogFragment");
     }
 
     public void addToInventory(long quantity) {
@@ -911,6 +971,70 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         else {
             Toast toast = Toast.makeText(mContext, "Failed to create problem report.", Toast.LENGTH_SHORT);
             toast.show();
+        }
+    }
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    public void handleCamera() {
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
+            // If an image has been captured, then delete the image file.
+            if (mImageFile != null) {
+                if (mImageFile.exists())
+                    mImageFile.delete();
+            }
+            // Create the File where the photo should go
+            mImageFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".jpg";
+            mImageFile = new File(mImageFileName);
+            mImageFileUri = Uri.fromFile(mImageFile);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mImageFile));
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
+            bmpFactoryOptions.inJustDecodeBounds = false;
+            Bitmap imageBitmap = BitmapFactory.decodeFile(mImageFileName, bmpFactoryOptions);
+            // Display it
+            mImageView.setImageBitmap(imageBitmap);
+            enableRevertAndSaveButtons();
+        }
+    }
+
+    private void moveImageFileToAppStorgaeAndUpdateItem() {
+        if (mImageFile != null) {
+            if (mImageFile.exists()) {
+                File newImagefile = new File(mContext.getExternalFilesDir(null), String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".jpg");
+                try {
+                    copyFile(mImageFile, newImagefile);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                mItem.mImagePath = newImagefile.getAbsolutePath();
+                mImageFile.delete();
+            }
+        }
+    }
+
+    void copyFile(File src, File dst) throws IOException {
+        FileChannel inChannel = new FileInputStream(src).getChannel();
+        FileChannel outChannel = new FileOutputStream(dst).getChannel();
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        }
+        finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
         }
     }
 }
