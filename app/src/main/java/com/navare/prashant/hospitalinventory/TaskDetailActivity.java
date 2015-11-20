@@ -44,7 +44,6 @@ public class TaskDetailActivity extends ActionBarActivity
     private boolean mbRevertMenuEnable = false;
     private boolean mbSaveMenuEnable = false;
 
-    public final int PICK_CONTACT = 2015;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,22 +136,8 @@ public class TaskDetailActivity extends ActionBarActivity
     }
 
     private void assignTask() {
-        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-        startActivityForResult(i, PICK_CONTACT);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_CONTACT && resultCode == RESULT_OK) {
-            Uri contactUri = data.getData();
-            Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
-            cursor.moveToFirst();
-            int columnDisplayName = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-            String assigneeName = cursor.getString(columnDisplayName);
-            ((TaskDetailFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.task_detail_container)).assignTask(assigneeName);
-            cursor.close();
-        }
+        ((TaskDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.task_detail_container)).assignTask();
     }
 
     @Override

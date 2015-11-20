@@ -584,8 +584,19 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         Uri itemURI = Uri.withAppendedPath(HospitalInventoryContentProvider.ITEM_URI,
                 mItemID);
         int result = getActivity().getContentResolver().delete(itemURI, null, null);
-        if (result > 0)
+        if (result > 0) {
+            // if there is an image file, delete it as well.
+            if (mItem.mImagePath.isEmpty() == false) {
+                File imageFile = new File(mItem.mImagePath);
+                imageFile.delete();
+                // If an image has been captured, then delete the image file.
+                if (mImageFile != null) {
+                    if (mImageFile.exists())
+                        mImageFile.delete();
+                }
+            }
             mCallbacks.onItemDeleted();
+        }
     }
 
     public void saveItem() {

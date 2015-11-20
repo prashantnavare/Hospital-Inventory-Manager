@@ -1,12 +1,21 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.ActionBar;
-import android.app.Activity;import android.content.Context;import android.database.Cursor;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;import android.support.v4.app.LoaderManager;import android.support.v4.content.CursorLoader;import android.support.v4.content.Loader;import android.text.Editable;import android.text.TextWatcher;import android.view.LayoutInflater;
+import android.support.v4.app.FragmentActivity;import android.support.v4.app.LoaderManager;import android.support.v4.content.CursorLoader;import android.support.v4.content.Loader;
+import android.telephony.SmsManager;
+import android.text.Editable;import android.text.TextWatcher;import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;import com.navare.prashant.hospitalinventory.Database.Item;
@@ -67,6 +77,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextContractExpiryDate;
     private TableRow mRequiredQuantityRow;
     private TextView mTextRequiredQuantity;
+
+    String mCurrentAssignee;
+    String mNewAssignee;
 
     public interface Callbacks {
         /**
@@ -243,6 +256,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 mTask.setContentFromCursor(dataCursor);
                 updateUIFromTask();
 
+
                 if (mTask.mTaskType == Task.ServiceCall) {
                     // Get the service call details.
                     getLoaderManager().initLoader(LOADER_ID_SERVICE_CALL_DETAILS, null, this);
@@ -360,16 +374,96 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 mTaskID);
         int result = getActivity().getContentResolver().update(taskURI, mTask.getContentValues(), null, null);
         if (result > 0) {
+
+            // If the task was unassigned to a person, send that person an SMS.
+            // If the task was assigned to a new person, send that person an SMS.
+            // TODO: the above
+            sendTaskSMSs();
             mCallbacks.EnableSaveButton(false);
             mCallbacks.EnableRevertButton(false);
             mCallbacks.RedrawOptionsMenu();
         }
     }
 
-    public void assignTask(String assigneeName) {
-        mTextAssignedTo.setText(assigneeName);
-        enableRevertAndSaveButtons();
+    private void sendTaskSMSs() {
+        if (mNewAssignee.isEmpty() == false) {
+            // If the current and new assignees are the same, don't do anytrhing.
+            if (mNewAssignee.equalsIgnoreCase(mCurrentAssignee) == true)
+                return;
+
+            // First send SMS to the new assignee
+            String smsAssignMessage = "You have been assigned a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+            String assigneePhoneNumber = getPhoneNumber(mNewAssignee);
+            if (assigneePhoneNumber.isEmpty() == false) {
+                sendAssigneeSMS(assigneePhoneNumber, smsAssignMessage);
+            }
+        }
     }
+
+    private void sendAssigneeSMS(String phoneNumber, String message)
+    {
+        String SENT = "SMS_SENT";
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(mContext, 0, new Intent(SENT), 0);
+        final SmsManager sms = SmsManager.getDefault();
+
+        // when the SMS has been sent, send the deAssignee an SMS about unassignment
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        if (mCurrentAssignee.isEmpty() == false) {
+                            String smsUnAssignMessage = "You have been unassigned from a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+                            String unAssigneePhoneNumber = getPhoneNumber(mCurrentAssignee);
+                            if (unAssigneePhoneNumber.isEmpty() == false) {
+                                sms.sendTextMessage(unAssigneePhoneNumber, null, smsUnAssignMessage, null, null);
+                            }
+                        }
+                        break;
+                }
+            }
+        }, new IntentFilter(SENT));
+
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, null);
+    }
+
+    private String getPhoneNumber(String name) {
+        String phoneNumber = "";
+        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" like'%" + name +"%'";
+        String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor c = mContext.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                projection, selection, null, null);
+        if (c.moveToFirst()) {
+            phoneNumber = c.getString(0);
+        }
+        c.close();
+        return phoneNumber;
+    }
+
+    public final int PICK_CONTACT = 2015;
+
+    public void assignTask() {
+        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        startActivityForResult(i, PICK_CONTACT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_CONTACT && resultCode == Activity.RESULT_OK) {
+            Uri contactUri = data.getData();
+            Cursor cursor = mContext.getContentResolver().query(contactUri, null, null, null, null);
+            cursor.moveToFirst();
+            int columnDisplayName = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+            String assigneeName = cursor.getString(columnDisplayName);
+            cursor.close();
+
+            mNewAssignee = assigneeName;
+            mTextAssignedTo.setText(assigneeName);
+            enableRevertAndSaveButtons();
+        }
+    }
+
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void updateTaskFromUI() {
@@ -453,6 +547,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mSpinnerPosition = 1;
             mSpinnerPriority.setSelection(1, false);
         }
+        mCurrentAssignee = mTask.mAssignedTo;
+
         // Toggle the action bar buttons appropriately
         mCallbacks.EnableTaskDoneButton(true);
         mCallbacks.EnableRevertButton(false);
