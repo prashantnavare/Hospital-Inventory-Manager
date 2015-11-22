@@ -5,9 +5,11 @@ import com.navare.prashant.hospitalinventory.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -55,8 +57,6 @@ public class MainActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
-
-    ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +133,27 @@ public class MainActivity extends Activity {
         buttonTasks.setOnTouchListener(mDelayHideTouchListener);
         buttonSettings.setOnTouchListener(mDelayHideTouchListener);
 
-        // Set up the daily alarm for computing new tasks
-        alarmReceiver.setAlarm(this, true);
+        // Set the title to the name of the hospital
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String titleString = preferences.getString("HospitalName", "Hospital Inventory");
+        if (titleString.equalsIgnoreCase("Hospital Inventory") == false) {
+            titleString = titleString + " Inventory";
+        }
+        setTitle(titleString);
+
+        String sTaskAlarmInitialized = "TaskAlarmInitialized";
+
+        if (!preferences.getBoolean(sTaskAlarmInitialized, false)) {
+
+            ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
+            // Set up the daily alarm for computing new tasks
+            alarmReceiver.setAlarm(getApplicationContext(), true);
+
+            // Set the preferences flag to true
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(sTaskAlarmInitialized, true);
+            editor.commit();
+        }
     }
 
     @Override

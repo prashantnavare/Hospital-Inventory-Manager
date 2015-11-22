@@ -918,6 +918,10 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mContractDetailsRow.setVisibility(View.GONE);
 
         mImageView.setImageBitmap(null);
+
+        mCallbacks.EnableRevertButton(false);
+        mCallbacks.EnableSaveButton(false);
+
     }
 
     public void showInventoryAddDialog() {

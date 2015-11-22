@@ -5,8 +5,10 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 import java.util.Calendar;
@@ -57,11 +59,6 @@ public class ComputeNewTasksAlarmReceiver extends WakefulBroadcastReceiver {
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         if (bDailyAlarm) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            // Set the alarm's trigger time to 8:30 a.m.
-            calendar.set(Calendar.HOUR_OF_DAY, 1);
-            calendar.set(Calendar.MINUTE, 00);
 
         /*
          * If you don't have precise time requirements, use an inexact repeating alarm
@@ -94,9 +91,22 @@ public class ComputeNewTasksAlarmReceiver extends WakefulBroadcastReceiver {
          *         AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
          */
 
-            // Set the alarm to fire at approximately 1:00 a.m., according to the device's
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+
+            // Set the alarm to fire at the user configured time., according to the device's
             // clock, and to repeat once a day.
-            // TODO: Set alarm at the user configured time.
+            // See if the user has set the time at which the task alarm should be set. The default is 01:00 (i.e. 1 am)
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String userAlarmTime = preferences.getString("TaskRefreshTime", "01:00");
+            String[] pieces = userAlarmTime.split(":");
+
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pieces[0]));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(pieces[1]));
+
+            // Before setting the new alarm time, cancel any previously set alarm.
+            alarmMgr.cancel(alarmIntent);
+
             alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
 

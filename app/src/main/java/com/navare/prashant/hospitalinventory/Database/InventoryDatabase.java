@@ -645,7 +645,6 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                             contractValidTillDate.setTimeInMillis(item.mContractValidTillDate);
                             // Contract reminders should be given 1 month before the actual contract end, unless the user has set the conract reminder interval.
                             long numberOfDaysbeforeExpiry = TimeUnit.DAYS.convert((contractValidTillDate.getTimeInMillis() - todayDate.getTimeInMillis()), TimeUnit.MILLISECONDS);
-                            // TODO: check if the user has set the conract reminder interval.
                             if (numberOfDaysbeforeExpiry <= 30) {
                                 bCreateTask = true;
                                 dueDate = item.mContractValidTillDate;
