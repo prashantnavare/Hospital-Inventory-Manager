@@ -85,9 +85,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         /**
          * Callbacks for when a task has been selected.
          */
+        void EnableAssignButton(boolean bEnable);
         void EnableTaskDoneButton(boolean bEnable);
-        void EnableRevertButton(boolean bEnable);
+        void EnableCallButton(boolean bEnable);
         void EnableSaveButton(boolean bEnable);
+        void EnableRevertButton(boolean bEnable);
         void RedrawOptionsMenu();
         void onTaskDone();
     }
@@ -95,7 +97,17 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private static Callbacks sDummyCallbacks = new Callbacks() {
 
         @Override
+        public void EnableAssignButton(boolean bEnable) {
+
+        }
+
+        @Override
         public void EnableTaskDoneButton(boolean bEnable) {
+
+        }
+
+        @Override
+        public void EnableCallButton(boolean bEnable) {
 
         }
 
@@ -448,6 +460,12 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         startActivityForResult(i, PICK_CONTACT);
     }
 
+    public void callAssignee() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + mTask.mAssignedToContactNumber));
+        startActivity(callIntent);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_CONTACT && resultCode == Activity.RESULT_OK) {
@@ -471,6 +489,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mTask = new Task();
 
         mTask.mAssignedTo = mTextAssignedTo.getText().toString();
+        if (mTask.mAssignedTo.isEmpty() == false)
+            mTask.mAssignedToContactNumber = getPhoneNumber(mTask.mAssignedTo);
         if (mSpinnerPriority.getSelectedItemId() == 0) {
             mTask.mPriority = Task.NormalPriority;
         }
@@ -550,9 +570,16 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mCurrentAssignee = mTask.mAssignedTo;
 
         // Toggle the action bar buttons appropriately
+        mCallbacks.EnableAssignButton(true);
+
+        if (mTask.mAssignedTo.isEmpty() == false) {
+            if (mTask.mAssignedToContactNumber.isEmpty() == false) {
+                mCallbacks.EnableCallButton(true);
+            }
+        }
         mCallbacks.EnableTaskDoneButton(true);
-        mCallbacks.EnableRevertButton(false);
         mCallbacks.EnableSaveButton(false);
+        mCallbacks.EnableRevertButton(false);
         mCallbacks.RedrawOptionsMenu();
     }
 

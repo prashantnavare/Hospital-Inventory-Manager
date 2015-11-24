@@ -8,27 +8,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 
 import com.navare.prashant.hospitalinventory.R;
+import com.navare.prashant.hospitalinventory.util.DBLock;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -141,7 +135,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 task.mItemName = strings[2].trim();
                 task.mStatus = Long.valueOf(strings[3].trim());
                 task.mAssignedTo = strings[4].trim();
-                task.mAssignedToContact = strings[5].trim();
+                task.mAssignedToContactNumber = strings[5].trim();
                 task.mDueDate = Long.valueOf(strings[6].trim());
                 task.mPriority = Long.valueOf(strings[7].trim());
                 long newID = addTask(task);
@@ -161,7 +155,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
      */
     public long addItem(Item item) {
         final SQLiteDatabase db = this.getWritableDatabase();
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         long realID = db.insert(Item.TABLE_NAME, null, item.getContentValues());
+        dbLock.unlock();
         if (realID > -1) {
             // Also add an entry to the Item FTS table
             ContentValues ftsValues = new ContentValues();
@@ -169,7 +166,9 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             ftsValues.put(Item.COL_FTS_ITEM_DESCRIPTION, item.mDescription);
             ftsValues.put(Item.COL_FTS_ITEM_REALID, Long.toString(realID));
 
+            dbLock.lock();
             long ftsID =  db.insert(Item.FTS_TABLE_NAME, null, ftsValues);
+            dbLock.unlock();
             if (ftsID == -1) {
                 deleteItem(String.valueOf(realID));
                 return ftsID;
@@ -180,13 +179,18 @@ public class InventoryDatabase extends SQLiteOpenHelper {
 
     public int deleteItem(String itemID) {
         final SQLiteDatabase db = this.getWritableDatabase();
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         final int result = db.delete(Item.TABLE_NAME,
                 BaseColumns._ID + " IS ?",
                 new String[]{itemID});
+        dbLock.unlock();
 
         if (result > 0) {
+            dbLock.lock();
             int ftsResult = db.delete(Item.FTS_TABLE_NAME,
                     Item.COL_FTS_ITEM_REALID + " MATCH ? ", new String[]{itemID});
+            dbLock.unlock();
             notifyProviderOnItemChange();
             return ftsResult;
         }
@@ -220,8 +224,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         builder.setTables(Item.TABLE_NAME);
         builder.setProjectionMap(Item.mColumnMap);
 
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, null);
+        dbLock.unlock();
 
         if (cursor == null) {
             return null;
@@ -252,8 +259,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         builder.setTables(Item.FTS_TABLE_NAME);
         builder.setProjectionMap(Item.mFTSColumnMap);
 
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, null, null, null, null, Item.COL_FTS_ITEM_NAME);
+        dbLock.unlock();
 
         if (cursor == null) {
             return null;
@@ -297,8 +307,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         builder.setTables(Item.FTS_TABLE_NAME);
         builder.setProjectionMap(Item.mFTSColumnMap);
 
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, Item.COL_FTS_ITEM_NAME);
+        dbLock.unlock();
 
         if (cursor == null) {
             return null;
@@ -324,7 +337,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             ftsValues.put(Item.COL_FTS_ITEM_NAME, values.getAsString(Item.COL_NAME));
             ftsValues.put(Item.COL_FTS_ITEM_DESCRIPTION, values.getAsString(Item.COL_DESCRIPTION));
 
+            DBLock dbLock = DBLock.getInstance();
+            dbLock.lock();
             long ftsRowsUpdated =  db.update(Item.FTS_TABLE_NAME, ftsValues, Item.COL_FTS_ITEM_REALID + " MATCH " + itemId, null);
+            dbLock.unlock();
         }
         notifyProviderOnItemChange();
         return rowsUpdated;
@@ -332,7 +348,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
 
     public long insertServiceCall(ContentValues values) {
         final SQLiteDatabase db = this.getWritableDatabase();
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         long realID = db.insert(ServiceCall.TABLE_NAME, null, values);
+        dbLock.unlock();
         return realID;
     }
 
@@ -361,7 +380,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             ftsValues.put(Task.COL_FTS_TASK_REALID, Long.toString(realID));
             ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
 
+            DBLock dbLock = DBLock.getInstance();
+            dbLock.lock();
             long ftsID =  db.insert(Task.FTS_TABLE_NAME, null, ftsValues);
+            dbLock.unlock();
             if (ftsID == -1) {
                 deleteTask(String.valueOf(realID));
                 return ftsID;
@@ -377,8 +399,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 new String[]{taskID});
 
         if (result > 0) {
+            DBLock dbLock = DBLock.getInstance();
+            dbLock.lock();
             int ftsResult = db.delete(Task.FTS_TABLE_NAME,
                     Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskID});
+            dbLock.unlock();
             notifyProviderOnTaskChange();
             return ftsResult;
         }
@@ -412,8 +437,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         builder.setTables(Task.TABLE_NAME);
         builder.setProjectionMap(Task.mColumnMap);
 
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, null);
+        dbLock.unlock();
 
         if (cursor == null) {
             return null;
@@ -440,8 +468,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         builder.setTables(ServiceCall.TABLE_NAME);
         builder.setProjectionMap(ServiceCall.mColumnMap);
 
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, null);
+        dbLock.unlock();
 
         if (cursor == null) {
             return null;
@@ -472,8 +503,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         builder.setTables(Task.FTS_TABLE_NAME);
         builder.setProjectionMap(Task.mFTSColumnMap);
 
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, null, null, null, null, Item.COL_FTS_ITEM_NAME);
+        dbLock.unlock();
 
         if (cursor == null) {
             return null;
@@ -517,8 +551,11 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         builder.setTables(Task.FTS_TABLE_NAME);
         builder.setProjectionMap(Task.mFTSColumnMap);
 
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         Cursor cursor = builder.query(this.getReadableDatabase(),
                 columns, selection, selectionArgs, null, null, Task.COL_FTS_ITEM_NAME);
+        dbLock.unlock();
 
         if (cursor == null) {
             return null;
@@ -546,7 +583,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             ftsValues.put(Task.COL_FTS_ASSIGNED_TO, values.getAsString(Task.COL_ASSIGNED_TO));
             ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
 
+            DBLock dbLock = DBLock.getInstance();
+            dbLock.lock();
             long ftsRowsUpdated =  db.update(Task.FTS_TABLE_NAME, ftsValues, Task.COL_FTS_TASK_REALID + " MATCH " + taskId, null);
+            dbLock.unlock();
         }
         notifyProviderOnTaskChange();
         return rowsUpdated;
@@ -555,16 +595,22 @@ public class InventoryDatabase extends SQLiteOpenHelper {
     public void completeTask(String taskId) {
         // This task has been completed. Delete it from the regular and FTS tables of open tasks
         final SQLiteDatabase db = this.getWritableDatabase();
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         int result = db.delete(Task.TABLE_NAME,
                 BaseColumns._ID + " IS ? ", new String[]{taskId});
         int ftsResult = db.delete(Task.FTS_TABLE_NAME,
                 Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskId});
+        dbLock.unlock();
         notifyProviderOnTaskChange();
     }
 
     public int updateServiceCall(String serviceCallId, ContentValues values, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = this.getWritableDatabase();
+        DBLock dbLock = DBLock.getInstance();
+        dbLock.lock();
         int rowsUpdated = db.update(ServiceCall.TABLE_NAME, values, BaseColumns._ID + "=" + serviceCallId, null);
+        dbLock.unlock();
         notifyProviderOnTaskChange();
         return rowsUpdated;
     }
@@ -581,11 +627,14 @@ public class InventoryDatabase extends SQLiteOpenHelper {
     public void computeNewTasks() {
 
         Map<Pair<Long, Long>, Task> taskMap = new HashMap<Pair<Long, Long>, Task>();
+        DBLock dbLock = DBLock.getInstance();
 
         // First get all the items to see which ones have pending tasks.
         SQLiteQueryBuilder itemBuilder = new SQLiteQueryBuilder();
         itemBuilder.setTables(Item.TABLE_NAME);
+        dbLock.lock();
         Cursor itemCursor = itemBuilder.query(this.getReadableDatabase(), Item.FIELDS, null, null, null, null, null);
+        dbLock.unlock();
 
         Item item = new Item();
         for (itemCursor.moveToFirst(); !itemCursor.isAfterLast(); itemCursor.moveToNext()) {
@@ -726,8 +775,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         SQLiteQueryBuilder serviceCallbuilder = new SQLiteQueryBuilder();
         serviceCallbuilder.setTables(ServiceCall.TABLE_NAME);
 
+        dbLock.lock();
         Cursor serviceCallCursor = serviceCallbuilder.query(this.getReadableDatabase(),
                 ServiceCall.FIELDS, serviceCallSelection, serviceCallSelectionArgs, null, null, null);
+        dbLock.unlock();
 
         for (serviceCallCursor.moveToFirst(); !serviceCallCursor.isAfterLast(); serviceCallCursor.moveToNext()) {
             ServiceCall serviceCall = new ServiceCall();
@@ -746,8 +797,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         SQLiteQueryBuilder taskbuilder = new SQLiteQueryBuilder();
         taskbuilder.setTables(Task.TABLE_NAME);
 
+        dbLock.lock();
         Cursor taskCursor = taskbuilder.query(this.getReadableDatabase(),
                 Task.FIELDS, taskSelection, taskSelectionArgs, null, null, null);
+        dbLock.unlock();
 
         Task currentOpenTask = new Task();
         for (taskCursor.moveToFirst(); !taskCursor.isAfterLast(); taskCursor.moveToNext()) {

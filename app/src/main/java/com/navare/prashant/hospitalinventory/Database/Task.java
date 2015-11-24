@@ -5,8 +5,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.navare.prashant.hospitalinventory.R;
-
 import java.util.HashMap;
 
 /**
@@ -107,7 +105,7 @@ public class Task {
     public long mStatus = 0;
     public long mPriority = 0;
     public String mAssignedTo = "";
-    public String mAssignedToContact = "";
+    public String mAssignedToContactNumber = "";
     public long mDueDate = 0;
     public long mCompletedTimeStamp = 0;
     public String mCompletionComments = "";
@@ -130,7 +128,7 @@ public class Task {
         this.mStatus = cursor.getLong(4);
         this.mPriority = cursor.getLong(5);
         this.mAssignedTo = cursor.getString(6);
-        this.mAssignedToContact = cursor.getString(7);
+        this.mAssignedToContactNumber = cursor.getString(7);
         this.mDueDate = cursor.getLong(8);
         this.mCompletedTimeStamp = cursor.getLong(9);
         this.mCompletionComments = cursor.getString(10);
@@ -150,7 +148,7 @@ public class Task {
         values.put(COL_STATUS, mStatus);
         values.put(COL_PRIORITY, mPriority);
         values.put(COL_ASSIGNED_TO, mAssignedTo);
-        values.put(COL_ASSIGNED_TO_CONTACT, mAssignedToContact);
+        values.put(COL_ASSIGNED_TO_CONTACT, mAssignedToContactNumber);
         values.put(COL_DUE_DATE, mDueDate);
         values.put(COL_COMPLETED_TIME_STAMP, mCompletedTimeStamp);
         values.put(COL_COMPLETION_COMMENTS, mCompletionComments);
@@ -169,7 +167,7 @@ public class Task {
         mStatus = values.getAsLong(COL_STATUS);
         mPriority = values.getAsLong(COL_PRIORITY);
         mAssignedTo = values.getAsString(COL_ASSIGNED_TO);
-        mAssignedToContact = values.getAsString(COL_ASSIGNED_TO_CONTACT);
+        mAssignedToContactNumber = values.getAsString(COL_ASSIGNED_TO_CONTACT);
         mDueDate= values.getAsLong(COL_DUE_DATE);
         mCompletedTimeStamp= values.getAsLong(COL_COMPLETED_TIME_STAMP);
         mCompletionComments = values.getAsString(COL_COMPLETION_COMMENTS);

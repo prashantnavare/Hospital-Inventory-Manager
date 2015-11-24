@@ -36,13 +36,17 @@ public class TaskDetailActivity extends ActionBarActivity
                     ContractTaskDoneDialogFragment.ContractTaskDoneDialogListener,
                     InventoryTaskDoneDialogFragment.InventoryTaskDoneDialogListener {
 
+    private MenuItem assignMenuItem = null;
     private MenuItem doneMenuItem = null;
-    private MenuItem revertMenuItem = null;
+    private MenuItem callMenuItem = null;
     private MenuItem saveMenuItem = null;
+    private MenuItem revertMenuItem = null;
 
-    private boolean mbDoneMenuEnable = false;
-    private boolean mbRevertMenuEnable = false;
+    private  boolean mbAssignMenuEnable = true;
+    private boolean mbDoneMenuEnable = true;
+    private boolean mbCallMenuEnable = false;
     private boolean mbSaveMenuEnable = false;
+    private boolean mbRevertMenuEnable = false;
 
 
     @Override
@@ -83,16 +87,20 @@ public class TaskDetailActivity extends ActionBarActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.task_detail_actions, menu);
 
-        saveMenuItem = menu.getItem(0);
+        assignMenuItem = menu.getItem(0);
         doneMenuItem = menu.getItem(1);
-        revertMenuItem = menu.getItem(2);
+        callMenuItem = menu.getItem(2);
+        saveMenuItem = menu.getItem(3);
+        revertMenuItem = menu.getItem(4);
 
         // Toggle the options menu buttons as per desired state
         // It is possible that the query has already finished loading before we get here
         // as it happens on a separate thread. Hence the boolean state keepers
+        EnableAssignButton(mbAssignMenuEnable);
+        EnableTaskDoneButton(mbDoneMenuEnable);
+        EnableCallButton(mbCallMenuEnable);
         EnableSaveButton(mbSaveMenuEnable);
         EnableRevertButton(mbRevertMenuEnable);
-        EnableTaskDoneButton(mbDoneMenuEnable);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -104,24 +112,28 @@ public class TaskDetailActivity extends ActionBarActivity
             case android.R.id.home:
                 NavUtils.navigateUpTo(this, new Intent(this, TaskListActivity.class));
                 return true;
-            case R.id.menu_revert:
-                revertUI();
+            case R.id.menu_assign:
+                assignTask();
                 return true;
             case R.id.menu_done:
                 doneTask();
                 return true;
+            case R.id.menu_call:
+                callAssignee();
+                return true;
             case R.id.menu_save:
                 saveTask();
                 return true;
-            case R.id.menu_assign:
-                assignTask();
+            case R.id.menu_revert:
+                revertUI();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    private void saveTask() {
+
+    private void assignTask() {
         ((TaskDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.task_detail_container)).saveTask();
+                .findFragmentById(R.id.task_detail_container)).assignTask();
     }
 
     private void doneTask() {
@@ -130,14 +142,29 @@ public class TaskDetailActivity extends ActionBarActivity
                 .findFragmentById(R.id.task_detail_container)).showTaskDoneDialog();
     }
 
+    private void callAssignee() {
+
+        ((TaskDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.task_detail_container)).callAssignee();
+    }
+
+    private void saveTask() {
+        ((TaskDetailFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.task_detail_container)).saveTask();
+    }
+
     private void revertUI() {
         ((TaskDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.task_detail_container)).revertUI();
     }
 
-    private void assignTask() {
-        ((TaskDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.task_detail_container)).assignTask();
+    @Override
+    public void EnableAssignButton(boolean bEnable) {
+        mbAssignMenuEnable = bEnable;
+        if (assignMenuItem != null) {
+            assignMenuItem.setEnabled(bEnable);
+            assignMenuItem.setVisible(bEnable);
+        }
     }
 
     @Override
@@ -150,11 +177,11 @@ public class TaskDetailActivity extends ActionBarActivity
     }
 
     @Override
-    public void EnableRevertButton(boolean bEnable) {
-        mbRevertMenuEnable = bEnable;
-        if (revertMenuItem != null) {
-            revertMenuItem.setEnabled(bEnable);
-            revertMenuItem.setVisible(bEnable);
+    public void EnableCallButton(boolean bEnable) {
+        mbCallMenuEnable = bEnable;
+        if (callMenuItem != null) {
+            callMenuItem.setEnabled(bEnable);
+            callMenuItem.setVisible(bEnable);
         }
     }
 
@@ -164,6 +191,15 @@ public class TaskDetailActivity extends ActionBarActivity
         if (saveMenuItem != null) {
             saveMenuItem.setEnabled(bEnable);
             saveMenuItem.setVisible(bEnable);
+        }
+    }
+
+    @Override
+    public void EnableRevertButton(boolean bEnable) {
+        mbRevertMenuEnable = bEnable;
+        if (revertMenuItem != null) {
+            revertMenuItem.setEnabled(bEnable);
+            revertMenuItem.setVisible(bEnable);
         }
     }
 
