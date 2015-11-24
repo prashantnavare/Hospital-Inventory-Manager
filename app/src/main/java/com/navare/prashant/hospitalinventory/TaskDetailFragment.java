@@ -478,6 +478,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
             mNewAssignee = assigneeName;
             mTextAssignedTo.setText(assigneeName);
+            mTask.mAssignedTo = assigneeName;
+            mTask.mAssignedToContactNumber = getPhoneNumber(assigneeName);
             enableRevertAndSaveButtons();
         }
     }
