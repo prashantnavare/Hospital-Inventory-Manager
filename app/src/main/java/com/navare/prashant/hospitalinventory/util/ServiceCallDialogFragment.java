@@ -165,7 +165,12 @@ public class ServiceCallDialogFragment extends DialogFragment {
             return Task.UrgentPriority;
         else return 0;
     }
+
     public String getItemName() {
         return mItem.mName;
+    }
+
+    public String getItemLocation() {
+        return mItem.mLocation;
     }
 }

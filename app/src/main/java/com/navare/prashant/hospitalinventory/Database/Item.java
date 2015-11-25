@@ -9,7 +9,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import java.sql.Date;
 import java.util.HashMap;
 
 /**
@@ -28,6 +27,7 @@ public class Item {
     public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
     public static final String COL_TYPE = "type";
+    public static final String COL_LOCATION = "location";
 
     public static final String COL_CALIBRATION_REMINDERS = "calibrationReminders";
     public static final String COL_CALIBRATION_FREQUENCY = "calibrationFrequency";
@@ -63,6 +63,7 @@ public class Item {
             COL_NAME,
             COL_DESCRIPTION,
             COL_TYPE,
+            COL_LOCATION,
 
             COL_CALIBRATION_REMINDERS,
             COL_CALIBRATION_FREQUENCY,
@@ -81,6 +82,7 @@ public class Item {
             COL_INVENTORY_REMINDERS,
             COL_MIN_REQUIRED_QUANTITY,
             COL_CURRENT_QUANTITY,
+
             COL_IMAGE_PATH
     };
 
@@ -99,6 +101,7 @@ public class Item {
         map.put(COL_NAME, COL_NAME);
         map.put(COL_DESCRIPTION, COL_DESCRIPTION);
         map.put(COL_TYPE, COL_TYPE);
+        map.put(COL_LOCATION, COL_LOCATION);
 
         map.put(COL_CALIBRATION_REMINDERS, COL_CALIBRATION_REMINDERS);
         map.put(COL_CALIBRATION_FREQUENCY, COL_CALIBRATION_FREQUENCY);
@@ -134,6 +137,7 @@ public class Item {
                     + COL_NAME + " TEXT NOT NULL DEFAULT '',"
                     + COL_DESCRIPTION + " TEXT NOT NULL DEFAULT '',"
                     + COL_TYPE + " INTEGER, "
+                    + COL_LOCATION + " TEXT NOT NULL DEFAULT '',"
 
                     + COL_CALIBRATION_REMINDERS + " INTEGER,"
                     + COL_CALIBRATION_FREQUENCY + " INTEGER,"
@@ -162,6 +166,7 @@ public class Item {
     public String mName = "";
     public String mDescription = "";
     public long mType = 0;
+    public String mLocation = "";
 
     public long mCalibrationReminders = 0;
     public long mCalibrationFrequency = 0;
@@ -199,26 +204,27 @@ public class Item {
         this.mName = cursor.getString(1);
         this.mDescription = cursor.getString(2);
         this.mType = cursor.getLong(3);
+        this.mLocation = cursor.getString(4);
 
-        this.mCalibrationReminders = cursor.getLong(4);
-        this.mCalibrationFrequency = cursor.getLong(5);
-        this.mCalibrationDate = cursor.getLong(6);
-        this.mCalibrationInstructions = cursor.getString(7);
+        this.mCalibrationReminders = cursor.getLong(5);
+        this.mCalibrationFrequency = cursor.getLong(6);
+        this.mCalibrationDate = cursor.getLong(7);
+        this.mCalibrationInstructions = cursor.getString(8);
 
-        this.mMaintenanceReminders = cursor.getLong(8);
-        this.mMaintenanceFrequency = cursor.getLong(9);
-        this.mMaintenanceDate = cursor.getLong(10);
-        this.mMaintenanceInstructions = cursor.getString(11);
+        this.mMaintenanceReminders = cursor.getLong(9);
+        this.mMaintenanceFrequency = cursor.getLong(10);
+        this.mMaintenanceDate = cursor.getLong(11);
+        this.mMaintenanceInstructions = cursor.getString(12);
 
-        this.mContractReminders = cursor.getLong(12);
-        this.mContractValidTillDate = cursor.getLong(13);
-        this.mContractInstructions = cursor.getString(14);
+        this.mContractReminders = cursor.getLong(13);
+        this.mContractValidTillDate = cursor.getLong(14);
+        this.mContractInstructions = cursor.getString(15);
 
-        this.mInventoryReminders = cursor.getLong(15);
-        this.mMinRequiredQuantity = cursor.getLong(16);
-        this.mCurrentQuantity = cursor.getLong(17);
+        this.mInventoryReminders = cursor.getLong(16);
+        this.mMinRequiredQuantity = cursor.getLong(17);
+        this.mCurrentQuantity = cursor.getLong(18);
 
-        this.mImagePath = cursor.getString(18);
+        this.mImagePath = cursor.getString(19);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -232,6 +238,7 @@ public class Item {
         values.put(COL_NAME, mName);
         values.put(COL_DESCRIPTION, mDescription);
         values.put(COL_TYPE, mType);
+        values.put(COL_LOCATION, mLocation);
 
         values.put(COL_CALIBRATION_REMINDERS, mCalibrationReminders);
         values.put(COL_CALIBRATION_FREQUENCY, mCalibrationFrequency);
@@ -265,6 +272,7 @@ public class Item {
         mName = values.getAsString(COL_NAME);
         mDescription = values.getAsString(COL_DESCRIPTION);
         mType = values.getAsLong(COL_TYPE);
+        mLocation = values.getAsString(COL_LOCATION);
 
         mCalibrationReminders = values.getAsLong(COL_CALIBRATION_REMINDERS);
         mCalibrationFrequency = values.getAsLong(COL_CALIBRATION_FREQUENCY);
@@ -290,14 +298,14 @@ public class Item {
     // Item FTS Table
     public static final String FTS_TABLE_NAME = "FTSItemTable";
     public static final String COL_FTS_ITEM_NAME = SearchManager.SUGGEST_COLUMN_TEXT_1;
-    public static final String COL_FTS_ITEM_DESCRIPTION = SearchManager.SUGGEST_COLUMN_TEXT_2;
+    public static final String COL_FTS_ITEM_LOCATION = SearchManager.SUGGEST_COLUMN_TEXT_2;
     public static final String COL_FTS_ITEM_REALID = "realID";
 
     // For database projection so order is consistent
     public static final String[] FTS_FIELDS = {
             BaseColumns._ID,
             COL_FTS_ITEM_NAME,
-            COL_FTS_ITEM_DESCRIPTION,
+            COL_FTS_ITEM_LOCATION,
             COL_FTS_ITEM_REALID
     };
 
@@ -309,14 +317,14 @@ public class Item {
             "CREATE VIRTUAL TABLE " + FTS_TABLE_NAME +
                     " USING fts3 (" +
                     COL_FTS_ITEM_NAME + ", " +
-                    COL_FTS_ITEM_DESCRIPTION + "," +
+                    COL_FTS_ITEM_LOCATION + "," +
                     COL_FTS_ITEM_REALID +
                     ");";
 
     // Fields corresponding to FTSItemTable columns
     public String mRowID = "";
     public String mFTSName = "";
-    public String mFTSDescription = "";
+    public String mFTSLocation = "";
     public String mFTSRealID = "";
 
     /**
@@ -326,7 +334,7 @@ public class Item {
         // Indices expected to match order in FIELDS!
         this.mRowID = cursor.getString(0);
         this.mFTSName = cursor.getString(1);
-        this.mFTSDescription = cursor.getString(2);
+        this.mFTSLocation = cursor.getString(2);
         this.mFTSRealID = cursor.getString(3);
     }
 
@@ -340,7 +348,7 @@ public class Item {
     private static HashMap<String,String> buildFTSColumnMap() {
         HashMap<String,String> map = new HashMap<String,String>();
         map.put(COL_FTS_ITEM_NAME, COL_FTS_ITEM_NAME);
-        map.put(COL_FTS_ITEM_DESCRIPTION, COL_FTS_ITEM_DESCRIPTION);
+        map.put(COL_FTS_ITEM_LOCATION, COL_FTS_ITEM_LOCATION);
         map.put(COL_FTS_ITEM_REALID, COL_FTS_ITEM_REALID);
         map.put(BaseColumns._ID, "rowid AS " +
                 BaseColumns._ID);

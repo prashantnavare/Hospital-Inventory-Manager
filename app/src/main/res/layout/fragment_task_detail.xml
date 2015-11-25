@@ -31,6 +31,21 @@
             android:padding="5dip"
             >
             <TextView
+                android:text="Location"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+            <TextView
+                android:id="@+id/textItemLocation"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            >
+            <TextView
                 android:text="@string/due_date"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -76,7 +91,8 @@
             android:padding="5dip"
             >
             <TextView
-                android:text="Contract Expiry:"
+                android:text="Contract Expiry"
+                android:layout_marginRight="8dp"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView
@@ -92,7 +108,8 @@
             android:padding="5dip"
             >
             <TextView
-                android:text="Required Quantity:"
+                android:text="Required Quantity"
+                android:layout_marginRight="8dp"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView
@@ -124,6 +141,7 @@
             <TextView
                 android:id="@+id/textInstructionsLabel"
                 android:text="@string/instructions"
+                android:layout_marginRight="8dp"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView

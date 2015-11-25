@@ -56,6 +56,31 @@
 
         </TableRow>
 
+        <!-- Item Location -->
+        <TableRow
+            android:id="@+id/itemLocationRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:background="#ECEFF1"
+            >
+
+            <TextView
+                android:text="Location"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                />
+
+            <EditText
+                android:id="@+id/textLocation"
+                android:hint="Item Location"
+                android:inputType="textMultiLine"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:cursorVisible="true"
+                />
+
+        </TableRow>
+
         <TableRow
             android:id="@+id/calibrationRemindersRow"
             android:layout_width="wrap_content"

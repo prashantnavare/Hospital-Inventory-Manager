@@ -89,6 +89,7 @@ public class TaskListFragment extends ListFragment {
 
         String[] columns = new String[] {
                 Task.COL_FTS_ITEM_NAME,
+                Task.COL_FTS_ITEM_LOCATION,
                 Task.COL_FTS_TASK_TYPE,
                 Task.COL_FTS_ASSIGNED_TO,
                 Task.COL_FTS_DUE_DATE,
@@ -96,6 +97,7 @@ public class TaskListFragment extends ListFragment {
         };
         int[] views = new int[] {
                 R.id.textItemName,
+                R.id.textItemLocation,
                 R.id.textTaskType,
                 R.id.textAssignedTo,
                 R.id.textDueDate,

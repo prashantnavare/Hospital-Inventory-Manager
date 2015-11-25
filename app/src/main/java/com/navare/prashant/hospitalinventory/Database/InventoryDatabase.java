@@ -163,7 +163,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             // Also add an entry to the Item FTS table
             ContentValues ftsValues = new ContentValues();
             ftsValues.put(Item.COL_FTS_ITEM_NAME, item.mName);
-            ftsValues.put(Item.COL_FTS_ITEM_DESCRIPTION, item.mDescription);
+            ftsValues.put(Item.COL_FTS_ITEM_LOCATION, item.mLocation);
             ftsValues.put(Item.COL_FTS_ITEM_REALID, Long.toString(realID));
 
             dbLock.lock();
@@ -335,7 +335,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         if (rowsUpdated > 0) {
             ContentValues ftsValues = new ContentValues();
             ftsValues.put(Item.COL_FTS_ITEM_NAME, values.getAsString(Item.COL_NAME));
-            ftsValues.put(Item.COL_FTS_ITEM_DESCRIPTION, values.getAsString(Item.COL_DESCRIPTION));
+            ftsValues.put(Item.COL_FTS_ITEM_LOCATION, values.getAsString(Item.COL_LOCATION));
 
             DBLock dbLock = DBLock.getInstance();
             dbLock.lock();
@@ -366,6 +366,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             // Also add an entry to the Task FTS table
             ContentValues ftsValues = new ContentValues();
             ftsValues.put(Task.COL_FTS_ITEM_NAME, task.mItemName);
+            ftsValues.put(Task.COL_FTS_ITEM_LOCATION, task.mItemLocation);
             ftsValues.put(Task.COL_FTS_TASK_TYPE, task.getTaskType());
             ftsValues.put(Task.COL_FTS_ASSIGNED_TO, task.mAssignedTo);
 
@@ -828,6 +829,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         task.mTaskType = taskType;
         task.mItemID = item.mID;
         task.mItemName = item.mName;
+        task.mItemLocation = item.mLocation;
         task.mDueDate = dueDate;
         task.mStatus = Task.OpenStatus;
         task.mPriority = priority;
@@ -839,6 +841,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         task.mTaskType = Task.ServiceCall;
         task.mItemID = serviceCall.mID;
         task.mItemName = serviceCall.mItemName;
+        task.mItemLocation = serviceCall.mItemLocation;
         // No due date for service call tasks.
         task.mDueDate = 0;
         task.mStatus = Task.OpenStatus;

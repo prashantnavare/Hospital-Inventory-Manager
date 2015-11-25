@@ -66,6 +66,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
     private TextView mTextItemType;
     private TextView mTextItemName;
+    private TextView mTextItemLocation;
     private TextView mTextDueDate;
     private TextView mTextAssignedTo;
     private TextView mTextTaskType;
@@ -78,8 +79,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private TableRow mRequiredQuantityRow;
     private TextView mTextRequiredQuantity;
 
-    String mCurrentAssignee;
-    String mNewAssignee;
+    String mCurrentAssignee = "";
+    String mNewAssignee = "";
 
     public interface Callbacks {
         /**
@@ -181,6 +182,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
         mTextItemType = ((TextView) rootView.findViewById(R.id.textItemType));
         mTextItemName = ((TextView) rootView.findViewById(R.id.textItemName));
+        mTextItemLocation = ((TextView) rootView.findViewById(R.id.textItemLocation));
         mTextDueDate = ((TextView) rootView.findViewById(R.id.textDueDate));
 
         mTextAssignedTo = ((TextView) rootView.findViewById(R.id.textAssignedTo));
@@ -389,7 +391,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
             // If the task was unassigned to a person, send that person an SMS.
             // If the task was assigned to a new person, send that person an SMS.
-            // TODO: the above
             sendTaskSMSs();
             mCallbacks.EnableSaveButton(false);
             mCallbacks.EnableRevertButton(false);
@@ -405,6 +406,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
             // First send SMS to the new assignee
             String smsAssignMessage = "You have been assigned a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+            if (mTask.mItemLocation.isEmpty() == false) {
+                smsAssignMessage = smsAssignMessage + " located at " + mTask.mItemLocation;
+            }
             String assigneePhoneNumber = getPhoneNumber(mNewAssignee);
             if (assigneePhoneNumber.isEmpty() == false) {
                 sendAssigneeSMS(assigneePhoneNumber, smsAssignMessage);
@@ -427,6 +431,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                     case Activity.RESULT_OK:
                         if (mCurrentAssignee.isEmpty() == false) {
                             String smsUnAssignMessage = "You have been unassigned from a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+                            if (mTask.mItemLocation.isEmpty() == false) {
+                                smsUnAssignMessage = smsUnAssignMessage + " located at " + mTask.mItemLocation;
+                            }
                             String unAssigneePhoneNumber = getPhoneNumber(mCurrentAssignee);
                             if (unAssigneePhoneNumber.isEmpty() == false) {
                                 sms.sendTextMessage(unAssigneePhoneNumber, null, smsUnAssignMessage, null, null);
@@ -480,6 +487,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mTextAssignedTo.setText(assigneeName);
             mTask.mAssignedTo = assigneeName;
             mTask.mAssignedToContactNumber = getPhoneNumber(assigneeName);
+            mCallbacks.EnableCallButton(true);
             enableRevertAndSaveButtons();
         }
     }
@@ -509,6 +517,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mTextItemType.setText(getResources().getText(R.string.instrument));
 
         mTextItemName.setText(mTask.mItemName);
+        mTextItemLocation.setText(mTask.mItemLocation);
 
         if (mTask.mDueDate > 0) {
             Date dueDate = new Date();

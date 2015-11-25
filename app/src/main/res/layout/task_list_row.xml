@@ -10,7 +10,6 @@
         android:padding="5dip"
         >
         <TextView
-                android:id="@+id/textItemType"
                 android:text="@string/item"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         <Space
@@ -18,6 +17,23 @@
             android:layout_height="match_parent" />
         <TextView
             android:id="@+id/textItemName"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <TextView
+            android:text="Location"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textItemLocation"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
     </TableRow>

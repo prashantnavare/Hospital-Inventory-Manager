@@ -30,6 +30,7 @@ public class ServiceCall {
     public static final String COL_OPEN_TIME_STAMP = "openTimeStamp";
     public static final String COL_CLOSED_TIME_STAMP = "closedTimeStamp";
     public static final String COL_ITEM_NAME = "itemName";
+    public static final String COL_ITEM_LOCATION = "itemLocation";
 
     // Defines related to service call status
     public static final long OpenStatus = 1;
@@ -45,7 +46,8 @@ public class ServiceCall {
             COL_STATUS,
             COL_OPEN_TIME_STAMP,
             COL_CLOSED_TIME_STAMP,
-            COL_ITEM_NAME
+            COL_ITEM_NAME,
+            COL_ITEM_LOCATION
     };
 
     public static final HashMap<String, String> mColumnMap = buildColumnMap();
@@ -66,6 +68,7 @@ public class ServiceCall {
         map.put(COL_OPEN_TIME_STAMP, COL_OPEN_TIME_STAMP);
         map.put(COL_CLOSED_TIME_STAMP, COL_CLOSED_TIME_STAMP);
         map.put(COL_ITEM_NAME, COL_ITEM_NAME);
+        map.put(COL_ITEM_LOCATION, COL_ITEM_LOCATION);
 
         return map;
     }
@@ -84,7 +87,8 @@ public class ServiceCall {
                     + COL_STATUS + " INTEGER, "
                     + COL_OPEN_TIME_STAMP + " INTEGER,"
                     + COL_CLOSED_TIME_STAMP + " INTEGER,"
-                    + COL_ITEM_NAME + " TEXT NOT NULL DEFAULT '' "
+                    + COL_ITEM_NAME + " TEXT NOT NULL DEFAULT '',"
+                    + COL_ITEM_LOCATION + " TEXT NOT NULL DEFAULT '' "
                     + ")";
 
     // Fields corresponding to ItemTable columns
@@ -96,6 +100,7 @@ public class ServiceCall {
     public long mOpenTimeStamp = 0;
     public long mClosedTimeStamp = 0;
     public String mItemName = "";
+    public String mItemLocation = "";
 
     /**
      * No need to do anything, fields are already set to default values above
@@ -117,6 +122,7 @@ public class ServiceCall {
         this.mOpenTimeStamp = cursor.getLong(5);
         this.mClosedTimeStamp = cursor.getLong(6);
         this.mItemName = cursor.getString(7);
+        this.mItemLocation = cursor.getString(8);
     }
 
     /**
@@ -133,6 +139,7 @@ public class ServiceCall {
         values.put(COL_OPEN_TIME_STAMP, mOpenTimeStamp);
         values.put(COL_CLOSED_TIME_STAMP, mClosedTimeStamp);
         values.put(COL_ITEM_NAME, mItemName);
+        values.put(COL_ITEM_LOCATION, mItemLocation);
 
         return values;
     }
@@ -149,5 +156,6 @@ public class ServiceCall {
         mOpenTimeStamp = values.getAsLong(COL_OPEN_TIME_STAMP);
         mClosedTimeStamp = values.getAsLong(COL_CLOSED_TIME_STAMP);
         mItemName = values.getAsString(COL_ITEM_NAME);
+        mItemLocation = values.getAsString(COL_ITEM_LOCATION);
     }
 }

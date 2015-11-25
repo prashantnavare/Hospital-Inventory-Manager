@@ -22,6 +22,7 @@ public class Task {
     public static final String COL_TASK_TYPE = "taskType";
     public static final String COL_ITEM_ID = "itemID";
     public static final String COL_ITEM_NAME = "itemName";
+    public static final String COL_ITEM_LOCATION = "itemLocation";
     public static final String COL_STATUS = "status";
     public static final String COL_PRIORITY = "priority";
     public static final String COL_ASSIGNED_TO = "assignedTo";
@@ -48,6 +49,7 @@ public class Task {
             COL_TASK_TYPE,
             COL_ITEM_ID,
             COL_ITEM_NAME,
+            COL_ITEM_LOCATION,
             COL_STATUS,
             COL_PRIORITY,
             COL_ASSIGNED_TO,
@@ -66,6 +68,7 @@ public class Task {
         map.put(COL_TASK_TYPE, COL_TASK_TYPE);
         map.put(COL_ITEM_ID, COL_ITEM_ID);
         map.put(COL_ITEM_NAME, COL_ITEM_NAME);
+        map.put(COL_ITEM_LOCATION, COL_ITEM_LOCATION);
         map.put(COL_STATUS, COL_STATUS);
         map.put(COL_PRIORITY, COL_PRIORITY);
         map.put(COL_ASSIGNED_TO, COL_ASSIGNED_TO);
@@ -88,6 +91,7 @@ public class Task {
                     + COL_TASK_TYPE + " INTEGER,"
                     + COL_ITEM_ID + " INTEGER,"
                     + COL_ITEM_NAME + " TEXT NOT NULL DEFAULT '',"
+                    + COL_ITEM_LOCATION + " TEXT NOT NULL DEFAULT '',"
                     + COL_STATUS + " INTEGER,"
                     + COL_PRIORITY + " INTEGER,"
                     + COL_ASSIGNED_TO + " TEXT NOT NULL DEFAULT '',"
@@ -102,6 +106,7 @@ public class Task {
     public long mTaskType = -1;
     public long mItemID = -1;
     public String mItemName = "";
+    public String mItemLocation = "";
     public long mStatus = 0;
     public long mPriority = 0;
     public String mAssignedTo = "";
@@ -125,13 +130,14 @@ public class Task {
         this.mTaskType = cursor.getLong(1);
         this.mItemID = cursor.getLong(2);
         this.mItemName = cursor.getString(3);
-        this.mStatus = cursor.getLong(4);
-        this.mPriority = cursor.getLong(5);
-        this.mAssignedTo = cursor.getString(6);
-        this.mAssignedToContactNumber = cursor.getString(7);
-        this.mDueDate = cursor.getLong(8);
-        this.mCompletedTimeStamp = cursor.getLong(9);
-        this.mCompletionComments = cursor.getString(10);
+        this.mItemLocation = cursor.getString(4);
+        this.mStatus = cursor.getLong(5);
+        this.mPriority = cursor.getLong(6);
+        this.mAssignedTo = cursor.getString(7);
+        this.mAssignedToContactNumber = cursor.getString(8);
+        this.mDueDate = cursor.getLong(9);
+        this.mCompletedTimeStamp = cursor.getLong(10);
+        this.mCompletionComments = cursor.getString(11);
     }
 
     /**
@@ -145,6 +151,7 @@ public class Task {
         values.put(COL_TASK_TYPE, mTaskType);
         values.put(COL_ITEM_ID, mItemID);
         values.put(COL_ITEM_NAME, mItemName);
+        values.put(COL_ITEM_LOCATION, mItemLocation);
         values.put(COL_STATUS, mStatus);
         values.put(COL_PRIORITY, mPriority);
         values.put(COL_ASSIGNED_TO, mAssignedTo);
@@ -164,6 +171,7 @@ public class Task {
         mTaskType = values.getAsLong(COL_TASK_TYPE);
         mItemID = values.getAsLong(COL_ITEM_ID);
         mItemName = values.getAsString(COL_ITEM_NAME);
+        mItemLocation = values.getAsString(COL_ITEM_LOCATION);
         mStatus = values.getAsLong(COL_STATUS);
         mPriority = values.getAsLong(COL_PRIORITY);
         mAssignedTo = values.getAsString(COL_ASSIGNED_TO);
@@ -175,6 +183,7 @@ public class Task {
     // Task FTS Table
     public static final String FTS_TABLE_NAME = "FTSTaskTable";
     public static final String COL_FTS_ITEM_NAME = SearchManager.SUGGEST_COLUMN_TEXT_1;
+    public static final String COL_FTS_ITEM_LOCATION = "itemLocation";
     public static final String COL_FTS_TASK_TYPE = SearchManager.SUGGEST_COLUMN_TEXT_2;
     public static final String COL_FTS_ASSIGNED_TO = "assignedTo";
     public static final String COL_FTS_DUE_DATE = "ftsDueDate";
@@ -185,6 +194,7 @@ public class Task {
     public static final String[] FTS_FIELDS = {
             BaseColumns._ID,
             COL_FTS_ITEM_NAME,
+            COL_FTS_ITEM_LOCATION,
             COL_FTS_TASK_TYPE,
             COL_FTS_ASSIGNED_TO,
             COL_FTS_DUE_DATE,
@@ -200,6 +210,7 @@ public class Task {
             "CREATE VIRTUAL TABLE " + FTS_TABLE_NAME +
                     " USING fts3 (" +
                     COL_FTS_ITEM_NAME + ", " +
+                    COL_FTS_ITEM_LOCATION + ", " +
                     COL_FTS_TASK_TYPE + "," +
                     COL_FTS_ASSIGNED_TO + "," +
                     COL_FTS_DUE_DATE + "," +
@@ -210,6 +221,7 @@ public class Task {
     // Fields corresponding to FTSItemTable columns
     public String mRowID = "";
     public String mFTSItemName = "";
+    public String mFTSItemLocation = "";
     public String mFTSTaskType = "";
     public String mFTSAssignedTo = "";
     public String mFTSDueDate = "";
@@ -223,11 +235,12 @@ public class Task {
         // Indices expected to match order in FIELDS!
         this.mRowID = cursor.getString(0);
         this.mFTSItemName = cursor.getString(1);
-        this.mFTSTaskType = cursor.getString(2);
-        this.mFTSAssignedTo = cursor.getString(3);
-        this.mFTSDueDate = cursor.getString(4);
-        this.mFTSRealID = cursor.getString(5);
-        this.mFTSPriority = cursor.getString(6);
+        this.mFTSItemLocation = cursor.getString(2);
+        this.mFTSTaskType = cursor.getString(3);
+        this.mFTSAssignedTo = cursor.getString(4);
+        this.mFTSDueDate = cursor.getString(5);
+        this.mFTSRealID = cursor.getString(6);
+        this.mFTSPriority = cursor.getString(7);
     }
 
     public static final HashMap<String, String> mFTSColumnMap = buildFTSColumnMap();
@@ -240,6 +253,7 @@ public class Task {
     private static HashMap<String,String> buildFTSColumnMap() {
         HashMap<String,String> map = new HashMap<>();
         map.put(COL_FTS_ITEM_NAME, COL_FTS_ITEM_NAME);
+        map.put(COL_FTS_ITEM_LOCATION, COL_FTS_ITEM_LOCATION);
         map.put(COL_FTS_TASK_TYPE, COL_FTS_TASK_TYPE);
         map.put(COL_FTS_ASSIGNED_TO, COL_FTS_ASSIGNED_TO);
         map.put(COL_FTS_DUE_DATE, COL_FTS_DUE_DATE);

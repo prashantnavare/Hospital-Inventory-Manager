@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
@@ -27,14 +26,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager;
-import android.app.DatePickerDialog;
 
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Item;
@@ -55,7 +52,6 @@ import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -87,6 +83,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
      * The UI elements showing the details of the item
      */
     private TextView mTextName;
+    private TextView mTextLocation;
     private TextView mTextDescription;
     private Spinner mSpinnerType;
 
@@ -267,6 +264,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mTextName = ((TextView) rootView.findViewById(R.id.textName));
         mTextName.addTextChangedListener(this);
+
+        mTextLocation = ((TextView) rootView.findViewById(R.id.textLocation));
+        mTextLocation.addTextChangedListener(this);
 
         mTextDescription = ((TextView) rootView.findViewById(R.id.textDescription));
         mTextDescription.addTextChangedListener(this);
@@ -666,6 +666,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         else {
             mItem.mName = mTextName.getText().toString();
         }
+        mItem.mLocation = mTextLocation.getText().toString();
         mItem.mDescription = mTextDescription.getText().toString();
         if (mSpinnerType.getSelectedItemId() == 0) {
             // Instrument
@@ -776,6 +777,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void updateUIFromItem() {
         mTextName.setText(mItem.mName);
+        mTextLocation.setText(mItem.mLocation);
         mTextDescription.setText(mItem.mDescription);
         if (mItem.mType == Item.InstrumentType) {
 
@@ -903,6 +905,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void displayUIForNewItem() {
         mTextName.setText("");
+        mTextLocation.setText("");
         mTextDescription.setText("");
         mSpinnerPosition = 0;
         mSpinnerType.setSelection(0, false);
@@ -958,7 +961,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mCallbacks.RedrawOptionsMenu();
     }
 
-    public void createServiceCall(long itemID, String description, long priority, String itemName) {
+    public void createServiceCall(long itemID, String description, long priority, String itemName, String itemLocation) {
         ServiceCall sc = new ServiceCall();
         sc.mItemID = itemID;
         sc.mDescription = description;
@@ -966,6 +969,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         sc.mStatus = ServiceCall.OpenStatus;
         sc.mOpenTimeStamp = Calendar.getInstance().getTimeInMillis();
         sc.mItemName = itemName;
+        sc.mItemLocation = itemLocation;
 
         // a new service call is being inserted.
         Uri uri = getActivity().getContentResolver().insert(HospitalInventoryContentProvider.SERVICE_CALL_URI, sc.getContentValues());
@@ -978,6 +982,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             task.mTaskType = Task.ServiceCall;
             task.mItemID = Long.valueOf(uri.getLastPathSegment());
             task.mItemName = mItem.mName;
+            task.mItemLocation = mItem.mLocation;
             task.mStatus = Task.OpenStatus;
             task.mPriority = priority;
 

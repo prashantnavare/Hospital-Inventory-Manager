@@ -85,7 +85,7 @@ public class ItemListFragment extends ListFragment {
 
         setListAdapter(new SimpleCursorAdapter(getActivity(),
                 R.layout.item_list_row, null, new String[] {
-                Item.COL_FTS_ITEM_NAME, Item.COL_FTS_ITEM_DESCRIPTION}, new int[] { R.id.textName, R.id.textDescription}, 0));
+                Item.COL_FTS_ITEM_NAME, Item.COL_FTS_ITEM_LOCATION}, new int[] { R.id.textName, R.id.textLocation}, 0));
 
         getNewItemList(null);
     }

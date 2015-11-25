@@ -312,7 +312,7 @@ public class ItemDetailActivity extends ActionBarActivity
     @Override
     public void onServiceCallDialogReportClick(ServiceCallDialogFragment dialog) {
         ((ItemDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.item_detail_container)).createServiceCall(dialog.getItemID(), dialog.getDescription(), dialog.getPriority(), dialog.getItemName());
+                .findFragmentById(R.id.item_detail_container)).createServiceCall(dialog.getItemID(), dialog.getDescription(), dialog.getPriority(), dialog.getItemName(), dialog.getItemLocation());
     }
 
     @Override
