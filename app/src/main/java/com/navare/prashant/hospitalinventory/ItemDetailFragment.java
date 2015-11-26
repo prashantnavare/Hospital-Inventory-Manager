@@ -44,6 +44,7 @@ import com.navare.prashant.hospitalinventory.util.ServiceCallDialogFragment;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -122,6 +123,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     String mImageFileName;
     File mImageFile;
     Uri mImageFileUri;
+    Bitmap mImageBitmap = null;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -422,12 +424,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public  void onDestroyView() {
-        // If we have an image file, then clean it up
-        // If an image has been captured, then delete the image file.
-        if (mImageFile != null) {
-            if (mImageFile.exists())
-                mImageFile.delete();
-        }
         super.onDestroyView();
     }
 
@@ -569,11 +565,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         else {
             updateUIFromItem();
         }
-        // If an image has been captured, then delete the image file.
-        if (mImageFile != null) {
-            if (mImageFile.exists())
-                mImageFile.delete();
-        }
 
         mCallbacks.EnableRevertButton(false);
         mCallbacks.EnableSaveButton(false);
@@ -585,16 +576,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mItemID);
         int result = getActivity().getContentResolver().delete(itemURI, null, null);
         if (result > 0) {
-            // if there is an image file, delete it as well.
-            if (mItem.mImagePath.isEmpty() == false) {
-                File imageFile = new File(mItem.mImagePath);
-                imageFile.delete();
-                // If an image has been captured, then delete the image file.
-                if (mImageFile != null) {
-                    if (mImageFile.exists())
-                        mImageFile.delete();
-                }
-            }
             mCallbacks.onItemDeleted();
         }
     }
@@ -603,9 +584,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         boolean bAllDataOK = updateItemFromUI();
         if (bAllDataOK == false)
             return;
-
-        // If there is an image file, then move it to the app storage and save the path to the file.
-        moveImageFileToAppStorgaeAndUpdateItem();
 
         boolean bSuccess = false;
         if ((mItemID == null) || (mItemID.isEmpty())) {
@@ -628,7 +606,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             mCallbacks.EnableRevertButton(false);
             mCallbacks.RedrawOptionsMenu();
         }
-
     }
 
     private void showAlertDialog(String message) {
@@ -771,6 +748,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mItem.mInventoryReminders = 0;
             }
         }
+        if (mImageBitmap != null) {
+            ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+            mImageBitmap.compress(Bitmap.CompressFormat.PNG, 0, imageStream);
+            mItem.mImage = imageStream.toByteArray();
+        }
         return true;
     }
 
@@ -889,16 +871,15 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             }
         }
 
-        // TODO: reset the imageView
-        if (mItem.mImagePath.isEmpty()) {
+        if (mItem.mImage == null) {
             mImageView.setImageBitmap(null);
         }
         else {
             BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
             bmpFactoryOptions.inJustDecodeBounds = false;
-            Bitmap imageBitmap = BitmapFactory.decodeFile(mItem.mImagePath, bmpFactoryOptions);
+            mImageBitmap = BitmapFactory.decodeByteArray(mItem.mImage, 0, mItem.mImage.length, bmpFactoryOptions);
             // Display it
-            mImageView.setImageBitmap(imageBitmap);
+            mImageView.setImageBitmap(mImageBitmap);
         }
     }
 
@@ -1000,11 +981,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
-            // If an image has been captured, then delete the image file.
-            if (mImageFile != null) {
-                if (mImageFile.exists())
-                    mImageFile.delete();
-            }
             // Create the File where the photo should go
             mImageFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".jpg";
             mImageFile = new File(mImageFileName);
@@ -1020,41 +996,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
             bmpFactoryOptions.inJustDecodeBounds = false;
-            Bitmap imageBitmap = BitmapFactory.decodeFile(mImageFileName, bmpFactoryOptions);
+            mImageBitmap = BitmapFactory.decodeFile(mImageFileName, bmpFactoryOptions);
             // Display it
-            mImageView.setImageBitmap(imageBitmap);
+            mImageView.setImageBitmap(mImageBitmap);
+            mImageFile.delete();
             enableRevertAndSaveButtons();
-        }
-    }
-
-    private void moveImageFileToAppStorgaeAndUpdateItem() {
-        if (mImageFile != null) {
-            if (mImageFile.exists()) {
-                File newImagefile = new File(mContext.getExternalFilesDir(null), String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".jpg");
-                try {
-                    copyFile(mImageFile, newImagefile);
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
-                mItem.mImagePath = newImagefile.getAbsolutePath();
-                mImageFile.delete();
-            }
-        }
-    }
-
-    void copyFile(File src, File dst) throws IOException {
-        FileChannel inChannel = new FileInputStream(src).getChannel();
-        FileChannel outChannel = new FileOutputStream(dst).getChannel();
-        try {
-            inChannel.transferTo(0, inChannel.size(), outChannel);
-        }
-        finally {
-            if (inChannel != null)
-                inChannel.close();
-            if (outChannel != null)
-                outChannel.close();
         }
     }
 }

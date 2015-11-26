@@ -270,7 +270,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 mTask.setContentFromCursor(dataCursor);
                 updateUIFromTask();
 
-
                 if (mTask.mTaskType == Task.ServiceCall) {
                     // Get the service call details.
                     getLoaderManager().initLoader(LOADER_ID_SERVICE_CALL_DETAILS, null, this);
@@ -483,11 +482,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             String assigneeName = cursor.getString(columnDisplayName);
             cursor.close();
 
+            mCurrentAssignee = mTask.mAssignedTo;
             mNewAssignee = assigneeName;
             mTextAssignedTo.setText(assigneeName);
-            mTask.mAssignedTo = assigneeName;
-            mTask.mAssignedToContactNumber = getPhoneNumber(assigneeName);
-            mCallbacks.EnableCallButton(true);
             enableRevertAndSaveButtons();
         }
     }
@@ -578,7 +575,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mSpinnerPosition = 1;
             mSpinnerPriority.setSelection(1, false);
         }
-        mCurrentAssignee = mTask.mAssignedTo;
 
         // Toggle the action bar buttons appropriately
         mCallbacks.EnableAssignButton(true);
