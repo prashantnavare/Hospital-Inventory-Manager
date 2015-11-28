@@ -11,7 +11,10 @@ import com.navare.prashant.hospitalinventory.util.ComputeNewTasksAlarmReceiver;
  */
 public class HospitalInventoryApp extends Application {
 
-    private static String sTaskAlarmInitialized = "TaskAlarmInitialized";
+    // Object for intrinsic database lock
+    public static final Object sDatabaseLock = new Object();
+
+    static String sTaskAlarmInitialized = "TaskAlarmInitialized";
     @Override
     public void onCreate() {
         super.onCreate();
