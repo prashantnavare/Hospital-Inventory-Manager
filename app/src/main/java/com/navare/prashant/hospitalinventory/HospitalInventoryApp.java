@@ -1,6 +1,7 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -14,10 +15,14 @@ public class HospitalInventoryApp extends Application {
     // Object for intrinsic database lock
     public static final Object sDatabaseLock = new Object();
 
+    public static Context sContext;
+
     static String sTaskAlarmInitialized = "TaskAlarmInitialized";
     @Override
     public void onCreate() {
         super.onCreate();
+
+        sContext = getApplicationContext();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean(sTaskAlarmInitialized, false)) {

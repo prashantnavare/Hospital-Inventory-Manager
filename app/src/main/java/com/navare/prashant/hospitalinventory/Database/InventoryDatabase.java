@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class InventoryDatabase extends SQLiteOpenHelper {
     private static final String TAG = "InventoryDatabase";
-    private static final String DATABASE_NAME = "HospitalInventory";
+    public static final String DATABASE_NAME = "HospitalInventory";
     private static final int DATABASE_VERSION = 1;
 
     private final Context mHelperContext;
