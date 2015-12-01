@@ -206,6 +206,10 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, ItemListActivity.class));
     }
 
+    public void onBackupRestoreClick(View view) {
+        startActivity(new Intent(this, BackupRestoreActivity.class));
+    }
+
     public void onSettingsClick(View view) {
         startActivity(new Intent(this, SettingsActivity.class));
     }

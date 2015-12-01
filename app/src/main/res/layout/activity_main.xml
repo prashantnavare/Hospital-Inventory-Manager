@@ -53,12 +53,12 @@
             android:longClickable="true" />
 
         <Button
-            android:id="@+id/settings_button"
-            android:onClick="onSettingsClick"
+            android:id="@+id/backuprestore_button"
+            android:onClick="onBackupRestoreClick"
             style="?metaButtonBarButtonStyle"
             android:layout_width="157dp"
             android:layout_height="wrap_content"
-            android:text="@string/settings_button"
+            android:text="@string/backup_restore_button"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="300dp"
             android:clickable="true"
@@ -69,6 +69,22 @@
             android:focusableInTouchMode="true"
             android:elegantTextHeight="true" />
 
+        <Button
+            android:id="@+id/settings_button"
+            android:onClick="onSettingsClick"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="400dp"
+            android:clickable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:textStyle="bold"
+            android:longClickable="true"
+            android:focusableInTouchMode="true"
+            android:elegantTextHeight="true" />
     </FrameLayout>
 
 </FrameLayout>
