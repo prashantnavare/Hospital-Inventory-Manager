@@ -11,8 +11,4 @@
         android:title="@string/pref_header_database"
         android:icon="@drawable/ic_settings_database" />
 
-    <header
-        android:fragment="com.navare.prashant.hospitalinventory.SettingsActivity$BackupRestorePreferenceFragment"
-        android:title="@string/pref_header_backup_restore" android:icon="@drawable/ic_settings_backup_restore" />
-
 </preference-headers>

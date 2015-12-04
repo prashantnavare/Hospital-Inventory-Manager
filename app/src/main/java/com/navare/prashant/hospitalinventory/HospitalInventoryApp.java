@@ -17,7 +17,7 @@ public class HospitalInventoryApp extends Application {
 
     public static Context sContext;
 
-    static String sTaskAlarmInitialized = "TaskAlarmInitialized";
+    public static String sTaskAlarmInitialized = "TaskAlarmInitialized";
     @Override
     public void onCreate() {
         super.onCreate();

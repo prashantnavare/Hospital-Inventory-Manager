@@ -134,16 +134,10 @@ public class MainActivity extends Activity {
         buttonSettings.setOnTouchListener(mDelayHideTouchListener);
 
         // Set the title to the name of the hospital
+        getSetTitle();
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String titleString = preferences.getString("HospitalName", "Hospital Inventory");
-        if (titleString.equalsIgnoreCase("Hospital Inventory") == false) {
-            titleString = titleString + " Inventory";
-        }
-        setTitle(titleString);
-
-        String sTaskAlarmInitialized = "TaskAlarmInitialized";
-
-        if (!preferences.getBoolean(sTaskAlarmInitialized, false)) {
+        if (!preferences.getBoolean(HospitalInventoryApp.sTaskAlarmInitialized, false)) {
 
             ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
             // Set up the daily alarm for computing new tasks
@@ -151,9 +145,15 @@ public class MainActivity extends Activity {
 
             // Set the preferences flag to true
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(sTaskAlarmInitialized, true);
+            editor.putBoolean(HospitalInventoryApp.sTaskAlarmInitialized, true);
             editor.commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSetTitle();
     }
 
     @Override
@@ -214,17 +214,12 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    public void CopyDB(InputStream inputStream, OutputStream outputStream)
-            throws IOException
-    {
-        //---copy 1K bytes at a time---
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = inputStream.read(buffer)) > 0)
-        {
-            outputStream.write(buffer, 0, length);
+    private void getSetTitle() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String titleString = preferences.getString("HospitalName", "Hospital Inventory");
+        if (titleString.equalsIgnoreCase("Hospital Inventory") == false) {
+            titleString = titleString + " Inventory";
         }
-        inputStream.close();
-        outputStream.close();
+        setTitle(titleString);
     }
 }
