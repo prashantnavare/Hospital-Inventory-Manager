@@ -197,7 +197,6 @@ public class SettingsActivity extends PreferenceActivity {
             prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                     if(key.equals(sPrefTaskRefreshTime)) {
-                        // TODO: If the Task refresh time has changed, then reset the alarm to the new time
                         ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
                         alarmReceiver.setAlarm(getActivity().getApplicationContext(), true);
                     }

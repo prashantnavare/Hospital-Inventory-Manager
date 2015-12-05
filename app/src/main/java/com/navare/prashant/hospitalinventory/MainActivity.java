@@ -216,10 +216,8 @@ public class MainActivity extends Activity {
 
     private void getSetTitle() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String titleString = preferences.getString("HospitalName", "Hospital Inventory");
-        if (titleString.equalsIgnoreCase("Hospital Inventory") == false) {
-            titleString = titleString + " Inventory";
-        }
+        String titleString = preferences.getString("HospitalName", "");
+        titleString = titleString + " Inventory Manager";
         setTitle(titleString);
     }
 }

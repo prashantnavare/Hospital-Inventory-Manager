@@ -7,10 +7,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;import android.support.v4.app.LoaderManager;import android.support.v4.content.CursorLoader;import android.support.v4.content.Loader;
@@ -403,8 +405,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             if (mNewAssignee.equalsIgnoreCase(mCurrentAssignee) == true)
                 return;
 
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+            String titleString = preferences.getString("HospitalName", "");
+            titleString = titleString + " Inventory Manager: ";
             // First send SMS to the new assignee
-            String smsAssignMessage = "You have been assigned a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+            String smsAssignMessage = titleString + "You have been assigned a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
             if (mTask.mItemLocation.isEmpty() == false) {
                 smsAssignMessage = smsAssignMessage + " located at " + mTask.mItemLocation;
             }
@@ -429,7 +434,10 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         if (mCurrentAssignee.isEmpty() == false) {
-                            String smsUnAssignMessage = "You have been unassigned from a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+                            String titleString = preferences.getString("HospitalName", "");
+                            titleString = titleString + " Inventory Manager: ";
+                            String smsUnAssignMessage = titleString + "You have been unassigned from a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
                             if (mTask.mItemLocation.isEmpty() == false) {
                                 smsUnAssignMessage = smsUnAssignMessage + " located at " + mTask.mItemLocation;
                             }

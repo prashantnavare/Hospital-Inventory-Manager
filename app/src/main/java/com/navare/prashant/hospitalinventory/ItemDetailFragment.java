@@ -982,7 +982,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
             // Create the File where the photo should go
-            mImageFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".jpg";
+            mImageFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + String.valueOf(Calendar.getInstance().getTimeInMillis()) + ".png";
             mImageFile = new File(mImageFileName);
             mImageFileUri = Uri.fromFile(mImageFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mImageFile));
@@ -995,7 +995,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
-            bmpFactoryOptions.inJustDecodeBounds = false;
+            bmpFactoryOptions.inSampleSize = 4;
             mImageBitmap = BitmapFactory.decodeFile(mImageFileName, bmpFactoryOptions);
             // Display it
             mImageView.setImageBitmap(mImageBitmap);

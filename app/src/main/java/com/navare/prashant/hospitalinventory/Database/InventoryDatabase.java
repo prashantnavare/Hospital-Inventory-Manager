@@ -51,10 +51,6 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         db.execSQL(ServiceCall.CREATE_TABLE);
         db.execSQL(Task.CREATE_TABLE);
         db.execSQL(Task.CREATE_FTS_TABLE);
-
-        // PNTODO: Delete this eventually
-        loadInventory();
-        // TODO: delete this: loadTasksTable();
     }
 
     /**
@@ -645,9 +641,16 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                         // Check the last calibration date.
                         if (item.mCalibrationDate > 0) {
                             // If it is set, then see when the next calibration is due.
-                            Calendar nextCalibrationDate = Calendar.getInstance();
-                            nextCalibrationDate.setTimeInMillis(item.mCalibrationDate + TimeUnit.MILLISECONDS.convert(item.mCalibrationFrequency, TimeUnit.DAYS));
                             Calendar todayDate = Calendar.getInstance();
+                            Calendar nextCalibrationDate = Calendar.getInstance();
+                            // If the item's calibration date is already set in the future, use it.
+                            if (todayDate.getTimeInMillis() < item.mCalibrationDate) {
+                                nextCalibrationDate.setTimeInMillis(item.mCalibrationDate);
+                            }
+                            else {
+                                // Calculate the next calibration date based on the calibration frequency
+                                nextCalibrationDate.setTimeInMillis(item.mCalibrationDate + TimeUnit.MILLISECONDS.convert(item.mCalibrationFrequency, TimeUnit.DAYS));
+                            }
                             if (todayDate.compareTo(nextCalibrationDate) >= 0) {
                                 // Calibration is overdue
                                 bCreateTask = true;
@@ -719,9 +722,16 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                         // Check the last Maintenance date.
                         if (item.mMaintenanceDate > 0) {
                             // If it is set, then see when the next Maintenance is due.
-                            Calendar nextMaintenanceDate = Calendar.getInstance();
-                            nextMaintenanceDate.setTimeInMillis(item.mMaintenanceDate + TimeUnit.MILLISECONDS.convert(item.mMaintenanceFrequency, TimeUnit.DAYS));
                             Calendar todayDate = Calendar.getInstance();
+                            Calendar nextMaintenanceDate = Calendar.getInstance();
+                            // If the item's maintenance date is already set in the future, use it.
+                            if (todayDate.getTimeInMillis() < item.mMaintenanceDate) {
+                                nextMaintenanceDate.setTimeInMillis(item.mMaintenanceDate);
+                            }
+                            else {
+                                // Calculate the next maintenance date based on the maintenance frequency
+                                nextMaintenanceDate.setTimeInMillis(item.mMaintenanceDate + TimeUnit.MILLISECONDS.convert(item.mMaintenanceFrequency, TimeUnit.DAYS));
+                            }
                             if (todayDate.compareTo(nextMaintenanceDate) >= 0) {
                                 // Maintenance is overdue
                                 bCreateTask = true;

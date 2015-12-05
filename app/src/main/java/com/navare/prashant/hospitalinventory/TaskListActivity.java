@@ -104,6 +104,7 @@ public class TaskListActivity extends ActionBarActivity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Not Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint("Search tasks...");
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -81,6 +81,7 @@
 
         </TableRow>
 
+        <!-- Calibration Reminder -->
         <TableRow
             android:id="@+id/calibrationRemindersRow"
             android:layout_width="wrap_content"
@@ -99,6 +100,7 @@
 
         </TableRow>
 
+        <!-- Calibration Details -->
         <TableRow
             android:id="@+id/calibrationDetailsRow"
             android:layout_width="wrap_content"
@@ -139,7 +141,7 @@
                     android:orientation="horizontal"
                     >
                     <TextView
-                        android:text="@string/last_calibration_date"
+                        android:text="@string/calibration_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -177,6 +179,7 @@
             </LinearLayout>
         </TableRow>
 
+        <!-- Maintenance reminders -->
         <TableRow
             android:id="@+id/maintenanceRemindersRow"
             android:layout_width="wrap_content"
@@ -194,6 +197,7 @@
                 android:checked="false" />
         </TableRow>
 
+        <!-- Maintenance Details -->
         <TableRow
             android:id="@+id/maintenanceDetailsRow"
             android:layout_width="wrap_content"
@@ -233,7 +237,7 @@
                     android:orientation="horizontal"
                     >
                     <TextView
-                        android:text="@string/last_maintenance_date"
+                        android:text="@string/maintenance_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -271,6 +275,7 @@
             </LinearLayout>
         </TableRow>
 
+        <!-- Contract Reminders -->
         <TableRow
             android:id="@+id/contractRemindersRow"
             android:layout_width="wrap_content"
@@ -289,6 +294,7 @@
 
         </TableRow>
 
+        <!-- Contract Details -->
         <TableRow
             android:id="@+id/contractDetailsRow"
             android:layout_width="wrap_content"
@@ -346,6 +352,7 @@
             </LinearLayout>
         </TableRow>
 
+        <!-- Current Quantity -->
         <TableRow
             android:id="@+id/currentQuantityRow"
             android:layout_width="wrap_content"
@@ -367,6 +374,7 @@
                 android:numeric="integer" />
         </TableRow>
 
+        <!-- Inventory Reminders -->
         <TableRow
             android:id="@+id/inventoryRemindersRow"
             android:layout_width="wrap_content"
@@ -385,6 +393,7 @@
 
         </TableRow>
 
+        <!-- Inventory Reminders Details-->
         <TableRow
             android:id="@+id/inventoryDetailsRow"
             android:layout_width="wrap_content"
