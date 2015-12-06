@@ -13,15 +13,7 @@ import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import android.content.Intent;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -137,7 +129,7 @@ public class MainActivity extends Activity {
         getSetTitle();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!preferences.getBoolean(HospitalInventoryApp.sTaskAlarmInitialized, false)) {
+        if (!preferences.getBoolean(HospitalInventoryApp.sPrefTaskAlarmInitialized, false)) {
 
             ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
             // Set up the daily alarm for computing new tasks
@@ -145,7 +137,7 @@ public class MainActivity extends Activity {
 
             // Set the preferences flag to true
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(HospitalInventoryApp.sTaskAlarmInitialized, true);
+            editor.putBoolean(HospitalInventoryApp.sPrefTaskAlarmInitialized, true);
             editor.commit();
         }
     }
@@ -216,7 +208,7 @@ public class MainActivity extends Activity {
 
     private void getSetTitle() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String titleString = preferences.getString("HospitalName", "");
+        String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
         titleString = titleString + " Inventory Manager";
         setTitle(titleString);
     }

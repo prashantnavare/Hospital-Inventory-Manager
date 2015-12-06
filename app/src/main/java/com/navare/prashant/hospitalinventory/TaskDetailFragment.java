@@ -406,10 +406,10 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-            String titleString = preferences.getString("HospitalName", "");
+            String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
             titleString = titleString + " Inventory Manager: ";
             // First send SMS to the new assignee
-            String smsAssignMessage = titleString + "You have been assigned a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+            String smsAssignMessage = titleString + "You have been assigned a " + mTask.getTaskTypeString() + " task for " + mTask.mItemName;
             if (mTask.mItemLocation.isEmpty() == false) {
                 smsAssignMessage = smsAssignMessage + " located at " + mTask.mItemLocation;
             }
@@ -435,9 +435,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                     case Activity.RESULT_OK:
                         if (mCurrentAssignee.isEmpty() == false) {
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-                            String titleString = preferences.getString("HospitalName", "");
+                            String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
                             titleString = titleString + " Inventory Manager: ";
-                            String smsUnAssignMessage = titleString + "You have been unassigned from a " + getTaskTypeString(mTask) + " task for " + mTask.mItemName;
+                            String smsUnAssignMessage = titleString + "You have been unassigned from a " + mTask.getTaskTypeString() + " task for " + mTask.mItemName;
                             if (mTask.mItemLocation.isEmpty() == false) {
                                 smsUnAssignMessage = smsUnAssignMessage + " located at " + mTask.mItemLocation;
                             }
@@ -534,8 +534,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
         mTextAssignedTo.setText(mTask.mAssignedTo);
 
-        String taskType = getTaskTypeString(mTask);
-        mTextTaskType.setText(taskType);
+        mTextTaskType.setText(mTask.getTaskTypeString());
 
         // The following table rows are visible only if task is contract or inventory
         mContractExpiryDateRow.setVisibility(View.GONE);
@@ -596,21 +595,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mCallbacks.EnableSaveButton(false);
         mCallbacks.EnableRevertButton(false);
         mCallbacks.RedrawOptionsMenu();
-    }
-
-    private String getTaskTypeString(Task task) {
-        if (task.mTaskType == Task.Calibration)
-            return getResources().getString(R.string.calibration);
-        else if (task.mTaskType == Task.Inventory)
-            return getResources().getString(R.string.inventory);
-        else if (task.mTaskType == Task.Contract)
-            return getResources().getString(R.string.contract_renewal);
-        else if (task.mTaskType == Task.Maintenance)
-            return getResources().getString(R.string.maintenance);
-        else if (task.mTaskType == Task.ServiceCall)
-            return getResources().getString(R.string.service_call);
-        else
-            return getResources().getString(R.string.unknown);
     }
 
     public void showTaskDoneDialog() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Hospital Inventory</string>
+    <string name="app_name">Inventory Manager</string>
     <string name="inventory_button">Inventory</string>
     <string name="tasks_button">Tasks</string>
     <string name="settings_button">Settings</string>
@@ -50,18 +50,12 @@
     <string name="item">Item</string>
     <string name="task">Task</string>
     <string name="consummable">Consummable</string>
-    <string name="calibration">Calibration</string>
     <string name="unknown">Unknown</string>
-    <string name="service_call">Service Call</string>
-    <string name="maintenance">Maintenance</string>
-    <string name="contract">Contract</string>
-    <string name="inventory">Inventory</string>
     <string name="completion_comments">Completion Comments</string>
     <string name="task_done">Task Done</string>
     <string name="comments">Comments</string>
     <string name="priority">Priority</string>
     <string name="task_priority">Task Priority?</string>
-    <string name="contract_renewal">Contract Renewal</string>
     <string name="menu_assign_task">Assign Task</string>
     <string name="menu_camera">Photo</string>
     <string name="title_activity_settings">Settings</string>
@@ -71,7 +65,7 @@
     <!-- General settings -->
     <string name="pref_header_general">General</string>
 
-    <string name="pref_title_hospital_name">Hospital Name</string>
+    <string name="pref_title_organization_name">Organization Name</string>
     <string name="pref_default_hospital_name"></string>
 
     <string name="pref_title_task_sync_time">Time when the task table is refreshed</string>

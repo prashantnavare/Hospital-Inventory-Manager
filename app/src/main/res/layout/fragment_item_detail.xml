@@ -28,6 +28,7 @@
                 android:id="@+id/textName"
                 android:hint="Item Name"
                 android:inputType="textCapWords|textMultiLine"
+                android:capitalize="words"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:cursorVisible="true"
                 />
@@ -75,6 +76,7 @@
                 android:id="@+id/textLocation"
                 android:hint="Item Location"
                 android:inputType="textMultiLine"
+                android:capitalize="words"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:cursorVisible="true"
                 />
@@ -172,6 +174,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
+                        android:capitalize="sentences"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:cursorVisible="true"
                         />
@@ -268,6 +271,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
+                        android:capitalize="sentences"
+                        android:autoText="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:cursorVisible="true"
                         />
@@ -345,6 +350,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
+                        android:capitalize="sentences"
+                        android:autoText="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:cursorVisible="true"
                         />
@@ -435,6 +442,8 @@
                 android:id="@+id/textDescription"
                 android:hint="Item Description"
                 android:inputType="textMultiLine|textAutoCorrect"
+                android:capitalize="sentences"
+                android:autoText="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:cursorVisible="true"
                 />

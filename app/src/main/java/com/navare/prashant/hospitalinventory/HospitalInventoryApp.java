@@ -17,7 +17,10 @@ public class HospitalInventoryApp extends Application {
 
     public static Context sContext;
 
-    public static String sTaskAlarmInitialized = "TaskAlarmInitialized";
+    public static String sPrefTaskAlarmInitialized = "TaskAlarmInitialized";
+    public static String sPrefOrganizationName = "OrganizationName";
+    public static String sPrefTaskRefreshTime = "TaskRefreshTime";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -25,7 +28,7 @@ public class HospitalInventoryApp extends Application {
         sContext = getApplicationContext();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean(sTaskAlarmInitialized, false)) {
+        if (!prefs.getBoolean(sPrefTaskAlarmInitialized, false)) {
 
             ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
             // Set up the daily alarm for computing new tasks
@@ -33,7 +36,7 @@ public class HospitalInventoryApp extends Application {
 
             // Set the preferences flag to true
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(sTaskAlarmInitialized, true);
+            editor.putBoolean(sPrefTaskAlarmInitialized, true);
             editor.commit();
         }
     }

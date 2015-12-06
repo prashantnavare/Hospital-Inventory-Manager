@@ -176,8 +176,6 @@ public class SettingsActivity extends PreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
-        private static String sPrefHospitalName = "HospitalName";
-        private static String sPrefTaskRefreshTime = "TaskRefreshTime";
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -188,15 +186,15 @@ public class SettingsActivity extends PreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference(sPrefHospitalName));
-            bindPreferenceSummaryToValue(findPreference(sPrefTaskRefreshTime));
+            bindPreferenceSummaryToValue(findPreference(HospitalInventoryApp.sPrefOrganizationName));
+            bindPreferenceSummaryToValue(findPreference(HospitalInventoryApp.sPrefTaskRefreshTime));
 
             //listener on changed TaskRefreshTime preference:
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
             prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                    if(key.equals(sPrefTaskRefreshTime)) {
+                    if(key.equals(HospitalInventoryApp.sPrefTaskRefreshTime)) {
                         ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
                         alarmReceiver.setAlarm(getActivity().getApplicationContext(), true);
                     }

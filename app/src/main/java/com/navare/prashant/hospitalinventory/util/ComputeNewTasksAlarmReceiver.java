@@ -11,6 +11,8 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
+import com.navare.prashant.hospitalinventory.HospitalInventoryApp;
+
 import java.util.Calendar;
 
 /**
@@ -98,7 +100,7 @@ public class ComputeNewTasksAlarmReceiver extends WakefulBroadcastReceiver {
             // clock, and to repeat once a day.
             // See if the user has set the time at which the task alarm should be set. The default is 01:00 (i.e. 1 am)
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String userAlarmTime = preferences.getString("TaskRefreshTime", "01:00");
+            String userAlarmTime = preferences.getString(HospitalInventoryApp.sPrefTaskRefreshTime, "01:00");
             String[] pieces = userAlarmTime.split(":");
 
             calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(pieces[0]));

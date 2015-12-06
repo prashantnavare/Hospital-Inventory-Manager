@@ -51,6 +51,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Please describe the problem..."
+            android:capitalize="sentences"
             android:inputType="textMultiLine|textAutoCorrect"
             android:textAppearance="?android:attr/textAppearanceSmall"
             />

@@ -80,7 +80,6 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <TextView
                 android:id="@+id/textTaskType"
-                android:text="@string/calibration"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 />
         </TableRow>

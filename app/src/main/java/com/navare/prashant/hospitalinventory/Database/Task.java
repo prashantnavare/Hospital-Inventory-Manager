@@ -268,14 +268,14 @@ public class Task {
         return map;
     }
 
-    public String getTaskType() {
+    public String getTaskTypeString() {
         switch ((int)mTaskType) {
             case Calibration:
                 return "Calibration";
             case Contract:
                 return "Contract Renewal";
             case Inventory:
-                return "Inventory";
+                return "Reorder";
             case Maintenance:
                 return "Maintenance";
             case ServiceCall:

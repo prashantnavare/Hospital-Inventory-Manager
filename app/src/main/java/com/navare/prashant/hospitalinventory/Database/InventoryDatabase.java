@@ -364,7 +364,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             ContentValues ftsValues = new ContentValues();
             ftsValues.put(Task.COL_FTS_ITEM_NAME, task.mItemName);
             ftsValues.put(Task.COL_FTS_ITEM_LOCATION, task.mItemLocation);
-            ftsValues.put(Task.COL_FTS_TASK_TYPE, task.getTaskType());
+            ftsValues.put(Task.COL_FTS_TASK_TYPE, task.getTaskTypeString());
             ftsValues.put(Task.COL_FTS_ASSIGNED_TO, task.mAssignedTo);
 
             if (task.mDueDate > 0) {
