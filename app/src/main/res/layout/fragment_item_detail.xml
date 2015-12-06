@@ -28,7 +28,6 @@
                 android:id="@+id/textName"
                 android:hint="Item Name"
                 android:inputType="textCapWords|textMultiLine"
-                android:capitalize="words"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:cursorVisible="true"
                 />
@@ -74,9 +73,7 @@
 
             <EditText
                 android:id="@+id/textLocation"
-                android:hint="Item Location"
-                android:inputType="textMultiLine"
-                android:capitalize="words"
+                android:inputType="textMultiLine|textCapWords"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:cursorVisible="true"
                 />
@@ -173,7 +170,7 @@
                         android:id="@+id/textCalibrationInstructions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
+                        android:inputType="textMultiLine|textCapSentences"
                         android:capitalize="sentences"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:cursorVisible="true"
@@ -270,8 +267,7 @@
                         android:id="@+id/textMaintenanceInstructions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
-                        android:capitalize="sentences"
+                        android:inputType="textMultiLine|textCapSentences"
                         android:autoText="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:cursorVisible="true"
@@ -349,8 +345,7 @@
                         android:id="@+id/textContractInstructions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
-                        android:capitalize="sentences"
+                        android:inputType="textMultiLine|textCapSentences"
                         android:autoText="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:cursorVisible="true"
@@ -440,10 +435,7 @@
 
             <EditText
                 android:id="@+id/textDescription"
-                android:hint="Item Description"
-                android:inputType="textMultiLine|textAutoCorrect"
-                android:capitalize="sentences"
-                android:autoText="true"
+                android:inputType="textMultiLine|textCapSentences"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:cursorVisible="true"
                 />

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -98,6 +99,7 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
         // Tweak the UI as per the type getResources().getText(R.string.main_title)
         Dialog myDialog = getDialog();
         myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return rootView;
     }
 

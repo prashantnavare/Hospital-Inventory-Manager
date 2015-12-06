@@ -20,6 +20,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -468,15 +469,12 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 newDate.set(year, monthOfYear, dayOfMonth);
                 switch (pickerType) {
                     case CALIBRATION:
-                        mItem.mCalibrationDate = newDate.getTimeInMillis();
                         mBtnChangeCalibrationDate.setText(dateFormatter.format(newDate.getTime()));
                         break;
                     case MAINTENANCE:
-                        mItem.mMaintenanceDate = newDate.getTimeInMillis();
                         mBtnChangeMaintenanceDate.setText(dateFormatter.format(newDate.getTime()));
                         break;
                     case CONTRACT:
-                        mItem.mContractValidTillDate = newDate.getTimeInMillis();
                         mBtnContractValidTillDate.setText(dateFormatter.format(newDate.getTime()));
                         break;
                 }
@@ -905,6 +903,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mCallbacks.EnableRevertButton(false);
         mCallbacks.EnableSaveButton(false);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
     }
 

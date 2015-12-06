@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -105,6 +106,7 @@ public class InventoryDialogFragment extends DialogFragment {
             mTextMessage.setText(getResources().getText(R.string.subtract_quantity));
             mBtnYes.setText(getResources().getText(R.string.subtract));
         }
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return rootView;
     }
 

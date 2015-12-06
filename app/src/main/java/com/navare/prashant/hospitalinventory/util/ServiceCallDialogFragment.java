@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -117,6 +118,7 @@ public class ServiceCallDialogFragment extends DialogFragment {
             titleTextView.setGravity(Gravity.CENTER);
             titleTextView.setText(getResources().getText(R.string.dialog_service_call_title));
         }
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return rootView;
     }
 

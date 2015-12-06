@@ -51,7 +51,7 @@
                 android:id="@+id/textCompletionComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine|textCapSentences|textAutoComplete|textAutoCorrect"
+                android:inputType="textMultiLine|textCapSentences"
                 android:autoText="true"
                 android:capitalize="sentences"
                 android:minWidth="250sp"
