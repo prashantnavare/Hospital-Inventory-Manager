@@ -50,7 +50,6 @@
 
             <Spinner
                 android:id="@+id/spinnerType"
-                android:drawSelectorOnTop="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:clickable="true" />
 

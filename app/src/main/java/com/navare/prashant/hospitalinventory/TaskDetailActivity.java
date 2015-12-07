@@ -1,6 +1,9 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -48,6 +51,7 @@ public class TaskDetailActivity extends ActionBarActivity
     private boolean mbSaveMenuEnable = false;
     private boolean mbRevertMenuEnable = false;
 
+    private Activity mThisActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,7 @@ public class TaskDetailActivity extends ActionBarActivity
                     .add(R.id.task_detail_container, fragment)
                     .commit();
         }
+        mThisActivity = this;
     }
 
     @Override
@@ -110,7 +115,12 @@ public class TaskDetailActivity extends ActionBarActivity
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, TaskListActivity.class));
+                if (mbSaveMenuEnable == true) {
+                    promptUserForSavingTask();
+                }
+                else {
+                    NavUtils.navigateUpTo(this, new Intent(this, TaskListActivity.class));
+                }
                 return true;
             case R.id.menu_assign:
                 assignTask();
@@ -146,6 +156,40 @@ public class TaskDetailActivity extends ActionBarActivity
 
         ((TaskDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.task_detail_container)).callAssignee();
+    }
+
+    private void promptUserForSavingTask() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Save Changes");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Would you like to save the changes to this task?");
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.ic_menu_save);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+
+                saveTask();
+                NavUtils.navigateUpTo(mThisActivity, new Intent(mThisActivity, TaskListActivity.class));
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                NavUtils.navigateUpTo(mThisActivity, new Intent(mThisActivity, TaskListActivity.class));
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     private void saveTask() {

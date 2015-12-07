@@ -381,11 +381,13 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             long ftsID = -1;
             synchronized (HospitalInventoryApp.sDatabaseLock) {
                 ftsID =  db.insert(Task.FTS_TABLE_NAME, null, ftsValues);
+                if (ftsID == -1) {
+                    deleteTask(String.valueOf(realID));
+                    return ftsID;
+                }
+                HospitalInventoryApp.incrementTaskCount();
             }
-            if (ftsID == -1) {
-                deleteTask(String.valueOf(realID));
-                return ftsID;
-            }
+            notifyProviderOnTaskChange();
         }
         return realID;
     }
@@ -402,6 +404,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             synchronized (HospitalInventoryApp.sDatabaseLock) {
                 ftsResult = db.delete(Task.FTS_TABLE_NAME,
                         Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskID});
+                HospitalInventoryApp.decrementTaskCount();
             }
             notifyProviderOnTaskChange();
             return ftsResult;
@@ -583,21 +586,18 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
 
             synchronized (HospitalInventoryApp.sDatabaseLock) {
-                long ftsRowsUpdated =  db.update(Task.FTS_TABLE_NAME, ftsValues, Task.COL_FTS_TASK_REALID + " MATCH " + taskId, null);
+                // If this task is completed, then delete the corresponding FTS entry. Else update the FTS entry
+                if (task.mStatus == Task.CompletedStatus) {
+                    int ftsResult = db.delete(Task.FTS_TABLE_NAME, Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskId});
+                    HospitalInventoryApp.decrementTaskCount();
+                }
+                else {
+                    long ftsRowsUpdated =  db.update(Task.FTS_TABLE_NAME, ftsValues, Task.COL_FTS_TASK_REALID + " MATCH " + taskId, null);
+                }
             }
         }
         notifyProviderOnTaskChange();
         return rowsUpdated;
-    }
-
-    public void completeTask(String taskId) {
-        // This task has been completed. Delete it from the regular and FTS tables of open tasks
-        final SQLiteDatabase db = this.getWritableDatabase();
-        synchronized (HospitalInventoryApp.sDatabaseLock) {
-            int result = db.delete(Task.TABLE_NAME, BaseColumns._ID + " IS ? ", new String[]{taskId});
-            int ftsResult = db.delete(Task.FTS_TABLE_NAME, Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskId});
-        }
-        notifyProviderOnTaskChange();
     }
 
     public int updateServiceCall(String serviceCallId, ContentValues values, String selection, String[] selectionArgs) {

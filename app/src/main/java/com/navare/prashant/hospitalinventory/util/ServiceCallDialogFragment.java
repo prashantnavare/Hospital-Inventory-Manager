@@ -99,7 +99,7 @@ public class ServiceCallDialogFragment extends DialogFragment {
         });
 
         mSpinnerPriority = (Spinner) rootView.findViewById(R.id.spinnerPriority);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, getResources().getStringArray(R.array.priorities_array));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.priorities_array));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerPriority.setAdapter(adapter);
         mSpinnerPriority.setSelection(0, false);

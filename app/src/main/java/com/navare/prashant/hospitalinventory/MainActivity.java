@@ -50,6 +50,10 @@ public class MainActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+    private Button buttonInventory;
+    private Button buttonTasks;
+    private Button buttonSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,9 +118,9 @@ public class MainActivity extends Activity {
         });
 
         // Buttons
-        Button buttonInventory = (Button) findViewById(R.id.inventory_button);
-        Button buttonTasks = (Button) findViewById(R.id.tasks_button);
-        Button buttonSettings = (Button) findViewById(R.id.settings_button);
+        buttonInventory = (Button) findViewById(R.id.inventory_button);
+        buttonTasks = (Button) findViewById(R.id.tasks_button);
+        buttonSettings = (Button) findViewById(R.id.settings_button);
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
@@ -126,7 +130,7 @@ public class MainActivity extends Activity {
         buttonSettings.setOnTouchListener(mDelayHideTouchListener);
 
         // Set the title to the name of the hospital
-        getSetTitle();
+        getSetTitleAndTaskCount();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (!preferences.getBoolean(HospitalInventoryApp.sPrefTaskAlarmInitialized, false)) {
@@ -145,7 +149,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        getSetTitle();
+        getSetTitleAndTaskCount();
     }
 
     @Override
@@ -206,10 +210,14 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    private void getSetTitle() {
+    private void getSetTitleAndTaskCount() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
         titleString = titleString + " Inventory Manager";
         setTitle(titleString);
+
+        long taskCount = preferences.getLong(HospitalInventoryApp.sPrefTaskCount, 0);
+        String taskButtonString = "Tasks (" + String.valueOf(taskCount) + ")";
+        buttonTasks.setText(taskButtonString);
     }
 }

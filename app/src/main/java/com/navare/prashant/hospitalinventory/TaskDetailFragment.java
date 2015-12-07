@@ -195,7 +195,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTextInstructions = ((TextView) rootView.findViewById(R.id.textInstructions));
 
         mSpinnerPriority = (Spinner) rootView.findViewById(R.id.spinnerPriority);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, getResources().getStringArray(R.array.priorities_array));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.priorities_array));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerPriority.setAdapter(adapter);
         mSpinnerPosition = 0;

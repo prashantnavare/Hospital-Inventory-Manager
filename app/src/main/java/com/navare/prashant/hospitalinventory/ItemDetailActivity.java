@@ -1,5 +1,6 @@
 package com.navare.prashant.hospitalinventory;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public class ItemDetailActivity extends ActionBarActivity
     private boolean mbServiceCallMenuEnable = false;
     private boolean mbCameraMenuEnable = false;
 
+    private Activity mThisActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class ItemDetailActivity extends ActionBarActivity
                     .add(R.id.item_detail_container, fragment)
                     .commit();
         }
+        mThisActivity = this;
     }
 
     @Override
@@ -121,7 +124,12 @@ public class ItemDetailActivity extends ActionBarActivity
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpTo(this, new Intent(this, ItemListActivity.class));
+                if (mbSaveMenuEnable == true) {
+                    promptUserForSavingItem();
+                }
+                else {
+                    NavUtils.navigateUpTo(this, new Intent(this, ItemListActivity.class));
+                }
                 return true;
             case R.id.menu_revert:
                 revertUI();
@@ -172,6 +180,40 @@ public class ItemDetailActivity extends ActionBarActivity
     private void saveItem() {
         ((ItemDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.item_detail_container)).saveItem();
+    }
+
+    private void promptUserForSavingItem() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Save Changes");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Would you like to save the changes to this item?");
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.ic_menu_save);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+
+                saveItem();
+                NavUtils.navigateUpTo(mThisActivity, new Intent(mThisActivity, ItemListActivity.class));
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                NavUtils.navigateUpTo(mThisActivity, new Intent(mThisActivity, ItemListActivity.class));
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     private void deleteItem() {

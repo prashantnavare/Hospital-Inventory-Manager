@@ -320,10 +320,6 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         String taskId = uri.getLastPathSegment();
         int rowsUpdated = mInventoryDB.updateTask(taskId, values, selection, selectionArgs);
         if (rowsUpdated > 0) {
-            long status = values.getAsLong(Task.COL_STATUS);
-            if (status == Task.CompletedStatus) {
-                mInventoryDB.completeTask(taskId);
-            }
             getContext().getContentResolver().notifyChange(uri, null);
             getContext().getContentResolver().notifyChange(FTS_TASK_URI, null);
         }

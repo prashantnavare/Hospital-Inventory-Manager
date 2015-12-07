@@ -275,7 +275,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextDescription.addTextChangedListener(this);
 
         mSpinnerType = (Spinner) rootView.findViewById(R.id.spinnerType);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, getResources().getStringArray(R.array.item_type_array));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.item_type_array));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerType.setAdapter(adapter);
         mSpinnerPosition = 0;
