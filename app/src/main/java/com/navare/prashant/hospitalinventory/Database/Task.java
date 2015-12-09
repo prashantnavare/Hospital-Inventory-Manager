@@ -21,6 +21,7 @@ public class Task {
     // These fields can be anything you want.
     public static final String COL_TASK_TYPE = "taskType";
     public static final String COL_ITEM_ID = "itemID";
+    public static final String COL_SERVICE_CALL_ID = "serviceCallID";
     public static final String COL_ITEM_NAME = "itemName";
     public static final String COL_ITEM_LOCATION = "itemLocation";
     public static final String COL_STATUS = "status";
@@ -48,6 +49,7 @@ public class Task {
             BaseColumns._ID,
             COL_TASK_TYPE,
             COL_ITEM_ID,
+            COL_SERVICE_CALL_ID,
             COL_ITEM_NAME,
             COL_ITEM_LOCATION,
             COL_STATUS,
@@ -67,6 +69,7 @@ public class Task {
         map.put(BaseColumns._ID, BaseColumns._ID);
         map.put(COL_TASK_TYPE, COL_TASK_TYPE);
         map.put(COL_ITEM_ID, COL_ITEM_ID);
+        map.put(COL_SERVICE_CALL_ID, COL_SERVICE_CALL_ID);
         map.put(COL_ITEM_NAME, COL_ITEM_NAME);
         map.put(COL_ITEM_LOCATION, COL_ITEM_LOCATION);
         map.put(COL_STATUS, COL_STATUS);
@@ -90,6 +93,7 @@ public class Task {
                     + BaseColumns._ID + " INTEGER PRIMARY KEY,"
                     + COL_TASK_TYPE + " INTEGER,"
                     + COL_ITEM_ID + " INTEGER,"
+                    + COL_SERVICE_CALL_ID + " INTEGER,"
                     + COL_ITEM_NAME + " TEXT NOT NULL DEFAULT '',"
                     + COL_ITEM_LOCATION + " TEXT NOT NULL DEFAULT '',"
                     + COL_STATUS + " INTEGER,"
@@ -105,6 +109,7 @@ public class Task {
     public long mID = -1;
     public long mTaskType = -1;
     public long mItemID = -1;
+    public long mServiceCallID = -1;
     public String mItemName = "";
     public String mItemLocation = "";
     public long mStatus = 0;
@@ -129,15 +134,16 @@ public class Task {
         this.mID = cursor.getLong(0);
         this.mTaskType = cursor.getLong(1);
         this.mItemID = cursor.getLong(2);
-        this.mItemName = cursor.getString(3);
-        this.mItemLocation = cursor.getString(4);
-        this.mStatus = cursor.getLong(5);
-        this.mPriority = cursor.getLong(6);
-        this.mAssignedTo = cursor.getString(7);
-        this.mAssignedToContactNumber = cursor.getString(8);
-        this.mDueDate = cursor.getLong(9);
-        this.mCompletedTimeStamp = cursor.getLong(10);
-        this.mCompletionComments = cursor.getString(11);
+        this.mServiceCallID = cursor.getLong(3);
+        this.mItemName = cursor.getString(4);
+        this.mItemLocation = cursor.getString(5);
+        this.mStatus = cursor.getLong(6);
+        this.mPriority = cursor.getLong(7);
+        this.mAssignedTo = cursor.getString(8);
+        this.mAssignedToContactNumber = cursor.getString(9);
+        this.mDueDate = cursor.getLong(10);
+        this.mCompletedTimeStamp = cursor.getLong(11);
+        this.mCompletionComments = cursor.getString(12);
     }
 
     /**
@@ -150,6 +156,7 @@ public class Task {
         // Note that ID is NOT included here
         values.put(COL_TASK_TYPE, mTaskType);
         values.put(COL_ITEM_ID, mItemID);
+        values.put(COL_SERVICE_CALL_ID, mServiceCallID);
         values.put(COL_ITEM_NAME, mItemName);
         values.put(COL_ITEM_LOCATION, mItemLocation);
         values.put(COL_STATUS, mStatus);
@@ -170,6 +177,7 @@ public class Task {
         // Note that ID is NOT included here
         mTaskType = values.getAsLong(COL_TASK_TYPE);
         mItemID = values.getAsLong(COL_ITEM_ID);
+        mServiceCallID = values.getAsLong(COL_SERVICE_CALL_ID);
         mItemName = values.getAsString(COL_ITEM_NAME);
         mItemLocation = values.getAsString(COL_ITEM_LOCATION);
         mStatus = values.getAsLong(COL_STATUS);
@@ -180,7 +188,34 @@ public class Task {
         mCompletedTimeStamp= values.getAsLong(COL_COMPLETED_TIME_STAMP);
         mCompletionComments = values.getAsString(COL_COMPLETION_COMMENTS);
     }
-    // Task FTS Table
+
+    public String getTaskTypeString() {
+        switch ((int)mTaskType) {
+            case Calibration:
+                return "Calibration";
+            case Contract:
+                return "Contract Renewal";
+            case Inventory:
+                return "Reorder";
+            case Maintenance:
+                return "Maintenance";
+            case ServiceCall:
+                return "Service Call";
+        }
+        return "Unknown";
+    }
+
+    public String getTaskPriority() {
+        switch ((int)mPriority) {
+            case NormalPriority:
+                return "Normal";
+            case UrgentPriority:
+                return "Urgent";
+        }
+        return "Unknown";
+    }
+
+    // Task FTS Table - for current tasks
     public static final String FTS_TABLE_NAME = "FTSTaskTable";
     public static final String COL_FTS_ITEM_NAME = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String COL_FTS_ITEM_LOCATION = "itemLocation";
@@ -229,7 +264,7 @@ public class Task {
     public String mFTSPriority = "";
 
     /**
-     * Set information from the FTSItemTable into an Item object.
+     * Set information from the FTSItemTable into a Task object.
      */
     public void setFTSContent(final Cursor cursor) {
         // Indices expected to match order in FIELDS!
@@ -268,29 +303,104 @@ public class Task {
         return map;
     }
 
-    public String getTaskTypeString() {
-        switch ((int)mTaskType) {
-            case Calibration:
-                return "Calibration";
-            case Contract:
-                return "Contract Renewal";
-            case Inventory:
-                return "Reorder";
-            case Maintenance:
-                return "Maintenance";
-            case ServiceCall:
-                return "Service Call";
-        }
-        return "Unknown";
+    // Completed Task FTS Table - for tasks that have been completed
+    public static final String COMPLETED_FTS_TABLE_NAME = "CompletedFTSTaskTable";
+    public static final String COMPLETED_COL_FTS_ITEM_NAME = "itemName";
+    public static final String COMPLETED_COL_FTS_ITEM_LOCATION = "itemLocation";
+    public static final String COMPLETED_COL_FTS_TASK_TYPE = "taskType";
+    public static final String COMPLETED_COL_FTS_ASSIGNED_TO = "assignedTo";
+    public static final String COMPLETED_COL_FTS_COMPLETION_DATE = "completionDate";
+    public static final String COMPLETED_COL_FTS_ITEM_ID = "itemID";
+    public static final String COMPLETED_COL_FTS_TASK_PRIORITY = "taskPriority";
+    public static final String COMPLETED_COL_FTS_COMPLETION_COMMENTS = "completionComments";
+    public static final String COMPLETED_COL_FTS_COMPLETION_TIMESTAMP = "completionTimeStamp";
+
+    // For database projection so order is consistent
+    public static final String[] COMPLETED_FTS_FIELDS = {
+            BaseColumns._ID,
+            COMPLETED_COL_FTS_ITEM_NAME,
+            COMPLETED_COL_FTS_ITEM_LOCATION,
+            COMPLETED_COL_FTS_TASK_TYPE,
+            COMPLETED_COL_FTS_ASSIGNED_TO,
+            COMPLETED_COL_FTS_COMPLETION_DATE,
+            COMPLETED_COL_FTS_ITEM_ID,
+            COMPLETED_COL_FTS_TASK_PRIORITY,
+            COMPLETED_COL_FTS_COMPLETION_COMMENTS,
+            COMPLETED_COL_FTS_COMPLETION_TIMESTAMP
+    };
+
+    /* Note that FTS3 does not support column constraints and thus, you cannot
+     * declare a primary key. However, "rowid" is automatically used as a unique
+     * identifier, so when making requests, we will use "_id" as an alias for "rowid"
+     */
+    public static final String CREATE_COMPLETED_FTS_TABLE =
+            "CREATE VIRTUAL TABLE " + COMPLETED_FTS_TABLE_NAME +
+                    " USING fts3 (" +
+                    COMPLETED_COL_FTS_ITEM_NAME + ", " +
+                    COMPLETED_COL_FTS_ITEM_LOCATION + ", " +
+                    COMPLETED_COL_FTS_TASK_TYPE + "," +
+                    COMPLETED_COL_FTS_ASSIGNED_TO + "," +
+                    COMPLETED_COL_FTS_COMPLETION_DATE + "," +
+                    COMPLETED_COL_FTS_ITEM_ID + "," +
+                    COMPLETED_COL_FTS_TASK_PRIORITY + "," +
+                    COMPLETED_COL_FTS_COMPLETION_COMMENTS + "," +
+                    COMPLETED_COL_FTS_COMPLETION_TIMESTAMP +
+                    ");";
+
+    // Fields corresponding to FTSItemTable columns
+    public String mCompletedRowID = "";
+    public String mCompletedFTSItemName = "";
+    public String mCompletedFTSItemLocation = "";
+    public String mCompletedFTSTaskType = "";
+    public String mCompletedFTSAssignedTo = "";
+    public String mCompletedFTSCompletionDate = "";
+    public String mCompletedFTSRealID = "";
+    public String mCompletedFTSPriority = "";
+    public String mCompletedFTSCompletionComments = "";
+    public String mCompletedFTSTimeStamp = "";
+
+    /**
+     * Set information from the CompletedFTSItemTable into a Task object.
+     */
+    public void setCompletedFTSContent(final Cursor cursor) {
+        // Indices expected to match order in FIELDS!
+        this.mCompletedRowID = cursor.getString(0);
+        this.mCompletedFTSItemName = cursor.getString(1);
+        this.mCompletedFTSItemLocation = cursor.getString(2);
+        this.mCompletedFTSTaskType = cursor.getString(3);
+        this.mCompletedFTSAssignedTo = cursor.getString(4);
+        this.mCompletedFTSCompletionDate = cursor.getString(5);
+        this.mCompletedFTSRealID = cursor.getString(6);
+        this.mCompletedFTSPriority = cursor.getString(7);
+        this.mCompletedFTSCompletionComments = cursor.getString(8);
+        this.mCompletedFTSTimeStamp = cursor.getString(9);
     }
 
-    public String getTaskPriority() {
-        switch ((int)mPriority) {
-            case NormalPriority:
-                return "Normal";
-            case UrgentPriority:
-                return "Urgent";
-        }
-        return "Unknown";
+    public static final HashMap<String, String> mCompletedFTSColumnMap = buildCompletedFTSColumnMap();
+    /**
+     * Builds a map for all Item FTS table columns that may be requested, which will be given to the
+     * SQLiteQueryBuilder. This is a good way to define aliases for column names, but must include
+     * all columns, even if the value is the key. This allows the ContentProvider to request
+     * columns w/o the need to know real column names and create the alias itself.
+     */
+    private static HashMap<String,String> buildCompletedFTSColumnMap() {
+        HashMap<String,String> map = new HashMap<>();
+        map.put(COMPLETED_COL_FTS_ITEM_NAME, COMPLETED_COL_FTS_ITEM_NAME);
+        map.put(COMPLETED_COL_FTS_ITEM_LOCATION, COMPLETED_COL_FTS_ITEM_LOCATION);
+        map.put(COMPLETED_COL_FTS_TASK_TYPE, COMPLETED_COL_FTS_TASK_TYPE);
+        map.put(COMPLETED_COL_FTS_ASSIGNED_TO, COMPLETED_COL_FTS_ASSIGNED_TO);
+        map.put(COMPLETED_COL_FTS_COMPLETION_DATE, COMPLETED_COL_FTS_COMPLETION_DATE);
+        map.put(COMPLETED_COL_FTS_ITEM_ID, COMPLETED_COL_FTS_ITEM_ID);
+        map.put(COMPLETED_COL_FTS_TASK_PRIORITY, COMPLETED_COL_FTS_TASK_PRIORITY);
+        map.put(COMPLETED_COL_FTS_COMPLETION_COMMENTS, COMPLETED_COL_FTS_COMPLETION_COMMENTS);
+        map.put(COMPLETED_COL_FTS_COMPLETION_TIMESTAMP, COMPLETED_COL_FTS_COMPLETION_TIMESTAMP);
+        map.put(BaseColumns._ID, "rowid AS " +
+                BaseColumns._ID);
+        map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid AS " +
+                SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
+        map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "rowid AS " +
+                SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
+        return map;
     }
+
 }

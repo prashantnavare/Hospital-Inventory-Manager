@@ -961,7 +961,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Also create a corresponding task
             Task task = new Task();
             task.mTaskType = Task.ServiceCall;
-            task.mItemID = Long.valueOf(uri.getLastPathSegment());
+            task.mItemID = itemID;
+            task.mServiceCallID = Long.valueOf(uri.getLastPathSegment());
             task.mItemName = mItem.mName;
             task.mItemLocation = mItem.mLocation;
             task.mStatus = Task.OpenStatus;

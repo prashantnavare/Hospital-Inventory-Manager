@@ -51,6 +51,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         db.execSQL(ServiceCall.CREATE_TABLE);
         db.execSQL(Task.CREATE_TABLE);
         db.execSQL(Task.CREATE_FTS_TABLE);
+        db.execSQL(Task.CREATE_COMPLETED_FTS_TABLE);
     }
 
     /**
@@ -589,6 +590,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 // If this task is completed, then delete the corresponding FTS entry. Else update the FTS entry
                 if (task.mStatus == Task.CompletedStatus) {
                     int ftsResult = db.delete(Task.FTS_TABLE_NAME, Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskId});
+                    insertCompletedFTSTaskRow(task, taskId);
                     HospitalInventoryApp.decrementTaskCount();
                 }
                 else {
@@ -598,6 +600,28 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         }
         notifyProviderOnTaskChange();
         return rowsUpdated;
+    }
+
+    private void insertCompletedFTSTaskRow(Task task, String taskId) {
+        ContentValues completedFTSValues = new ContentValues();
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_ITEM_NAME, task.mItemName);
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_ITEM_LOCATION, task.mItemLocation);
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_TASK_TYPE, task.getTaskTypeString());
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_ASSIGNED_TO, task.mAssignedTo);
+
+        Date completedDate = new Date();
+        SimpleDateFormat completedDateFormat = new SimpleDateFormat("dd MMMM, yyyy");
+        String dueDateString = completedDateFormat.format(completedDate);
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_COMPLETION_DATE, dueDateString);
+
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_ITEM_ID, taskId);
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_TASK_PRIORITY, task.getTaskPriority());
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_COMPLETION_COMMENTS, task.mCompletionComments);
+
+        long completedDateTimeStamp = Calendar.getInstance().getTimeInMillis();
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_COMPLETION_TIMESTAMP, String.valueOf(completedDateTimeStamp));
+
+        getWritableDatabase().insert(Task.COMPLETED_FTS_TABLE_NAME, null, completedFTSValues);
     }
 
     public int updateServiceCall(String serviceCallId, ContentValues values, String selection, String[] selectionArgs) {
@@ -851,7 +875,8 @@ public class InventoryDatabase extends SQLiteOpenHelper {
     private Task createServiceCallTempTask(ServiceCall serviceCall) {
         Task task = new Task();
         task.mTaskType = Task.ServiceCall;
-        task.mItemID = serviceCall.mID;
+        task.mItemID = serviceCall.mItemID;
+        task.mServiceCallID = serviceCall.mID;
         task.mItemName = serviceCall.mItemName;
         task.mItemLocation = serviceCall.mItemLocation;
         // No due date for service call tasks.

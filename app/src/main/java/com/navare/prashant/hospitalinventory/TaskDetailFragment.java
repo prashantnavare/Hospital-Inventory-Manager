@@ -250,7 +250,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         }
         else if (id == LOADER_ID_SERVICE_CALL_DETAILS) {
             Uri serviceCallURI = Uri.withAppendedPath(HospitalInventoryContentProvider.SERVICE_CALL_URI,
-                    String.valueOf(mTask.mItemID));
+                    String.valueOf(mTask.mServiceCallID));
 
             return new CursorLoader(getActivity(),
                     serviceCallURI, ServiceCall.FIELDS, null, null,
