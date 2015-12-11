@@ -341,13 +341,10 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         return rowsUpdated;
     }
 
-    public long insertServiceCall(ContentValues values) {
-        final SQLiteDatabase db = this.getWritableDatabase();
-        long realID = 0;
-        synchronized (HospitalInventoryApp.sDatabaseLock) {
-            realID = db.insert(ServiceCall.TABLE_NAME, null, values);
-        }
-        return realID;
+    public long insertTask(ContentValues values) {
+        Task task = new Task();
+        task.setContentFromCV(values);
+        return addTask(task);
     }
 
     /**
@@ -405,17 +402,14 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             synchronized (HospitalInventoryApp.sDatabaseLock) {
                 ftsResult = db.delete(Task.FTS_TABLE_NAME,
                         Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskID});
-                HospitalInventoryApp.decrementTaskCount();
+                if (ftsResult > 0) {
+                    HospitalInventoryApp.decrementTaskCount();
+                    notifyProviderOnTaskChange();
+                }
             }
-            notifyProviderOnTaskChange();
             return ftsResult;
         }
         return result;
-    }
-
-    private void notifyProviderOnTaskChange() {
-        mHelperContext.getContentResolver().notifyChange(
-                HospitalInventoryContentProvider.FTS_TASK_URI, null, false);
     }
 
     /**
@@ -439,36 +433,6 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(Task.TABLE_NAME);
         builder.setProjectionMap(Task.mColumnMap);
-
-        Cursor cursor = null;
-        synchronized (HospitalInventoryApp.sDatabaseLock) {
-            cursor = builder.query(this.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
-        }
-
-        if (cursor == null) {
-            return null;
-        }
-        else if (!cursor.moveToFirst()) {
-            cursor.close();
-            return null;
-        }
-        return cursor;
-    }
-
-    public Cursor getServiceCall(String rowID, String[] columns) {
-        String selection = BaseColumns._ID + " = ?";
-        String[] selectionArgs = new String[] {rowID};
-
-        /* This builds a query that looks like:
-         *     SELECT <columns> FROM <table> WHERE _id = <rowID>
-         */
-        /* The SQLiteBuilder provides a map for all possible columns requested to
-         * actual columns in the database, creating a simple column alias mechanism
-         * by which the ContentProvider does not need to know the real column names
-         */
-        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables(ServiceCall.TABLE_NAME);
-        builder.setProjectionMap(ServiceCall.mColumnMap);
 
         Cursor cursor = null;
         synchronized (HospitalInventoryApp.sDatabaseLock) {
@@ -526,7 +490,6 @@ public class InventoryDatabase extends SQLiteOpenHelper {
      * @return Cursor over all items that match, or null if none found.
      */
     public Cursor getFTSTaskMatches(String searchString, String[] columns) {
-        //String selection = Item.COL_FTS_ITEM_NAME + " MATCH ?";
         String selection = Task.FTS_TABLE_NAME + " MATCH ?";
         String[] selectionArgs = new String[] {searchString + "*"};
 
@@ -567,45 +530,70 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public long insertTask(ContentValues values) {
-        Task task = new Task();
-        task.setContentFromCV(values);
-        return addTask(task);
+    /**
+     * Returns a Cursor over all Completed FTS tasks that match the given itemID and searchString
+     *
+     * @param searchString The string to search for
+     * @param columns The columns to include, if null then all are included
+     * @return Cursor over all items that match, or null if none found.
+     */
+    public Cursor getCompletedFTSTaskMatches(String itemID, String searchString, String[] columns) {
+
+        String selectionArgsString;
+        String selection = Task.COMPLETED_FTS_TABLE_NAME + " MATCH ?";
+        if (searchString.isEmpty() == false) {
+            selectionArgsString = Task.SPECIAL_ITEM_ID_STRING_FOR_COMPLETED_TASKS + itemID + "  " + searchString + "*";
+        }
+        else {
+            selectionArgsString = Task.SPECIAL_ITEM_ID_STRING_FOR_COMPLETED_TASKS + itemID ;
+        }
+        String[] selectionArgs = new String[] {selectionArgsString};
+
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(Task.COMPLETED_FTS_TABLE_NAME);
+        builder.setProjectionMap(Task.mCompletedFTSColumnMap);
+
+        Cursor cursor = null;
+        synchronized (HospitalInventoryApp.sDatabaseLock) {
+            cursor = builder.query(this.getReadableDatabase(),
+                    columns, selection, selectionArgs, null, null, Task.COMPLETED_COL_FTS_COMPLETION_TIMESTAMP + " DESC ");
+        }
+
+        int numRows = cursor.getCount();
+        if (cursor == null) {
+            return null;
+        }
+        else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return cursor;
     }
 
     public int updateTask(String taskId, ContentValues values, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = this.getWritableDatabase();
         int rowsUpdated = 0;
+        Task task = new Task();
+        task.setContentFromCV(values);
         synchronized (HospitalInventoryApp.sDatabaseLock) {
-            rowsUpdated = db.update(Task.TABLE_NAME, values, BaseColumns._ID + "=" + taskId, null);
-        }
-        if (rowsUpdated > 0) {
-            ContentValues ftsValues = new ContentValues();
-            Task task = new Task();
-            task.setContentFromCV(values);
-            ftsValues.put(Task.COL_FTS_ASSIGNED_TO, values.getAsString(Task.COL_ASSIGNED_TO));
-            ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
-
-            synchronized (HospitalInventoryApp.sDatabaseLock) {
-                // If this task is completed, then delete the corresponding FTS entry. Else update the FTS entry
-                if (task.mStatus == Task.CompletedStatus) {
-                    int ftsResult = db.delete(Task.FTS_TABLE_NAME, Task.COL_FTS_TASK_REALID + " MATCH ? ", new String[]{taskId});
-                    insertCompletedFTSTaskRow(task, taskId);
-                    HospitalInventoryApp.decrementTaskCount();
-                }
-                else {
-                    long ftsRowsUpdated =  db.update(Task.FTS_TABLE_NAME, ftsValues, Task.COL_FTS_TASK_REALID + " MATCH " + taskId, null);
-                }
+            if (task.mStatus == Task.CompletedStatus) {
+                addCompletedFTSTask(task);
+                deleteTask(taskId);
+            }
+            else {
+                rowsUpdated = db.update(Task.TABLE_NAME, values, BaseColumns._ID + "=" + taskId, null);
+                ContentValues ftsValues = new ContentValues();
+                ftsValues.put(Task.COL_FTS_ASSIGNED_TO, values.getAsString(Task.COL_ASSIGNED_TO));
+                ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
+                long ftsRowsUpdated =  db.update(Task.FTS_TABLE_NAME, ftsValues, Task.COL_FTS_TASK_REALID + " MATCH " + taskId, null);
             }
         }
         notifyProviderOnTaskChange();
         return rowsUpdated;
     }
 
-    private void insertCompletedFTSTaskRow(Task task, String taskId) {
+    private void addCompletedFTSTask(Task task) {
         ContentValues completedFTSValues = new ContentValues();
-        completedFTSValues.put(Task.COMPLETED_COL_FTS_ITEM_NAME, task.mItemName);
-        completedFTSValues.put(Task.COMPLETED_COL_FTS_ITEM_LOCATION, task.mItemLocation);
         completedFTSValues.put(Task.COMPLETED_COL_FTS_TASK_TYPE, task.getTaskTypeString());
         completedFTSValues.put(Task.COMPLETED_COL_FTS_ASSIGNED_TO, task.mAssignedTo);
 
@@ -614,7 +602,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         String dueDateString = completedDateFormat.format(completedDate);
         completedFTSValues.put(Task.COMPLETED_COL_FTS_COMPLETION_DATE, dueDateString);
 
-        completedFTSValues.put(Task.COMPLETED_COL_FTS_ITEM_ID, taskId);
+        completedFTSValues.put(Task.COMPLETED_COL_FTS_ITEM_ID, Task.SPECIAL_ITEM_ID_STRING_FOR_COMPLETED_TASKS + String.valueOf(task.mItemID));
         completedFTSValues.put(Task.COMPLETED_COL_FTS_TASK_PRIORITY, task.getTaskPriority());
         completedFTSValues.put(Task.COMPLETED_COL_FTS_COMPLETION_COMMENTS, task.mCompletionComments);
 
@@ -622,6 +610,50 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         completedFTSValues.put(Task.COMPLETED_COL_FTS_COMPLETION_TIMESTAMP, String.valueOf(completedDateTimeStamp));
 
         getWritableDatabase().insert(Task.COMPLETED_FTS_TABLE_NAME, null, completedFTSValues);
+    }
+
+    private void notifyProviderOnTaskChange() {
+        mHelperContext.getContentResolver().notifyChange(
+                HospitalInventoryContentProvider.FTS_TASK_URI, null, false);
+    }
+
+    public long insertServiceCall(ContentValues values) {
+        final SQLiteDatabase db = this.getWritableDatabase();
+        long realID = 0;
+        synchronized (HospitalInventoryApp.sDatabaseLock) {
+            realID = db.insert(ServiceCall.TABLE_NAME, null, values);
+        }
+        return realID;
+    }
+
+    public Cursor getServiceCall(String rowID, String[] columns) {
+        String selection = BaseColumns._ID + " = ?";
+        String[] selectionArgs = new String[] {rowID};
+
+        /* This builds a query that looks like:
+         *     SELECT <columns> FROM <table> WHERE _id = <rowID>
+         */
+        /* The SQLiteBuilder provides a map for all possible columns requested to
+         * actual columns in the database, creating a simple column alias mechanism
+         * by which the ContentProvider does not need to know the real column names
+         */
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(ServiceCall.TABLE_NAME);
+        builder.setProjectionMap(ServiceCall.mColumnMap);
+
+        Cursor cursor = null;
+        synchronized (HospitalInventoryApp.sDatabaseLock) {
+            cursor = builder.query(this.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
+        }
+
+        if (cursor == null) {
+            return null;
+        }
+        else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return cursor;
     }
 
     public int updateServiceCall(String serviceCallId, ContentValues values, String selection, String[] selectionArgs) {

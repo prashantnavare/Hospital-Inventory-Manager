@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <TextView
+                android:text="Type"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textTaskType"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <TextView
+            android:text="Assigned To"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textAssignedTo"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <TextView
+            android:text="Completion Date"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textCompletionDate"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <TextView
+            android:text="Priority"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textPriority"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <TextView
+            android:text="Comments"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textComments"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+    </TableRow>
+
+</TableLayout>

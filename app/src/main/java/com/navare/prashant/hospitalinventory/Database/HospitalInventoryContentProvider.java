@@ -65,6 +65,13 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     // UriMatcher stuff
     private static final int COMPUTE_NEW_TASKS = 11;
 
+    // Completed FTS Tasks related
+    private static final String COMPLETED_FTS_TASKS_SUB_SCHEME = "/completed_fts_tasks";
+    static final String COMPLETED_FTS_TASK_URL = SCHEME + PROVIDER_NAME + COMPLETED_FTS_TASKS_SUB_SCHEME;
+    public static final Uri COMPLETED_FTS_TASK_URI = Uri.parse(COMPLETED_FTS_TASK_URL);
+    // UriMatcher stuff
+    private static final int SEARCH_COMPLETED_FTS_TASKS = 12;
+
     private static final UriMatcher mURIMatcher = buildUriMatcher();
 
     /**
@@ -86,6 +93,9 @@ public class HospitalInventoryContentProvider extends ContentProvider {
 
         // to get FTS tasks...
         matcher.addURI(PROVIDER_NAME, FTS_TASKS_SUB_SCHEME, SEARCH_FTS_TASKS);
+
+        // to get Completed FTS tasks...
+        matcher.addURI(PROVIDER_NAME, COMPLETED_FTS_TASKS_SUB_SCHEME, SEARCH_COMPLETED_FTS_TASKS);
 
         // for task
         matcher.addURI(PROVIDER_NAME, TASK_SUB_SCHEME , TASKS);
@@ -151,6 +161,9 @@ public class HospitalInventoryContentProvider extends ContentProvider {
                     resultCursor =  searchFTSTasks(selectionArgs[0]);
                 }
                 break;
+            case SEARCH_COMPLETED_FTS_TASKS:
+                resultCursor =  searchCompletedFTSTasks(selectionArgs[0], selectionArgs[1]);
+                break;
             case TASK_ID:
                 resultCursor =  getTask(uri);
                 break;
@@ -191,6 +204,11 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     private Cursor searchFTSTasks(String query) {
         query = query.toLowerCase();
         return mInventoryDB.getFTSTaskMatches(query, Task.FTS_FIELDS);
+    }
+
+    private Cursor searchCompletedFTSTasks(String itemID, String query) {
+        query = query.toLowerCase();
+        return mInventoryDB.getCompletedFTSTaskMatches(itemID, query, Task.COMPLETED_FTS_FIELDS);
     }
 
     private Cursor getTask(Uri uri) {

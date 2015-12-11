@@ -305,8 +305,6 @@ public class Task {
 
     // Completed Task FTS Table - for tasks that have been completed
     public static final String COMPLETED_FTS_TABLE_NAME = "CompletedFTSTaskTable";
-    public static final String COMPLETED_COL_FTS_ITEM_NAME = "itemName";
-    public static final String COMPLETED_COL_FTS_ITEM_LOCATION = "itemLocation";
     public static final String COMPLETED_COL_FTS_TASK_TYPE = "taskType";
     public static final String COMPLETED_COL_FTS_ASSIGNED_TO = "assignedTo";
     public static final String COMPLETED_COL_FTS_COMPLETION_DATE = "completionDate";
@@ -314,12 +312,11 @@ public class Task {
     public static final String COMPLETED_COL_FTS_TASK_PRIORITY = "taskPriority";
     public static final String COMPLETED_COL_FTS_COMPLETION_COMMENTS = "completionComments";
     public static final String COMPLETED_COL_FTS_COMPLETION_TIMESTAMP = "completionTimeStamp";
+    public static final String SPECIAL_ITEM_ID_STRING_FOR_COMPLETED_TASKS = "SpecialItemID";
 
     // For database projection so order is consistent
     public static final String[] COMPLETED_FTS_FIELDS = {
             BaseColumns._ID,
-            COMPLETED_COL_FTS_ITEM_NAME,
-            COMPLETED_COL_FTS_ITEM_LOCATION,
             COMPLETED_COL_FTS_TASK_TYPE,
             COMPLETED_COL_FTS_ASSIGNED_TO,
             COMPLETED_COL_FTS_COMPLETION_DATE,
@@ -336,8 +333,6 @@ public class Task {
     public static final String CREATE_COMPLETED_FTS_TABLE =
             "CREATE VIRTUAL TABLE " + COMPLETED_FTS_TABLE_NAME +
                     " USING fts3 (" +
-                    COMPLETED_COL_FTS_ITEM_NAME + ", " +
-                    COMPLETED_COL_FTS_ITEM_LOCATION + ", " +
                     COMPLETED_COL_FTS_TASK_TYPE + "," +
                     COMPLETED_COL_FTS_ASSIGNED_TO + "," +
                     COMPLETED_COL_FTS_COMPLETION_DATE + "," +
@@ -349,8 +344,6 @@ public class Task {
 
     // Fields corresponding to FTSItemTable columns
     public String mCompletedRowID = "";
-    public String mCompletedFTSItemName = "";
-    public String mCompletedFTSItemLocation = "";
     public String mCompletedFTSTaskType = "";
     public String mCompletedFTSAssignedTo = "";
     public String mCompletedFTSCompletionDate = "";
@@ -365,15 +358,13 @@ public class Task {
     public void setCompletedFTSContent(final Cursor cursor) {
         // Indices expected to match order in FIELDS!
         this.mCompletedRowID = cursor.getString(0);
-        this.mCompletedFTSItemName = cursor.getString(1);
-        this.mCompletedFTSItemLocation = cursor.getString(2);
-        this.mCompletedFTSTaskType = cursor.getString(3);
-        this.mCompletedFTSAssignedTo = cursor.getString(4);
-        this.mCompletedFTSCompletionDate = cursor.getString(5);
-        this.mCompletedFTSRealID = cursor.getString(6);
-        this.mCompletedFTSPriority = cursor.getString(7);
-        this.mCompletedFTSCompletionComments = cursor.getString(8);
-        this.mCompletedFTSTimeStamp = cursor.getString(9);
+        this.mCompletedFTSTaskType = cursor.getString(1);
+        this.mCompletedFTSAssignedTo = cursor.getString(2);
+        this.mCompletedFTSCompletionDate = cursor.getString(3);
+        this.mCompletedFTSRealID = cursor.getString(4);
+        this.mCompletedFTSPriority = cursor.getString(5);
+        this.mCompletedFTSCompletionComments = cursor.getString(6);
+        this.mCompletedFTSTimeStamp = cursor.getString(7);
     }
 
     public static final HashMap<String, String> mCompletedFTSColumnMap = buildCompletedFTSColumnMap();
@@ -385,8 +376,6 @@ public class Task {
      */
     private static HashMap<String,String> buildCompletedFTSColumnMap() {
         HashMap<String,String> map = new HashMap<>();
-        map.put(COMPLETED_COL_FTS_ITEM_NAME, COMPLETED_COL_FTS_ITEM_NAME);
-        map.put(COMPLETED_COL_FTS_ITEM_LOCATION, COMPLETED_COL_FTS_ITEM_LOCATION);
         map.put(COMPLETED_COL_FTS_TASK_TYPE, COMPLETED_COL_FTS_TASK_TYPE);
         map.put(COMPLETED_COL_FTS_ASSIGNED_TO, COMPLETED_COL_FTS_ASSIGNED_TO);
         map.put(COMPLETED_COL_FTS_COMPLETION_DATE, COMPLETED_COL_FTS_COMPLETION_DATE);
