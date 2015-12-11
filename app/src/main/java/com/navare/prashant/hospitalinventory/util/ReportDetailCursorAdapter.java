@@ -33,19 +33,6 @@ public class ReportDetailCursorAdapter extends SimpleCursorAdapter {
             view.setBackgroundColor(Color.rgb(245, 245, 245));
         }
 
-        // If the priority is Urgent, mark it red
-        /*
-        TextView textPriority = (TextView) view.findViewById(R.id.textPriority);
-        Cursor cursor = getCursor();
-        cursor.moveToPosition(position);
-        String priority = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_TASK_PRIORITY));
-        if (priority.equalsIgnoreCase("Urgent")) {
-            textPriority.setTextColor(Color.RED);
-        }
-        else {
-            textPriority.setTextColor(Color.BLACK);
-        }
-        */
         return view;
     }
 }

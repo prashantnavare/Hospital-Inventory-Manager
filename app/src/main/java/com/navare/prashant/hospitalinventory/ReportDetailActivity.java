@@ -58,6 +58,8 @@ public class ReportDetailActivity extends ActionBarActivity
             Bundle arguments = new Bundle();
             arguments.putString(ReportDetailFragment.ARG_ITEM_ID,
                     getIntent().getStringExtra(ReportDetailFragment.ARG_ITEM_ID));
+            arguments.putString(ReportDetailFragment.ARG_ITEM_NAME,
+                    getIntent().getStringExtra(ReportDetailFragment.ARG_ITEM_NAME));
             ReportDetailFragment fragment = new ReportDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

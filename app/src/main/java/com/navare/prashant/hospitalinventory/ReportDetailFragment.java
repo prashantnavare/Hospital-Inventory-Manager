@@ -31,6 +31,7 @@ import com.navare.prashant.hospitalinventory.util.TaskListCursorAdapter;
 public class ReportDetailFragment extends Fragment {
 
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_NAME = "item_name";
 
     public static final int LOADER_ID_TASK_LIST = 11;
     /**
@@ -75,8 +76,10 @@ public class ReportDetailFragment extends Fragment {
     };
 
     private String mItemID;
+    private String mItemName;
     private ListView mReportListView;
     private ReportDetailCursorAdapter mListAdapter;
+    private ReportDetailActivity mMyActivity;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -91,6 +94,7 @@ public class ReportDetailFragment extends Fragment {
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemID = getArguments().getString(ARG_ITEM_ID);
+            mItemName = getArguments().getString(ARG_ITEM_NAME);
         }
 
         String[] columns = new String[] {
@@ -120,6 +124,8 @@ public class ReportDetailFragment extends Fragment {
 
         mReportListView = ((ListView) rootView.findViewById(R.id.reportListView));
         mReportListView.setAdapter(mListAdapter);
+
+        mMyActivity.setTitle("Reports for " + mItemName);
         return rootView;
     }
 
@@ -133,6 +139,7 @@ public class ReportDetailFragment extends Fragment {
         }
 
         mCallbacks = (Callbacks) activity;
+        mMyActivity = (ReportDetailActivity) activity;
     }
 
     @Override

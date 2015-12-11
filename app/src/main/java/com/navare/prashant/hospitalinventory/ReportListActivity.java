@@ -124,13 +124,14 @@ public class ReportListActivity extends ActionBarActivity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(String id, String name) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putString(ReportDetailFragment.ARG_ITEM_ID, id);
+            arguments.putString(ReportDetailFragment.ARG_ITEM_NAME, name);
             ReportDetailFragment fragment = new ReportDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -142,6 +143,7 @@ public class ReportListActivity extends ActionBarActivity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ReportDetailActivity.class);
             detailIntent.putExtra(ReportDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(ReportDetailFragment.ARG_ITEM_NAME, name);
             startActivity(detailIntent);
         }
     }

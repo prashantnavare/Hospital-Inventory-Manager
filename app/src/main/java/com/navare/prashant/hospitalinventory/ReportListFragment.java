@@ -52,7 +52,7 @@ public class ReportListFragment extends ListFragment {
         /**
          * Callback for when an task has been selected.
          */
-        void onItemSelected(String id);
+        void onItemSelected(String id, String name);
         String getQuery();
     }
 
@@ -62,7 +62,7 @@ public class ReportListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(String id, String name) {
         }
 
         @Override
@@ -129,7 +129,7 @@ public class ReportListFragment extends ListFragment {
         item.setFTSContent(cursor);
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(item.mFTSRealID);
+        mCallbacks.onItemSelected(item.mFTSRealID, item.mFTSName);
     }
 
     @Override
