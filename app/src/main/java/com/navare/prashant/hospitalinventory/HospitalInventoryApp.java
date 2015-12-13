@@ -30,15 +30,16 @@ public class HospitalInventoryApp extends Application {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean(sPrefTaskAlarmInitialized, false)) {
-
-            ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
-            // Set up the daily alarm for computing new tasks
-            alarmReceiver.setAlarm(getApplicationContext(), true);
-
             // Set the preferences flag to true
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(sPrefTaskAlarmInitialized, true);
+            editor.putString(HospitalInventoryApp.sPrefTaskRefreshTime, "01:00");
             editor.commit();
+
+            ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
+            // Set up the daily alarm for computing new tasks
+            alarmReceiver.setAlarm(sContext, true);
+
         }
     }
 

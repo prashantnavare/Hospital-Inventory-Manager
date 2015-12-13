@@ -58,6 +58,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // To solve the documented problem of multiple instances of Main activity (see https://code.google.com/p/android/issues/detail?id=2373)
+        if (!isTaskRoot()) {
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && action != null && action.equals(Intent.ACTION_MAIN)) {
+                finish();
+                return;
+            }
+        }
         setContentView(R.layout.activity_main);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
@@ -131,19 +140,6 @@ public class MainActivity extends Activity {
 
         // Set the title to the name of the hospital
         getSetTitleAndTaskCount();
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!preferences.getBoolean(HospitalInventoryApp.sPrefTaskAlarmInitialized, false)) {
-
-            ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
-            // Set up the daily alarm for computing new tasks
-            alarmReceiver.setAlarm(getApplicationContext(), true);
-
-            // Set the preferences flag to true
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(HospitalInventoryApp.sPrefTaskAlarmInitialized, true);
-            editor.commit();
-        }
     }
 
     @Override
