@@ -177,8 +177,8 @@ public class ItemDetailActivity extends ActionBarActivity
                 .findFragmentById(R.id.item_detail_container)).showInventorySubtractDialog();
     }
 
-    private void saveItem() {
-        ((ItemDetailFragment) getSupportFragmentManager()
+    private boolean saveItem() {
+        return ((ItemDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.item_detail_container)).saveItem();
     }
 
@@ -199,8 +199,9 @@ public class ItemDetailActivity extends ActionBarActivity
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
 
-                saveItem();
-                NavUtils.navigateUpTo(mThisActivity, new Intent(mThisActivity, ItemListActivity.class));
+                boolean bSuccess = saveItem();
+                if (bSuccess)
+                    NavUtils.navigateUpTo(mThisActivity, new Intent(mThisActivity, ItemListActivity.class));
             }
         });
 

@@ -578,10 +578,10 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
-    public void saveItem() {
+    public boolean saveItem() {
         boolean bAllDataOK = updateItemFromUI();
         if (bAllDataOK == false)
-            return;
+            return false;
 
         boolean bSuccess = false;
         if ((mItemID == null) || (mItemID.isEmpty())) {
@@ -604,6 +604,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             mCallbacks.EnableRevertButton(false);
             mCallbacks.RedrawOptionsMenu();
         }
+        return true;
     }
 
     private void showAlertDialog(String message) {
