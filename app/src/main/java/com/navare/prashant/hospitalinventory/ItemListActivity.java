@@ -155,6 +155,11 @@ public class ItemListActivity extends ActionBarActivity
     }
 
     @Override
+    public void setItemCount(long itemCount) {
+        setTitle("Inventory (" + String.valueOf(itemCount) + ")");
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String s) {
         return true;
     }

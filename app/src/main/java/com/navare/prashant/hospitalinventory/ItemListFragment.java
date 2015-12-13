@@ -55,6 +55,7 @@ public class ItemListFragment extends ListFragment {
          */
         void onItemSelected(String id);
         String getQuery();
+        void setItemCount(long itemCount);
     }
 
     /**
@@ -69,6 +70,11 @@ public class ItemListFragment extends ListFragment {
         @Override
         public String getQuery() {
             return null;
+        }
+
+        @Override
+        public void setItemCount(long itemCount) {
+
         }
     };
 
@@ -183,6 +189,7 @@ public class ItemListFragment extends ListFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(c);
+                mCallbacks.setItemCount(c.getCount());
             }
 
             @Override
