@@ -1,6 +1,7 @@
 package com.navare.prashant.hospitalinventory;
 
 import com.navare.prashant.hospitalinventory.util.ComputeNewTasksAlarmReceiver;
+import com.navare.prashant.hospitalinventory.util.SimpleEula;
 import com.navare.prashant.hospitalinventory.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -68,6 +69,8 @@ public class MainActivity extends Activity {
             }
         }
         setContentView(R.layout.activity_main);
+
+        new SimpleEula(this).show();
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content_controls);
