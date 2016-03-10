@@ -575,6 +575,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         int result = getActivity().getContentResolver().delete(itemURI, null, null);
         if (result > 0) {
             mCallbacks.onItemDeleted();
+            // TODO: Delete the tasks associated with this item
         }
     }
 

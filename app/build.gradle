@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Hospital Inventory Key'
+            keyPassword 'mohana123!!'
+            storeFile file('E:/keystore for android/hospital-inventory.jks')
+            storePassword 'mohana123!!'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "com.navare.prashant.hospitalinventory"
         minSdkVersion 14
@@ -15,12 +22,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.3'
