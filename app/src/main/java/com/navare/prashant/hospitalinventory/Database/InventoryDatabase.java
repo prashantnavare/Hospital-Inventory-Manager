@@ -188,6 +188,9 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 ftsResult = db.delete(Item.FTS_TABLE_NAME, Item.COL_FTS_ITEM_REALID + " MATCH ? ", new String[]{itemID});
             }
             notifyProviderOnItemChange();
+
+            // Lastly, delete all tasks associated with this item
+            deleteAllTasksForItem(itemID);
             return ftsResult;
         }
         return result;
@@ -410,6 +413,28 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             return ftsResult;
         }
         return result;
+    }
+
+    private void deleteAllTasksForItem(String itemID)
+    {
+        synchronized (HospitalInventoryApp.sDatabaseLock) {
+            Cursor taskCursor = null;
+            SQLiteQueryBuilder taskbuilder = new SQLiteQueryBuilder();
+            String taskSelection = Task.COL_ITEM_ID + " = ?";
+            String[] taskSelectionArgs = new String[] {itemID};
+
+            taskbuilder.setTables(Task.TABLE_NAME);
+            taskCursor = taskbuilder.query(this.getReadableDatabase(),
+                    Task.FIELDS, taskSelection, taskSelectionArgs, null, null, null);
+
+            if (taskCursor != null) {
+                Task currentTask = new Task();
+                for (taskCursor.moveToFirst(); !taskCursor.isAfterLast(); taskCursor.moveToNext()) {
+                    currentTask.setContentFromCursor(taskCursor);
+                    deleteTask(String.valueOf(currentTask.mID));
+                }
+            }
+        }
     }
 
     /**

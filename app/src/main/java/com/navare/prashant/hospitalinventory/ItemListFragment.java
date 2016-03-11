@@ -189,7 +189,8 @@ public class ItemListFragment extends ListFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(c);
-                mCallbacks.setItemCount(c.getCount());
+                if (c != null)
+                    mCallbacks.setItemCount(c.getCount());
             }
 
             @Override
