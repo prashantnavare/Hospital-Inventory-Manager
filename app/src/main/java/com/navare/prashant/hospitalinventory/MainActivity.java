@@ -1,6 +1,5 @@
 package com.navare.prashant.hospitalinventory;
 
-import com.navare.prashant.hospitalinventory.util.ComputeNewTasksAlarmReceiver;
 import com.navare.prashant.hospitalinventory.util.SimpleEula;
 import com.navare.prashant.hospitalinventory.util.SystemUiHider;
 
@@ -142,13 +141,13 @@ public class MainActivity extends Activity {
         buttonSettings.setOnTouchListener(mDelayHideTouchListener);
 
         // Set the title to the name of the hospital
-        getSetTitleAndTaskCount();
+        setTitleAndTaskandItemCount();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getSetTitleAndTaskCount();
+        setTitleAndTaskandItemCount();
     }
 
     @Override
@@ -213,7 +212,7 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    private void getSetTitleAndTaskCount() {
+    private void setTitleAndTaskandItemCount() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
         titleString = titleString + " Inventory Manager";
@@ -222,5 +221,9 @@ public class MainActivity extends Activity {
         long taskCount = preferences.getLong(HospitalInventoryApp.sPrefTaskCount, 0);
         String taskButtonString = "Tasks (" + String.valueOf(taskCount) + ")";
         buttonTasks.setText(taskButtonString);
+
+        long itemCount = preferences.getLong(HospitalInventoryApp.sPrefItemCount, 0);
+        String itemButtonString = "Inventory (" + String.valueOf(itemCount) + ")";
+        buttonInventory.setText(itemButtonString);
     }
 }

@@ -21,6 +21,7 @@ public class HospitalInventoryApp extends Application {
     public static String sPrefOrganizationName = "OrganizationName";
     public static String sPrefTaskRefreshTime = "TaskRefreshTime";
     public static String sPrefTaskCount = "TaskCount";
+    public static String sPrefItemCount = "ItemCount";
 
     @Override
     public void onCreate() {
@@ -57,6 +58,23 @@ public class HospitalInventoryApp extends Application {
         taskCount = taskCount + numTasks;
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong(sPrefTaskCount, taskCount);
+        editor.commit();
+    }
+
+    static public void incrementItemCount() {
+        changeItemCount(1);
+    }
+
+    static public void decrementItemCount() {
+        changeItemCount(-1);
+    }
+
+    static private void changeItemCount(long numItems) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
+        long itemCount = prefs.getLong(sPrefItemCount, 0);
+        itemCount = itemCount + numItems;
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(sPrefItemCount, itemCount);
         editor.commit();
     }
 }

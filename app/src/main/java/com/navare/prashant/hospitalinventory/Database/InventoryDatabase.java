@@ -171,6 +171,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 deleteItem(String.valueOf(realID));
                 return ftsID;
             }
+            HospitalInventoryApp.incrementItemCount();
         }
         return realID;
     }
@@ -191,6 +192,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
 
             // Lastly, delete all tasks associated with this item
             deleteAllTasksForItem(itemID);
+            HospitalInventoryApp.decrementItemCount();
             return ftsResult;
         }
         return result;
