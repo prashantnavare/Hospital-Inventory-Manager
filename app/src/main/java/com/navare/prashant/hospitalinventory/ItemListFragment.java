@@ -191,6 +191,9 @@ public class ItemListFragment extends ListFragment {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(c);
                 if (c != null)
                     mCallbacks.setItemCount(c.getCount());
+                else
+                    mCallbacks.setItemCount(0);
+
             }
 
             @Override
