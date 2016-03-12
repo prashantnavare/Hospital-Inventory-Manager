@@ -96,6 +96,7 @@ public class ReportListActivity extends ActionBarActivity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Not Do not iconify the widget; expand it by default
         searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint("Search reports...");
         return super.onCreateOptionsMenu(menu);
     }
 
