@@ -190,8 +190,9 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             }
             notifyProviderOnItemChange();
 
-            // Lastly, delete all tasks associated with this item
+            // Lastly, delete all tasks and service calls associated with this item
             deleteAllTasksForItem(itemID);
+            deleteAllServiceCallsForItem(itemID);
             HospitalInventoryApp.decrementItemCount();
             return ftsResult;
         }
@@ -691,6 +692,14 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         }
         notifyProviderOnTaskChange();
         return rowsUpdated;
+    }
+
+    private void deleteAllServiceCallsForItem(String itemID) {
+        final SQLiteDatabase db = this.getWritableDatabase();
+        int result = 0;
+        synchronized (HospitalInventoryApp.sDatabaseLock) {
+            result = db.delete(ServiceCall.TABLE_NAME, ServiceCall.COL_ITEMID + " IS ?", new String[]{itemID});
+        }
     }
 
     @Override
