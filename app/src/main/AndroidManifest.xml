@@ -5,7 +5,7 @@
     android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="16"
         android:targetSdkVersion="22" />
 
     <uses-feature
@@ -122,13 +122,17 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.navare.prashant.hospitalinventory.MainActivity" />
+        </activity>
 
         <provider
             android:name=".Database.HospitalInventoryContentProvider"
             android:authorities="com.navare.prashant.HospitalInventory.provider"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true"/>
 
         <service
             android:name=".util.ComputeNewTasksJobService"
@@ -153,17 +157,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.MainActivity" />
-        </activity>
-        <activity
-            android:name=".BookListActivity"
-            android:label="@string/title_book_list"></activity>
-        <activity
-            android:name=".BookDetailActivity"
-            android:label="@string/title_book_detail"
-            android:parentActivityName=".BookListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.navare.prashant.hospitalinventory.BookListActivity" />
         </activity>
     </application>
 
