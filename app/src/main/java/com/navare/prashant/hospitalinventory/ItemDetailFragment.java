@@ -34,6 +34,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Item;
 import com.navare.prashant.hospitalinventory.Database.ServiceCall;
@@ -126,6 +128,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     Uri mImageFileUri;
     Bitmap mImageBitmap = null;
 
+    private AdView mAdView;
+
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -215,6 +220,32 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         // Reset the active callbacks interface to the dummy implementation.
         mCallbacks = sDummyCallbacks;
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    // Called when returning to the activity
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    // Called before the activity is destroyed
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 
 
@@ -419,6 +450,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         if (mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) == false) {
             mItemImageRow.setVisibility(View.INVISIBLE);
         }
+
+        // Banner Ad
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
     }

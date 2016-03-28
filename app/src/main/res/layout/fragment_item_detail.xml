@@ -1,470 +1,491 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/itemDetailScrollView"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
 
-    <TableLayout
+    <ScrollView
+        android:id="@+id/itemDetailScrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:shrinkColumns="1"
+        android:layout_above="@+id/adView"
         >
 
-        <!-- Item Name -->
-        <TableRow
-            android:id="@+id/itemNameRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:shrinkColumns="1"
             >
 
-            <TextView
-                android:text="Name"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-            <EditText
-                android:id="@+id/textName"
-                android:hint="Item Name"
-                android:inputType="textCapWords|textMultiLine"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:cursorVisible="true"
-                />
-
-        </TableRow>
-
-        <!-- Item Type -->
-        <TableRow
-            android:id="@+id/itemTypeRow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <TextView
-                android:text="Type"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <Spinner
-                android:id="@+id/spinnerType"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:clickable="true" />
-
-        </TableRow>
-
-        <!-- Item Location -->
-        <TableRow
-            android:id="@+id/itemLocationRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <TextView
-                android:text="Location"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-            <EditText
-                android:id="@+id/textLocation"
-                android:inputType="textMultiLine|textCapWords"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:cursorVisible="true"
-                />
-
-        </TableRow>
-
-        <!-- Calibration Reminder -->
-        <TableRow
-            android:id="@+id/calibrationRemindersRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <CheckBox
-                android:id="@+id/chkCalibration"
-                android:layout_span="3"
-                android:text="Calibration Reminders"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:checked="false" />
-
-        </TableRow>
-
-        <!-- Calibration Details -->
-        <TableRow
-            android:id="@+id/calibrationDetailsRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <LinearLayout
-                android:id="@+id/layoutCalibration"
-                android:layout_column="1"
-                android:orientation="vertical"
-                >
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-                        android:text="@string/calibration_frequency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                    <EditText
-                        android:id="@+id/textCalibrationFrequency"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:minWidth="70sp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:text="@string/calibration_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                    />
-                    <Button
-                        android:id="@+id/btnChangeCalibrationDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/set_date" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:text="@string/instructions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        />
-                    <EditText
-                        android:id="@+id/textCalibrationInstructions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:capitalize="sentences"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:cursorVisible="true"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </TableRow>
-
-        <!-- Maintenance reminders -->
-        <TableRow
-            android:id="@+id/maintenanceRemindersRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <CheckBox
-                android:id="@+id/chkMaintenance"
-                android:layout_span="3"
-                android:text="Maintenance Reminders"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:checked="false" />
-        </TableRow>
-
-        <!-- Maintenance Details -->
-        <TableRow
-            android:id="@+id/maintenanceDetailsRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <LinearLayout
-                android:id="@+id/layoutMaintenance"
-                android:layout_column="1"
-                android:orientation="vertical"
-                >
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:text="@string/maintenance_frequency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                    <EditText
-                        android:id="@+id/textMaintenanceFrequency"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:minWidth="70sp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:numeric="integer" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:text="@string/maintenance_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        />
-                    <Button
-                        android:id="@+id/btnChangeMaintenanceDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/set_date" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:text="@string/instructions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        />
-                    <EditText
-                        android:id="@+id/textMaintenanceInstructions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:autoText="true"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:cursorVisible="true"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </TableRow>
-
-        <!-- Contract Reminders -->
-        <TableRow
-            android:id="@+id/contractRemindersRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <CheckBox
-                android:id="@+id/chkContract"
-                android:layout_span="3"
-                android:text="Contract Reminders"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:checked="false" />
-
-        </TableRow>
-
-        <!-- Contract Details -->
-        <TableRow
-            android:id="@+id/contractDetailsRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <LinearLayout
-                android:id="@+id/layoutContract"
-                android:layout_column="1"
-                android:orientation="vertical"
-                >
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:text="@string/contract_valid_till_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        />
-                    <Button
-                        android:id="@+id/btnContractValidTillDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/set_date" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:text="@string/instructions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        />
-                    <EditText
-                        android:id="@+id/textContractInstructions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:autoText="true"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:cursorVisible="true"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </TableRow>
-
-        <!-- Current Quantity -->
-        <TableRow
-            android:id="@+id/currentQuantityRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <TextView
-                android:text="@string/current_quantity"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-            <EditText
-                android:id="@+id/textCurrentQuantity"
-                android:inputType="numberDecimal"
-                android:minWidth="70sp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:numeric="integer" />
-        </TableRow>
-
-        <!-- Inventory Reminders -->
-        <TableRow
-            android:id="@+id/inventoryRemindersRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <CheckBox
-                android:id="@+id/chkInventory"
-                android:layout_span="3"
-                android:text="Inventory Reminders"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:checked="false" />
-
-        </TableRow>
-
-        <!-- Inventory Reminders Details-->
-        <TableRow
-            android:id="@+id/inventoryDetailsRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <TextView
-                android:text="@string/min_required_quantity"
-                android:layout_column="1"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <EditText
-                android:id="@+id/textMinRequiredQuantity"
-                android:layout_column="2"
-                android:inputType="numberDecimal"
-                android:minWidth="70sp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:numeric="integer" />
-        </TableRow>
-
-        <!-- Item Description -->
-        <TableRow
-            android:id="@+id/itemDescriptionRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <TextView
-                android:text="Description"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-            <EditText
-                android:id="@+id/textDescription"
-                android:inputType="textMultiLine|textCapSentences"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:cursorVisible="true"
-                />
-
-        </TableRow>
-
-        <!-- Item Image -->
-        <TableRow
-            android:id="@+id/itemImageRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:background="#ECEFF1"
-            >
-
-            <TextView
-                android:text="Image"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-
-            <ImageView
-                android:id="@+id/imageItem"
-                android:layout_height="wrap_content"
+            <!-- Item Name -->
+            <TableRow
+                android:id="@+id/itemNameRow"
                 android:layout_width="wrap_content"
-                android:visibility="visible"
-                />
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
 
-        </TableRow>
+                <TextView
+                    android:text="Name"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
 
-    </TableLayout>
+                <EditText
+                    android:id="@+id/textName"
+                    android:hint="Item Name"
+                    android:inputType="textCapWords|textMultiLine"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:cursorVisible="true"
+                    />
 
-</ScrollView>
+            </TableRow>
+
+            <!-- Item Type -->
+            <TableRow
+                android:id="@+id/itemTypeRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <TextView
+                    android:text="Type"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/spinnerType"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:clickable="true" />
+
+            </TableRow>
+
+            <!-- Item Location -->
+            <TableRow
+                android:id="@+id/itemLocationRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <TextView
+                    android:text="Location"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+
+                <EditText
+                    android:id="@+id/textLocation"
+                    android:inputType="textMultiLine|textCapWords"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:cursorVisible="true"
+                    />
+
+            </TableRow>
+
+            <!-- Calibration Reminder -->
+            <TableRow
+                android:id="@+id/calibrationRemindersRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <CheckBox
+                    android:id="@+id/chkCalibration"
+                    android:layout_span="3"
+                    android:text="Calibration Reminders"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:checked="false" />
+
+            </TableRow>
+
+            <!-- Calibration Details -->
+            <TableRow
+                android:id="@+id/calibrationDetailsRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <LinearLayout
+                    android:id="@+id/layoutCalibration"
+                    android:layout_column="1"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:text="@string/calibration_frequency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                        <EditText
+                            android:id="@+id/textCalibrationFrequency"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:minWidth="70sp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:text="@string/calibration_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                        />
+                        <Button
+                            android:id="@+id/btnChangeCalibrationDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/set_date" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:text="@string/instructions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            />
+                        <EditText
+                            android:id="@+id/textCalibrationInstructions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:capitalize="sentences"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:cursorVisible="true"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </TableRow>
+
+            <!-- Maintenance reminders -->
+            <TableRow
+                android:id="@+id/maintenanceRemindersRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <CheckBox
+                    android:id="@+id/chkMaintenance"
+                    android:layout_span="3"
+                    android:text="Maintenance Reminders"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:checked="false" />
+            </TableRow>
+
+            <!-- Maintenance Details -->
+            <TableRow
+                android:id="@+id/maintenanceDetailsRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <LinearLayout
+                    android:id="@+id/layoutMaintenance"
+                    android:layout_column="1"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:text="@string/maintenance_frequency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                        <EditText
+                            android:id="@+id/textMaintenanceFrequency"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:minWidth="70sp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:numeric="integer" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:text="@string/maintenance_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            />
+                        <Button
+                            android:id="@+id/btnChangeMaintenanceDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/set_date" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:text="@string/instructions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            />
+                        <EditText
+                            android:id="@+id/textMaintenanceInstructions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:autoText="true"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:cursorVisible="true"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </TableRow>
+
+            <!-- Contract Reminders -->
+            <TableRow
+                android:id="@+id/contractRemindersRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <CheckBox
+                    android:id="@+id/chkContract"
+                    android:layout_span="3"
+                    android:text="Contract Reminders"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:checked="false" />
+
+            </TableRow>
+
+            <!-- Contract Details -->
+            <TableRow
+                android:id="@+id/contractDetailsRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <LinearLayout
+                    android:id="@+id/layoutContract"
+                    android:layout_column="1"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:text="@string/contract_valid_till_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            />
+                        <Button
+                            android:id="@+id/btnContractValidTillDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/set_date" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:text="@string/instructions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            />
+                        <EditText
+                            android:id="@+id/textContractInstructions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:autoText="true"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:cursorVisible="true"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </TableRow>
+
+            <!-- Current Quantity -->
+            <TableRow
+                android:id="@+id/currentQuantityRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <TextView
+                    android:text="@string/current_quantity"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+                <EditText
+                    android:id="@+id/textCurrentQuantity"
+                    android:inputType="numberDecimal"
+                    android:minWidth="70sp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:numeric="integer" />
+            </TableRow>
+
+            <!-- Inventory Reminders -->
+            <TableRow
+                android:id="@+id/inventoryRemindersRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <CheckBox
+                    android:id="@+id/chkInventory"
+                    android:layout_span="3"
+                    android:text="Inventory Reminders"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:checked="false" />
+
+            </TableRow>
+
+            <!-- Inventory Reminders Details-->
+            <TableRow
+                android:id="@+id/inventoryDetailsRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <TextView
+                    android:text="@string/min_required_quantity"
+                    android:layout_column="1"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <EditText
+                    android:id="@+id/textMinRequiredQuantity"
+                    android:layout_column="2"
+                    android:inputType="numberDecimal"
+                    android:minWidth="70sp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:numeric="integer" />
+            </TableRow>
+
+            <!-- Item Description -->
+            <TableRow
+                android:id="@+id/itemDescriptionRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <TextView
+                    android:text="Description"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+
+                <EditText
+                    android:id="@+id/textDescription"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:cursorVisible="true"
+                    />
+
+            </TableRow>
+
+            <!-- Item Image -->
+            <TableRow
+                android:id="@+id/itemImageRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                android:background="#ECEFF1"
+                >
+
+                <TextView
+                    android:text="Image"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+
+                <ImageView
+                    android:id="@+id/imageItem"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </ScrollView>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/test_banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+
+</RelativeLayout>

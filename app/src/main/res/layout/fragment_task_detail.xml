@@ -1,154 +1,172 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/taskDetailScrollView"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:shrinkColumns="1"
+    android:layout_height="fill_parent">
+    <ScrollView
+        android:id="@+id/taskDetailScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/adView"
         >
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shrinkColumns="1"
+            >
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:id="@+id/textItemType"
-                android:text="@string/item"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-            <TextView
-                android:id="@+id/textItemName"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:text="Location"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-            <TextView
-                android:id="@+id/textItemLocation"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:text="@string/due_date"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <TextView
-                android:id="@+id/textDueDate"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:text="@string/assigned_to"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <TextView
-                android:id="@+id/textAssignedTo"
-                android:text="@string/none"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:text="@string/task"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <TextView
-                android:id="@+id/textTaskType"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-        <TableRow
-            android:id="@+id/contractExpiryDateRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:text="Contract Expiry"
-                android:layout_marginRight="8dp"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <TextView
-                android:id="@+id/textContractExpiryDate"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-        <TableRow
-            android:id="@+id/requiredQuantityRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:text="Required Quantity"
-                android:layout_marginRight="8dp"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <TextView
-                android:id="@+id/textRequiredQuantity"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:text="@string/priority"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <Spinner
-                android:id="@+id/spinnerPriority"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:spinnerMode="dropdown"
-                android:clickable="true" />
-        </TableRow>
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dip"
-            >
-            <TextView
-                android:id="@+id/textInstructionsLabel"
-                android:text="@string/instructions"
-                android:layout_marginRight="8dp"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <TextView
-                android:id="@+id/textInstructions"
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                />
-        </TableRow>
-    </TableLayout>
-</ScrollView>
+                android:padding="5dip"
+                >
+                <TextView
+                    android:id="@+id/textItemType"
+                    android:text="@string/item"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+                <TextView
+                    android:id="@+id/textItemName"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:text="Location"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+                <TextView
+                    android:id="@+id/textItemLocation"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:text="@string/due_date"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <TextView
+                    android:id="@+id/textDueDate"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:text="@string/assigned_to"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <TextView
+                    android:id="@+id/textAssignedTo"
+                    android:text="@string/none"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:text="@string/task"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <TextView
+                    android:id="@+id/textTaskType"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+            <TableRow
+                android:id="@+id/contractExpiryDateRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:text="Contract Expiry"
+                    android:layout_marginRight="8dp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <TextView
+                    android:id="@+id/textContractExpiryDate"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+            <TableRow
+                android:id="@+id/requiredQuantityRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:text="Required Quantity"
+                    android:layout_marginRight="8dp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <TextView
+                    android:id="@+id/textRequiredQuantity"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:text="@string/priority"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <Spinner
+                    android:id="@+id/spinnerPriority"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:spinnerMode="dropdown"
+                    android:clickable="true" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dip"
+                >
+                <TextView
+                    android:id="@+id/textInstructionsLabel"
+                    android:text="@string/instructions"
+                    android:layout_marginRight="8dp"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <TextView
+                    android:id="@+id/textInstructions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/test_banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+
+</RelativeLayout>

@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;import com.navare.prashant.hospitalinventory.Database.Item;
 import com.navare.prashant.hospitalinventory.Database.ServiceCall;
 import com.navare.prashant.hospitalinventory.Database.Task;
@@ -80,6 +82,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextContractExpiryDate;
     private TableRow mRequiredQuantityRow;
     private TextView mTextRequiredQuantity;
+
+    private AdView mAdView;
 
     String mCurrentAssignee = "";
     String mNewAssignee = "";
@@ -176,6 +180,31 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mCallbacks = sDummyCallbacks;
     }
 
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    // Called when returning to the activity
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    // Called before the activity is destroyed
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -218,6 +247,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTextContractExpiryDate = ((TextView) rootView.findViewById(R.id.textContractExpiryDate));
         mRequiredQuantityRow = (TableRow) rootView.findViewById(R.id.requiredQuantityRow);
         mTextRequiredQuantity = ((TextView) rootView.findViewById(R.id.textRequiredQuantity));
+
+        // Banner Ad
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
     }
