@@ -151,3 +151,9 @@ public class MainActivity extends Activity {
         buttonInventory.setText(itemButtonString);
     }
 }
+
+// TODO: Add interstitials for Inventory, Reports, Backup & Restore
+// TODO: Add banners for Tasks, Inventory, Reports, Backup & Restore
+// TODO: Add Remove Ads button + relevant logic for removing ads + Remove Ads button
+// TODO: Remove Ads logic - In app purchase logic
+// TODO: Register with admob.com, generate ad unit IDs for all the interstitials and banners, use them in code
