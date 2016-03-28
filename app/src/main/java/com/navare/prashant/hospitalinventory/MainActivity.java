@@ -28,6 +28,9 @@ public class MainActivity extends Activity {
 
     private AdView mAdView;
     private InterstitialAd mInterstitialAdForTasks;
+    private InterstitialAd mInterstitialAdForInventory;
+    private InterstitialAd mInterstitialAdForReports;
+    private InterstitialAd mInterstitialAdForBackupRestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,10 @@ public class MainActivity extends Activity {
         setTitleAndTaskandItemCount();
 
         // Ads related
+        doAdsInit();
+    }
+
+    private void doAdsInit() {
         // Banner Ad
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -64,7 +71,6 @@ public class MainActivity extends Activity {
         mInterstitialAdForTasks = new InterstitialAd(this);
         mInterstitialAdForTasks.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
 
-        // [START create_interstitial_ad_listener]
         mInterstitialAdForTasks.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
@@ -72,6 +78,57 @@ public class MainActivity extends Activity {
                 onTasksClick(null);
             }
         });
+
+        // Inventory related interstitial ad
+        mInterstitialAdForInventory = new InterstitialAd(this);
+        mInterstitialAdForInventory.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+
+        mInterstitialAdForInventory.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitialForInventory();
+                onInventoryClick(null);
+            }
+        });
+
+        // Reports related interstitial ad
+        mInterstitialAdForReports = new InterstitialAd(this);
+        mInterstitialAdForReports.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+
+        mInterstitialAdForReports.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitialForReports();
+                onReportsClick(null);
+            }
+        });
+
+        // BackupRestore related interstitial ad
+        mInterstitialAdForBackupRestore = new InterstitialAd(this);
+        mInterstitialAdForBackupRestore.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+
+        mInterstitialAdForBackupRestore.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitialForBackupRestore();
+                onBackupRestoreClick(null);
+            }
+        });
+    }
+
+    private void doAdsReload() {
+        if (!mInterstitialAdForTasks.isLoaded()) {
+            requestNewInterstitialForTasks();
+        }
+        if (!mInterstitialAdForInventory.isLoaded()) {
+            requestNewInterstitialForInventory();
+        }
+        if (!mInterstitialAdForReports.isLoaded()) {
+            requestNewInterstitialForReports();
+        }
+        if (!mInterstitialAdForBackupRestore.isLoaded()) {
+            requestNewInterstitialForBackupRestore();
+        }
     }
 
     // Called when leaving the activity
@@ -91,9 +148,7 @@ public class MainActivity extends Activity {
         if (mAdView != null) {
             mAdView.resume();
         }
-        if (!mInterstitialAdForTasks.isLoaded()) {
-            requestNewInterstitialForTasks();
-        }
+        doAdsReload();
     }
 
     // Called before the activity is destroyed
@@ -110,6 +165,21 @@ public class MainActivity extends Activity {
         mInterstitialAdForTasks.loadAd(adRequest);
     }
 
+    private void requestNewInterstitialForInventory() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAdForInventory.loadAd(adRequest);
+    }
+
+    private void requestNewInterstitialForReports() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAdForReports.loadAd(adRequest);
+    }
+
+    private void requestNewInterstitialForBackupRestore() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAdForBackupRestore.loadAd(adRequest);
+    }
+
     public void onTasksClick(View view)
     {
         if (mInterstitialAdForTasks.isLoaded()) {
@@ -121,15 +191,30 @@ public class MainActivity extends Activity {
     }
 
     public void onInventoryClick(View view) {
-        startActivity(new Intent(this, ItemListActivity.class));
+        if (mInterstitialAdForInventory.isLoaded()) {
+            mInterstitialAdForInventory.show();
+        }
+        else {
+            startActivity(new Intent(this, ItemListActivity.class));
+        }
     }
 
     public void onReportsClick(View view) {
-        startActivity(new Intent(this, ReportListActivity.class));
+        if (mInterstitialAdForReports.isLoaded()) {
+            mInterstitialAdForReports.show();
+        }
+        else {
+            startActivity(new Intent(this, ReportListActivity.class));
+        }
     }
 
     public void onBackupRestoreClick(View view) {
-        startActivity(new Intent(this, BackupRestoreActivity.class));
+        if (mInterstitialAdForBackupRestore.isLoaded()) {
+            mInterstitialAdForBackupRestore.show();
+        }
+        else {
+            startActivity(new Intent(this, BackupRestoreActivity.class));
+        }
     }
 
     public void onSettingsClick(View view) {
@@ -152,7 +237,6 @@ public class MainActivity extends Activity {
     }
 }
 
-// TODO: Add interstitials for Inventory, Reports, Backup & Restore
 // TODO: Add banners for Tasks, Inventory, Reports, Backup & Restore
 // TODO: Add Remove Ads button + relevant logic for removing ads + Remove Ads button
 // TODO: Remove Ads logic - In app purchase logic
