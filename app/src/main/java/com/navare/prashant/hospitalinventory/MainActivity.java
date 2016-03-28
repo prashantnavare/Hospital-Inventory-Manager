@@ -1,16 +1,16 @@
 package com.navare.prashant.hospitalinventory;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.navare.prashant.hospitalinventory.util.SimpleEula;
 import com.navare.prashant.hospitalinventory.util.SystemUiHider;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
@@ -25,6 +25,9 @@ public class MainActivity extends Activity {
     private Button buttonInventory;
     private Button buttonTasks;
     private Button buttonSettings;
+
+    private AdView mAdView;
+    private InterstitialAd mInterstitialAdForTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +53,71 @@ public class MainActivity extends Activity {
 
         // Set the title to the name of the hospital
         setTitleAndTaskandItemCount();
+
+        // Ads related
+        // Banner Ad
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        // Tasks related interstitial ad
+        mInterstitialAdForTasks = new InterstitialAd(this);
+        mInterstitialAdForTasks.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+
+        // [START create_interstitial_ad_listener]
+        mInterstitialAdForTasks.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitialForTasks();
+                onTasksClick(null);
+            }
+        });
     }
 
+    // Called when leaving the activity
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    // Called when returning to the activity
     @Override
     protected void onResume() {
         super.onResume();
         setTitleAndTaskandItemCount();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+        if (!mInterstitialAdForTasks.isLoaded()) {
+            requestNewInterstitialForTasks();
+        }
+    }
+
+    // Called before the activity is destroyed
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    private void requestNewInterstitialForTasks() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAdForTasks.loadAd(adRequest);
     }
 
     public void onTasksClick(View view)
     {
-        startActivity(new Intent(this, TaskListActivity.class));
+        if (mInterstitialAdForTasks.isLoaded()) {
+            mInterstitialAdForTasks.show();
+        }
+        else {
+            startActivity(new Intent(this, TaskListActivity.class));
+        }
     }
 
     public void onInventoryClick(View view) {
