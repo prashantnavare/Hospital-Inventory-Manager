@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Task;
 import com.navare.prashant.hospitalinventory.util.ReportDetailCursorAdapter;
@@ -81,6 +83,8 @@ public class ReportDetailFragment extends Fragment {
     private ReportDetailCursorAdapter mListAdapter;
     private ReportDetailActivity mMyActivity;
 
+    private AdView mAdView;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -118,6 +122,32 @@ public class ReportDetailFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    // Called when returning to the activity
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    // Called before the activity is destroyed
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_report_detail, container, false);
@@ -126,6 +156,12 @@ public class ReportDetailFragment extends Fragment {
         mReportListView.setAdapter(mListAdapter);
 
         mMyActivity.setTitle("Reports for " + mItemName);
+
+        // Banner Ad
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         return rootView;
     }
 
@@ -156,7 +192,7 @@ public class ReportDetailFragment extends Fragment {
         getLoaderManager().restartLoader(LOADER_ID_TASK_LIST, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                String [] selectionArgs = null;
+                String [] selectionArgs;
                 if (searchString != null) {
                     selectionArgs = new String[] {mItemID, searchString};
                 }
