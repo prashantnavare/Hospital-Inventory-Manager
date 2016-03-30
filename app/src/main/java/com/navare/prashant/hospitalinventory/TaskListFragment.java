@@ -1,9 +1,6 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.Activity;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -11,10 +8,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-
-
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Task;
 import com.navare.prashant.hospitalinventory.util.TaskListCursorAdapter;
@@ -60,6 +59,8 @@ public class TaskListFragment extends ListFragment {
         void onTaskSelected(String id);
         String getQuery();
     }
+
+    private AdView mAdView;
 
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
@@ -107,6 +108,44 @@ public class TaskListFragment extends ListFragment {
                 R.layout.task_list_row, null, columns, views, 0));
 
         getNewTaskList(null);
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    // Called when returning to the activity
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    // Called before the activity is destroyed
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
+
+        // Banner Ad
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        return rootView;
     }
 
     @Override

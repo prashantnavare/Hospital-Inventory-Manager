@@ -8,10 +8,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
 import com.navare.prashant.hospitalinventory.Database.Item;
 
@@ -78,6 +82,8 @@ public class ItemListFragment extends ListFragment {
         }
     };
 
+    private AdView mAdView;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -94,6 +100,44 @@ public class ItemListFragment extends ListFragment {
                 Item.COL_FTS_ITEM_NAME, Item.COL_FTS_ITEM_LOCATION}, new int[] { R.id.textName, R.id.textLocation}, 0));
 
         getNewItemList(null);
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    // Called when returning to the activity
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    // Called before the activity is destroyed
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_item_list, container, false);
+
+        // Banner Ad
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        return rootView;
     }
 
     @Override

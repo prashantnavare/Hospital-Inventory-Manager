@@ -9,15 +9,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;import android.os.Bundle;
+import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;import android.support.v4.app.LoaderManager;import android.support.v4.content.CursorLoader;import android.support.v4.content.Loader;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.telephony.SmsManager;
-import android.text.Editable;import android.text.TextWatcher;import android.view.LayoutInflater;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,9 +27,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;import com.navare.prashant.hospitalinventory.Database.Item;
@@ -36,8 +35,8 @@ import com.navare.prashant.hospitalinventory.Database.Task;
 import com.navare.prashant.hospitalinventory.util.ContractTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.InventoryTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.TaskDoneDialogFragment;
-
-import java.text.ParseException;import java.text.SimpleDateFormat;import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
