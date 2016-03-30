@@ -25,6 +25,7 @@ public class MainActivity extends Activity {
     private Button buttonInventory;
     private Button buttonTasks;
     private Button buttonSettings;
+    private Button buttonRemoveAds;
 
     private AdView mAdView;
     private InterstitialAd mInterstitialAdForTasks;
@@ -57,13 +58,24 @@ public class MainActivity extends Activity {
         // Set the title to the name of the hospital
         setTitleAndTaskandItemCount();
 
+        // TODO: Remove this after testing
+        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
+
         // Ads related
         doAdsInit();
     }
 
     private void doAdsInit() {
+        buttonRemoveAds = (Button) findViewById(R.id.removeads_button);
         // Banner Ad
         mAdView = (AdView) findViewById(R.id.adView);
+
+        if (HospitalInventoryApp.isAppPurchased() == true) {
+            buttonRemoveAds.setVisibility(View.GONE);
+            mAdView.setVisibility(View.GONE);
+            return;
+        }
+
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -117,16 +129,16 @@ public class MainActivity extends Activity {
     }
 
     private void doAdsReload() {
-        if (!mInterstitialAdForTasks.isLoaded()) {
+        if (mInterstitialAdForTasks != null && !mInterstitialAdForTasks.isLoaded()) {
             requestNewInterstitialForTasks();
         }
-        if (!mInterstitialAdForInventory.isLoaded()) {
+        if (mInterstitialAdForInventory != null && !mInterstitialAdForInventory.isLoaded()) {
             requestNewInterstitialForInventory();
         }
-        if (!mInterstitialAdForReports.isLoaded()) {
+        if (mInterstitialAdForReports != null && !mInterstitialAdForReports.isLoaded()) {
             requestNewInterstitialForReports();
         }
-        if (!mInterstitialAdForBackupRestore.isLoaded()) {
+        if (mInterstitialAdForBackupRestore != null && !mInterstitialAdForBackupRestore.isLoaded()) {
             requestNewInterstitialForBackupRestore();
         }
     }
@@ -182,7 +194,7 @@ public class MainActivity extends Activity {
 
     public void onTasksClick(View view)
     {
-        if (mInterstitialAdForTasks.isLoaded()) {
+        if (mInterstitialAdForTasks != null && mInterstitialAdForTasks.isLoaded()) {
             mInterstitialAdForTasks.show();
         }
         else {
@@ -191,7 +203,7 @@ public class MainActivity extends Activity {
     }
 
     public void onInventoryClick(View view) {
-        if (mInterstitialAdForInventory.isLoaded()) {
+        if (mInterstitialAdForInventory != null && mInterstitialAdForInventory.isLoaded()) {
             mInterstitialAdForInventory.show();
         }
         else {
@@ -200,7 +212,7 @@ public class MainActivity extends Activity {
     }
 
     public void onReportsClick(View view) {
-        if (mInterstitialAdForReports.isLoaded()) {
+        if (mInterstitialAdForReports != null && mInterstitialAdForReports.isLoaded()) {
             mInterstitialAdForReports.show();
         }
         else {
@@ -209,7 +221,7 @@ public class MainActivity extends Activity {
     }
 
     public void onBackupRestoreClick(View view) {
-        if (mInterstitialAdForBackupRestore.isLoaded()) {
+        if (mInterstitialAdForBackupRestore != null && mInterstitialAdForBackupRestore.isLoaded()) {
             mInterstitialAdForBackupRestore.show();
         }
         else {
@@ -237,7 +249,6 @@ public class MainActivity extends Activity {
     }
 }
 
-// TODO: Add banners for Tasks, Inventory, Reports, Backup & Restore
 // TODO: Add Remove Ads button + relevant logic for removing ads + Remove Ads button
-// TODO: Remove Ads logic - In app purchase logic
+// TODO: Remove Ads button logic - In app purchase logic
 // TODO: Register with admob.com, generate ad unit IDs for all the interstitials and banners, use them in code

@@ -22,6 +22,9 @@ public class HospitalInventoryApp extends Application {
     public static String sPrefTaskRefreshTime = "TaskRefreshTime";
     public static String sPrefTaskCount = "TaskCount";
     public static String sPrefItemCount = "ItemCount";
+    public static String sPrefPurchaseValue = "PurchaseValue";
+
+    public static long APP_PURCHASED = 0xdeadbeef;
 
     @Override
     public void onCreate() {
@@ -76,5 +79,21 @@ public class HospitalInventoryApp extends Application {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong(sPrefItemCount, itemCount);
         editor.commit();
+    }
+
+    static public void setPurchaseValue(long purchaseValue) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(sPrefPurchaseValue, purchaseValue);
+        editor.commit();
+    }
+
+    static public boolean isAppPurchased() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
+        long purchaseValue = prefs.getLong(sPrefPurchaseValue, 0);
+        if (purchaseValue == APP_PURCHASED)
+            return true;
+        else
+            return false;
     }
 }
