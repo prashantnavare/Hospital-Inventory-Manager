@@ -159,8 +159,14 @@ public class ReportDetailFragment extends Fragment {
 
         // Banner Ad
         mAdView = (AdView) rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        if (HospitalInventoryApp.isAppPurchased() == true) {
+            mAdView.setVisibility(View.GONE);
+            mAdView = null;
+        }
+        else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
 
         return rootView;
     }

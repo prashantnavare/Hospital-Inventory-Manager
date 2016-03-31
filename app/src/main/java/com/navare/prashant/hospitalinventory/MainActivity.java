@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         setTitleAndTaskandItemCount();
 
         // TODO: Remove this after testing
-        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
+        HospitalInventoryApp.setPurchaseValue(0);
 
         // Ads related
         doAdsInit();
@@ -249,6 +249,5 @@ public class MainActivity extends Activity {
     }
 }
 
-// TODO: Add Remove Ads button + relevant logic for removing ads + Remove Ads button
 // TODO: Remove Ads button logic - In app purchase logic
 // TODO: Register with admob.com, generate ad unit IDs for all the interstitials and banners, use them in code
