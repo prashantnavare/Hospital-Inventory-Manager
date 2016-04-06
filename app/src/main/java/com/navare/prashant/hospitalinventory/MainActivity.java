@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
 
         // Tasks related interstitial ad
         mInterstitialAdForTasks = new InterstitialAd(this);
-        mInterstitialAdForTasks.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+        mInterstitialAdForTasks.setAdUnitId(getString(R.string.interstitial_tasks_ad_unit_id));
 
         mInterstitialAdForTasks.setAdListener(new AdListener() {
             @Override
@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
 
         // Inventory related interstitial ad
         mInterstitialAdForInventory = new InterstitialAd(this);
-        mInterstitialAdForInventory.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+        mInterstitialAdForInventory.setAdUnitId(getString(R.string.interstitial_inventory_ad_unit_id));
 
         mInterstitialAdForInventory.setAdListener(new AdListener() {
             @Override
@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
 
         // Reports related interstitial ad
         mInterstitialAdForReports = new InterstitialAd(this);
-        mInterstitialAdForReports.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+        mInterstitialAdForReports.setAdUnitId(getString(R.string.interstitial_reports_ad_unit_id));
 
         mInterstitialAdForReports.setAdListener(new AdListener() {
             @Override
@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
 
         // BackupRestore related interstitial ad
         mInterstitialAdForBackupRestore = new InterstitialAd(this);
-        mInterstitialAdForBackupRestore.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+        mInterstitialAdForBackupRestore.setAdUnitId(getString(R.string.interstitial_backuprestore_ad_unit_id));
 
         mInterstitialAdForBackupRestore.setAdListener(new AdListener() {
             @Override

@@ -110,8 +110,17 @@
     <string name="backup_restore_button"><![CDATA[Backup & Restore]]></string>
     <string name="title_book_list">Books</string>
     <string name="title_book_detail">Book Detail</string>
-    <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="test_interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="interstitial_backuprestore_ad_unit_id">ca-app-pub-1181736027907915/4691435780</string>
+    <string name="interstitial_inventory_ad_unit_id">ca-app-pub-1181736027907915/1737969388</string>
+    <string name="interstitial_reports_ad_unit_id">ca-app-pub-1181736027907915/3214702587</string>
+    <string name="interstitial_tasks_ad_unit_id">ca-app-pub-1181736027907915/9261236185</string>
+    <string name="banner_item_detail_ad_unit_id">ca-app-pub-1181736027907915/9400836983</string>
+    <string name="banner_item_list_ad_unit_id">ca-app-pub-1181736027907915/1877570187</string>
+    <string name="banner_main_ad_unit_id">ca-app-pub-1181736027907915/7924103784</string>
+    <string name="banner_report_detail_ad_unit_id">ca-app-pub-1181736027907915/3354303382</string>
+    <string name="banner_report_list_ad_unit_id">ca-app-pub-1181736027907915/4831036583</string>
+    <string name="banner_task_detail_ad_unit_id">ca-app-pub-1181736027907915/6307769786</string>
+    <string name="banner_task_list_ad_unit_id">ca-app-pub-1181736027907915/7784502986</string>
     <string name="removeads_button">Remove Ads</string>
 
 </resources>
