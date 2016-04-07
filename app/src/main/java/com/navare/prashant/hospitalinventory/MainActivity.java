@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         setTitleAndTaskandItemCount();
 
         // TODO: Remove this after testing
-        HospitalInventoryApp.setPurchaseValue(0);
+        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
 
         // Ads related
         doAdsInit();
