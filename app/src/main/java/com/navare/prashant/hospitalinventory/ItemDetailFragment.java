@@ -99,9 +99,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private LinearLayout mContractRemindersLayout;
     private LinearLayout mContractDetailsLayout;
 
-    private TableRow mCurrentQuantityRow;
-    private TableRow mInventoryRemindersRow;
-    private TableRow mInventoryDetailsRow;
+    private LinearLayout mConsumableLayout;
+    private LinearLayout mInventoryDetailsLayout;
+
     private TableRow mItemImageRow;
 
     private CheckBox mCalibrationCheckBox;
@@ -269,9 +269,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         else
             mContractDetailsLayout.setVisibility(View.GONE);
 
-        mCurrentQuantityRow.setVisibility(View.GONE);
-        mInventoryRemindersRow.setVisibility(View.GONE);
-        mInventoryDetailsRow.setVisibility(View.GONE);
+        mConsumableLayout.setVisibility(View.GONE);
     }
 
     private void showConsummableLayout() {
@@ -282,12 +280,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mContractRemindersLayout.setVisibility(View.GONE);
         mContractDetailsLayout.setVisibility(View.GONE);
 
-        mCurrentQuantityRow.setVisibility(View.VISIBLE);
-        mInventoryRemindersRow.setVisibility(View.VISIBLE);
+        mConsumableLayout.setVisibility(View.VISIBLE);
         if (mInventoryCheckBox.isChecked())
-            mInventoryDetailsRow.setVisibility(View.VISIBLE);
+            mInventoryDetailsLayout.setVisibility(View.VISIBLE);
         else
-            mInventoryDetailsRow.setVisibility(View.GONE);
+            mInventoryDetailsLayout.setVisibility(View.GONE);
 
     }
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -422,9 +419,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextContractInstructions.addTextChangedListener(this);
 
         // Consummable related
-        mCurrentQuantityRow = (TableRow) rootView.findViewById(R.id.currentQuantityRow);
-        mInventoryRemindersRow = (TableRow) rootView.findViewById(R.id.inventoryRemindersRow);
-        mInventoryDetailsRow = (TableRow) rootView.findViewById(R.id.inventoryDetailsRow);
+        mConsumableLayout = (LinearLayout) rootView.findViewById(R.id.consumableLayout);
+        mInventoryDetailsLayout = (LinearLayout) rootView.findViewById(R.id.inventoryDetailsLayout);
 
         // Inventory related
         mTextCurrentQuantity = (TextView) rootView.findViewById(R.id.textCurrentQuantity);
@@ -434,9 +430,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mInventoryCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
-                    mInventoryDetailsRow.setVisibility(View.VISIBLE);
+                    mInventoryDetailsLayout.setVisibility(View.VISIBLE);
                 } else {
-                    mInventoryDetailsRow.setVisibility(View.GONE);
+                    mInventoryDetailsLayout.setVisibility(View.GONE);
                 }
                 enableRevertAndSaveButtons();
             }
@@ -903,13 +899,13 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Set the Inventory UI elements
             if (mItem.mInventoryReminders > 0) {
                 mInventoryCheckBox.setChecked(true);
-                mInventoryDetailsRow.setVisibility(View.VISIBLE);
+                mInventoryDetailsLayout.setVisibility(View.VISIBLE);
                 if (mItem.mMinRequiredQuantity > 0)
                     mTextMinRequiredQuantity.setText(String.valueOf(mItem.mMinRequiredQuantity));
             }
             else {
                 mInventoryCheckBox.setChecked(false);
-                mInventoryDetailsRow.setVisibility(View.GONE);
+                mInventoryDetailsLayout.setVisibility(View.GONE);
             }
         }
 
