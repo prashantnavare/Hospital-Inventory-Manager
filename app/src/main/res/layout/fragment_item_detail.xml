@@ -251,209 +251,251 @@
             </LinearLayout>
 
             <!-- Maintenance Layout -->
-        <LinearLayout
-            android:id="@+id/maintenanceRemindersLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:layout_gravity="bottom"
-            android:elevation="6dp"
-            android:background="@drawable/raised_background"
-            android:orientation="vertical"
-            android:textAlignment="center"
-            >
-            <!-- Maintenance Reminder checkbox -->
-                    <CheckBox
-                        android:id="@+id/chkMaintenance"
-                        android:text="Maintenance Reminders"
-                        android:layout_weight="1"
-                        android:textSize="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:textStyle="bold"
-                        android:checked="false"
-                        />
+            <LinearLayout
+                android:id="@+id/maintenanceRemindersLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:layout_gravity="bottom"
+                android:elevation="6dp"
+                android:background="@drawable/raised_background"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                >
+
+                <!-- Maintenance Reminder checkbox -->
+                <CheckBox
+                    android:id="@+id/chkMaintenance"
+                    android:text="Maintenance Reminders"
+                    android:layout_weight="1"
+                    android:textSize="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:checked="false"
+                    />
 
                 <!-- Maintenance Details -->
-        <LinearLayout
-            android:id="@+id/maintenanceDetailsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:layout_gravity="bottom"
-            android:elevation="6dp"
-            android:orientation="vertical"
-            android:textAlignment="center"
-            >
-                        <LinearLayout
+                <LinearLayout
+                    android:id="@+id/maintenanceDetailsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:layout_gravity="bottom"
+                    android:elevation="6dp"
+                    android:orientation="vertical"
+                    android:textAlignment="center"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        >
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:textSize="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="bottom"
-                            >
-                            <TextView
-                                android:layout_weight="1"
-                                android:textSize="10dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:text="@string/maintenance_frequency"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
-                            <EditText
-                                android:id="@+id/textMaintenanceFrequency"
-                                android:layout_weight="1"
-                                android:textSize="10dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:inputType="numberDecimal"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
+                            android:padding="5dp"
+                            android:text="@string/maintenance_frequency"
+                            />
+
+                        <EditText
+                            android:id="@+id/textMaintenanceFrequency"
+                            android:layout_weight="1"
+                            android:textSize="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="bottom"
-                            >
-                            <TextView
-                                android:text="@string/maintenance_date"
-                                android:layout_weight="1"
-                                android:textSize="10dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                />
-                            <Button
-                                android:id="@+id/btnChangeMaintenanceDate"
-                                android:layout_weight="1"
-                                android:textSize="8dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:text="@string/set_date"
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="bottom"
-                            >
-                            <TextView
-                                android:text="@string/instructions"
-                                android:layout_weight="1"
-                                android:textSize="12dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                />
-                            <EditText
-                                android:id="@+id/textMaintenanceInstructions"
-                                android:layout_weight="1"
-                                android:textSize="12dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="5dp"
-                                android:inputType="textMultiLine|textCapSentences"
-                                android:capitalize="sentences"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:cursorVisible="true"
-                                />
-                        </LinearLayout>
+                            android:padding="5dp"
+                            android:inputType="numberDecimal"
+                            />
+
                     </LinearLayout>
-        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        >
+                        <TextView
+                            android:text="@string/maintenance_date"
+                            android:layout_weight="1"
+                            android:textSize="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            />
+                        <Button
+                            android:id="@+id/btnChangeMaintenanceDate"
+                            android:layout_weight="1"
+                            android:textSize="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/set_date"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        >
+
+                        <TextView
+                            android:text="@string/instructions"
+                            android:layout_weight="1"
+                            android:textSize="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            />
+
+                        <EditText
+                            android:id="@+id/textMaintenanceInstructions"
+                            android:layout_weight="1"
+                            android:textSize="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:capitalize="sentences"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:cursorVisible="true"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Contract Layout -->
+            <LinearLayout
+                android:id="@+id/contractRemindersLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:layout_gravity="bottom"
+                android:elevation="6dp"
+                android:background="@drawable/raised_background"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                >
+
+                <!-- Contract Reminder checkbox -->
+                <CheckBox
+                    android:id="@+id/chkContract"
+                    android:text="Contract Reminders"
+                    android:layout_weight="1"
+                    android:textSize="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:checked="false"
+                    />
+
+                <!-- Contract Details -->
+                <LinearLayout
+                    android:id="@+id/contractDetailsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:layout_gravity="bottom"
+                    android:elevation="6dp"
+                    android:orientation="vertical"
+                    android:textAlignment="center"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        >
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:textSize="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/contract_valid_till_date"
+                            />
+                        <Button
+                            android:id="@+id/btnContractValidTillDate"
+                            android:layout_weight="1"
+                            android:textSize="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textStyle="bold"
+                            android:text="@string/set_date"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom"
+                        >
+
+                        <TextView
+                            android:text="@string/instructions"
+                            android:layout_weight="1"
+                            android:textSize="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            />
+
+                        <EditText
+                            android:id="@+id/textContractInstructions"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:autoText="true"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:cursorVisible="true"
+                            android:layout_weight="1"
+                            android:textSize="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <!-- Contract Reminders -->
-                <TableRow
-                    android:id="@+id/contractRemindersRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dip"
-                    android:background="#ECEFF1"
-                    >
-
-                    <CheckBox
-                        android:id="@+id/chkContract"
-                        android:layout_span="3"
-                        android:text="Contract Reminders"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:checked="false" />
-
-                </TableRow>
-
-                <!-- Contract Details -->
-                <TableRow
-                    android:id="@+id/contractDetailsRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dip"
-                    android:background="#ECEFF1"
-                    >
-
-                    <LinearLayout
-                        android:id="@+id/layoutContract"
-                        android:layout_column="1"
-                        android:orientation="vertical"
-                        >
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:text="@string/contract_valid_till_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
-                            <Button
-                                android:id="@+id/btnContractValidTillDate"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:text="@string/set_date" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <TextView
-                                android:text="@string/instructions"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
-                            <EditText
-                                android:id="@+id/textContractInstructions"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textMultiLine|textCapSentences"
-                                android:autoText="true"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:cursorVisible="true"
-                                />
-                        </LinearLayout>
-                    </LinearLayout>
-                </TableRow>
-
                 <!-- Current Quantity -->
                 <TableRow
                     android:id="@+id/currentQuantityRow"

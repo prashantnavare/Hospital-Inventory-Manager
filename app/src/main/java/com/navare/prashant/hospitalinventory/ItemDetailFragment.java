@@ -96,8 +96,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private LinearLayout mCalibrationDetailsLayout;
     private LinearLayout mMaintenanceRemindersLayout;
     private LinearLayout mMaintenanceDetailsLayout;
-    private TableRow mContractRemindersRow;
-    private TableRow mContractDetailsRow;
+    private LinearLayout mContractRemindersLayout;
+    private LinearLayout mContractDetailsLayout;
 
     private TableRow mCurrentQuantityRow;
     private TableRow mInventoryRemindersRow;
@@ -263,11 +263,11 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         else
             mMaintenanceDetailsLayout.setVisibility(View.GONE);
 
-        mContractRemindersRow.setVisibility(View.VISIBLE);
+        mContractRemindersLayout.setVisibility(View.VISIBLE);
         if (mContractCheckBox.isChecked())
-            mContractDetailsRow.setVisibility(View.VISIBLE);
+            mContractDetailsLayout.setVisibility(View.VISIBLE);
         else
-            mContractDetailsRow.setVisibility(View.GONE);
+            mContractDetailsLayout.setVisibility(View.GONE);
 
         mCurrentQuantityRow.setVisibility(View.GONE);
         mInventoryRemindersRow.setVisibility(View.GONE);
@@ -279,8 +279,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mCalibrationDetailsLayout.setVisibility(View.GONE);
         mMaintenanceRemindersLayout.setVisibility(View.GONE);
         mMaintenanceDetailsLayout.setVisibility(View.GONE);
-        mContractRemindersRow.setVisibility(View.GONE);
-        mContractDetailsRow.setVisibility(View.GONE);
+        mContractRemindersLayout.setVisibility(View.GONE);
+        mContractDetailsLayout.setVisibility(View.GONE);
 
         mCurrentQuantityRow.setVisibility(View.VISIBLE);
         mInventoryRemindersRow.setVisibility(View.VISIBLE);
@@ -338,8 +338,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mCalibrationDetailsLayout = (LinearLayout) rootView.findViewById(R.id.calibrationDetailsLayout);
         mMaintenanceRemindersLayout = (LinearLayout) rootView.findViewById(R.id.maintenanceRemindersLayout);
         mMaintenanceDetailsLayout = (LinearLayout) rootView.findViewById(R.id.maintenanceDetailsLayout);
-        mContractRemindersRow = (TableRow) rootView.findViewById(R.id.contractRemindersRow);
-        mContractDetailsRow = (TableRow) rootView.findViewById(R.id.contractDetailsRow);
+        mContractRemindersLayout = (LinearLayout) rootView.findViewById(R.id.contractRemindersLayout);
+        mContractDetailsLayout = (LinearLayout) rootView.findViewById(R.id.contractDetailsLayout);
 
         // Calibration
         mCalibrationCheckBox = (CheckBox) rootView.findViewById(R.id.chkCalibration);
@@ -401,9 +401,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mContractCheckBox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
-                    mContractDetailsRow.setVisibility(View.VISIBLE);
+                    mContractDetailsLayout.setVisibility(View.VISIBLE);
                 } else {
-                    mContractDetailsRow.setVisibility(View.GONE);
+                    mContractDetailsLayout.setVisibility(View.GONE);
                 }
                 enableRevertAndSaveButtons();
             }
@@ -865,7 +865,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Set the contract UI elements
             if (mItem.mContractReminders > 0) {
                 mContractCheckBox.setChecked(true);
-                mContractDetailsRow.setVisibility(View.VISIBLE);
+                mContractDetailsLayout.setVisibility(View.VISIBLE);
                 if (mItem.mContractValidTillDate > 0) {
                     Calendar contractDate = Calendar.getInstance();
                     contractDate.setTimeInMillis(mItem.mContractValidTillDate);
@@ -879,7 +879,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             }
             else {
                 mContractCheckBox.setChecked(false);
-                mContractDetailsRow.setVisibility(View.GONE);
+                mContractDetailsLayout.setVisibility(View.GONE);
             }
         }
         else if (mItem.mType == Item.ConsummableType) {
@@ -941,7 +941,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mMaintenanceDetailsLayout.setVisibility(View.GONE);
 
         mContractCheckBox.setChecked(false);
-        mContractDetailsRow.setVisibility(View.GONE);
+        mContractDetailsLayout.setVisibility(View.GONE);
 
         mImageView.setImageBitmap(null);
 
