@@ -546,102 +546,105 @@
                     android:checked="false"
                     />
 
-                <!-- Inventory Reminders Details-->
                 <LinearLayout
                     android:id="@+id/inventoryDetailsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:padding="5dp"
+                    android:orientation="horizontal"
                     android:layout_gravity="bottom"
-                    android:elevation="6dp"
-                    android:orientation="vertical"
-                    android:textAlignment="center"
                     >
 
-                    <LinearLayout
+                    <TextView
+                        android:text="@string/min_required_quantity"
+                        android:layout_weight="1"
+                        android:textSize="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="bottom"
-                        >
-
-                        <TextView
-                            android:text="@string/min_required_quantity"
-                            android:layout_weight="1"
-                            android:textSize="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            />
-                        <EditText
-                            android:id="@+id/textMinRequiredQuantity"
-                            android:inputType="numberDecimal"
-                            android:cursorVisible="true"
-                            android:layout_weight="1"
-                            android:textSize="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            />
-                    </LinearLayout>
+                        android:padding="5dp"
+                        />
+                    <EditText
+                        android:id="@+id/textMinRequiredQuantity"
+                        android:inputType="numberDecimal"
+                        android:cursorVisible="true"
+                        android:layout_weight="1"
+                        android:textSize="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
-                <TableLayout
+            <!-- Description  Layout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:layout_gravity="bottom"
+                android:elevation="6dp"
+                android:background="@drawable/raised_background"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                >
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <!-- Item Description -->
-                <TableRow
-                    android:id="@+id/itemDescriptionRow"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dip"
-                    android:background="#ECEFF1"
+                    android:orientation="horizontal"
+                    android:layout_gravity="bottom"
                     >
 
                     <TextView
                         android:text="Description"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_weight="1"
+                        android:textSize="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
                         />
 
                     <EditText
                         android:id="@+id/textDescription"
                         android:inputType="textMultiLine|textCapSentences"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:autoText="true"
                         android:cursorVisible="true"
+                        android:layout_weight="1"
+                        android:textSize="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
                         />
+                </LinearLayout>
 
-                </TableRow>
-
-                <!-- Item Image -->
-                <TableRow
-                    android:id="@+id/itemImageRow"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dip"
-                    android:background="#ECEFF1"
+                    android:orientation="horizontal"
+                    android:layout_gravity="bottom"
                     >
 
                     <TextView
                         android:text="Image"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_weight="1"
+                        android:textSize="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
                         />
 
                     <ImageView
                         android:id="@+id/imageItem"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
+                        android:padding="5dp"
                         android:visibility="visible"
                         />
-
-                </TableRow>
-            </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

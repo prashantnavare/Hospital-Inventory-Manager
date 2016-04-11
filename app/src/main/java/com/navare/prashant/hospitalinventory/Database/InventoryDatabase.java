@@ -910,7 +910,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
             for (taskCursor.moveToFirst(); !taskCursor.isAfterLast(); taskCursor.moveToNext()) {
                 currentOpenTask.setContentFromCursor(taskCursor);
                 if (currentOpenTask.mTaskType == Task.ServiceCall) {
-                    serviceCallMap.remove(currentOpenTask.mItemID);
+                    serviceCallMap.remove(currentOpenTask.mServiceCallID);
                 }
                 else {
                     taskMap.remove(Pair.create(currentOpenTask.mItemID, currentOpenTask.mTaskType));

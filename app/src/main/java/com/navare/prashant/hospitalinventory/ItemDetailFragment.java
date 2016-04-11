@@ -102,8 +102,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private LinearLayout mConsumableLayout;
     private LinearLayout mInventoryDetailsLayout;
 
-    private TableRow mItemImageRow;
-
     private CheckBox mCalibrationCheckBox;
     private TextView mTextCalibrationFrequency;
     private Button mBtnChangeCalibrationDate;
@@ -442,11 +440,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextMinRequiredQuantity.addTextChangedListener(this);
 
         // image related
-        mItemImageRow = (TableRow) rootView.findViewById(R.id.itemImageRow);
         mImageView = ((ImageView) rootView.findViewById(R.id.imageItem));
-        if (mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) == false) {
-            mItemImageRow.setVisibility(View.INVISIBLE);
-        }
 
         // Banner Ad
         mAdView = (AdView) rootView.findViewById(R.id.adView);
