@@ -28,6 +28,8 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -75,7 +77,6 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     public static final String ARG_ITEM_ID = "item_id";
 
     private Context mContext = null;
-    private int mSpinnerPosition = -1;
 
     /**
      * The item this fragment is presenting.
@@ -90,7 +91,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextName;
     private TextView mTextLocation;
     private TextView mTextDescription;
-    private Spinner mSpinnerType;
+    private RadioButton mInstrumentRadioButton;
+    private RadioButton mConsumableRadioButton;
 
     private LinearLayout mCalibrationRemindersLayout;
     private LinearLayout mCalibrationDetailsLayout;
@@ -301,30 +303,23 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextDescription = ((TextView) rootView.findViewById(R.id.textDescription));
         mTextDescription.addTextChangedListener(this);
 
-        mSpinnerType = (Spinner) rootView.findViewById(R.id.spinnerType);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.item_type_array));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerType.setAdapter(adapter);
-        mSpinnerPosition = 0;
-        mSpinnerType.setSelection(0, false);
-        mSpinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int position, long arg3) {
-                if (position != mSpinnerPosition) {
-                    // If it is an instrument, show the instrument layout rows
-                    mSpinnerPosition = position;
-                    if (position == 0) {
-                        showInstrumentLayout();
-                    } else {
-                        showConsummableLayout();
-                    }
-                    mCallbacks.EnableRevertButton(true);
-                    mCallbacks.EnableSaveButton(true);
-                    mCallbacks.RedrawOptionsMenu();
-                }
+        mInstrumentRadioButton = (RadioButton) rootView.findViewById(R.id.instrumentRadioButton);
+        mInstrumentRadioButton.setChecked(true);
+        mInstrumentRadioButton.setOnClickListener(new RadioGroup.OnClickListener() {
+            public void onClick(View v){
+                showInstrumentLayout();
+                mCallbacks.EnableRevertButton(true);
+                mCallbacks.EnableSaveButton(true);
+                mCallbacks.RedrawOptionsMenu();
             }
-
-            public void onNothingSelected(AdapterView<?> arg0) {
+        });
+        mConsumableRadioButton = (RadioButton) rootView.findViewById(R.id.consumableRadioButton);
+        mConsumableRadioButton.setOnClickListener(new RadioGroup.OnClickListener() {
+            public void onClick(View v){
+                showConsummableLayout();
+                mCallbacks.EnableRevertButton(true);
+                mCallbacks.EnableSaveButton(true);
+                mCallbacks.RedrawOptionsMenu();
             }
         });
 
@@ -677,7 +672,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         }
         mItem.mLocation = mTextLocation.getText().toString();
         mItem.mDescription = mTextDescription.getText().toString();
-        if (mSpinnerType.getSelectedItemId() == 0) {
+        if (mInstrumentRadioButton.isChecked()) {
             // Instrument
             mItem.mType = Item.InstrumentType;
 
@@ -760,7 +755,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mItem.mContractReminders = 0;
             }
         }
-        else {
+        else if (mConsumableRadioButton.isChecked()){
             // Consummable
             mItem.mType = Item.ConsummableType;
             // Inventory related
@@ -798,8 +793,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Enable the instrument layout
             showInstrumentLayout();
 
-            mSpinnerPosition = 0;
-            mSpinnerType.setSelection(0, false);
+            mInstrumentRadioButton.setChecked(true);
 
             // Turn on the Instrument action bar menu items
             mCallbacks.EnableServiceCallButton(true);
@@ -877,8 +871,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Turn off the Instrument specific views
             showConsummableLayout();
 
-            mSpinnerPosition = 1;
-            mSpinnerType.setSelection(1, false);
+            mConsumableRadioButton.setChecked(true);
 
             // Turn off the Instrument action bar menu items
             mCallbacks.EnableServiceCallButton(false);
@@ -920,8 +913,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextName.setText("");
         mTextLocation.setText("");
         mTextDescription.setText("");
-        mSpinnerPosition = 0;
-        mSpinnerType.setSelection(0, false);
+        mInstrumentRadioButton.setChecked(true);
         showInstrumentLayout();
 
         mCalibrationCheckBox.setChecked(false);

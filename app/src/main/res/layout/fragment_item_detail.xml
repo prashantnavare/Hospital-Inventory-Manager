@@ -43,7 +43,7 @@
                     >
 
                     <TextView
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:textSize="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                     >
 
                     <TextView
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:textSize="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -83,15 +83,27 @@
                         android:padding="5dp"
                         />
 
-                    <Spinner
-                        android:id="@+id/spinnerType"
-                        android:layout_weight="1"
-                        android:textSize="8dp"
+                    <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:clickable="true"
-                        />
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        >
+                        <RadioButton
+                            android:text="Instrument"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/instrumentRadioButton"
+                            android:textSize="10sp"
+                            />
+                        <RadioButton
+                            android:text="Consumable"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/consumableRadioButton"
+                            android:textSize="10sp"
+                            />
+                    </RadioGroup>
 
                 </LinearLayout>
 
@@ -105,7 +117,7 @@
                     >
 
                     <TextView
-                        android:layout_weight="1"
+                        android:layout_weight="3"
                         android:textSize="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -599,7 +611,7 @@
 
                     <TextView
                         android:text="Description"
-                        android:layout_weight="1"
+                        android:layout_weight="4"
                         android:textSize="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -628,7 +640,7 @@
 
                     <TextView
                         android:text="Image"
-                        android:layout_weight="1"
+                        android:layout_weight="4"
                         android:textSize="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
