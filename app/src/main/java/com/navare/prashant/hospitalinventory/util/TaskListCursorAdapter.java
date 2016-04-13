@@ -25,13 +25,6 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
 
         //get reference to the row
         View view = super.getView(position, convertView, parent);
-        //check for odd or even to set alternate colors to the row background
-        if(position % 2 == 0){
-            view.setBackgroundColor(Color.rgb(225, 225, 225));
-        }
-        else {
-            view.setBackgroundColor(Color.rgb(245, 245, 245));
-        }
 
         // If the priority is Urgent, mark it red
         TextView textPriority = (TextView) view.findViewById(R.id.textPriority);
