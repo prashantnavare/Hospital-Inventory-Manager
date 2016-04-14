@@ -24,6 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -57,7 +60,6 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     public static final String ARG_TASK_ID = "task_id";
 
     private Context mContext = null;
-    private int mSpinnerPosition = -1;
 
     /**
      * The task this fragment is presenting.
@@ -75,12 +77,15 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextTaskType;
     private TextView mTextInstructionsLabel;
     private TextView mTextInstructions;
-    private Spinner mSpinnerPriority;
 
-    private TableRow mContractExpiryDateRow;
+    private LinearLayout mContractExpiryDateLayout;
     private TextView mTextContractExpiryDate;
-    private TableRow mRequiredQuantityRow;
+    private LinearLayout mRequiredQuantityLayout;
     private TextView mTextRequiredQuantity;
+
+    private RadioButton mUrgentButton;
+    private RadioButton mNormalRadioButton;
+    int mPreviousPriority = 0;
 
     private AdView mAdView;
 
@@ -222,29 +227,34 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTextInstructionsLabel = ((TextView) rootView.findViewById(R.id.textInstructionsLabel));
         mTextInstructions = ((TextView) rootView.findViewById(R.id.textInstructions));
 
-        mSpinnerPriority = (Spinner) rootView.findViewById(R.id.spinnerPriority);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.priorities_array));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerPriority.setAdapter(adapter);
-        mSpinnerPosition = 0;
-        mSpinnerPriority.setSelection(0, false);
-        mSpinnerPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int position, long arg3) {
-                if (position != mSpinnerPosition) {
-                    mSpinnerPosition = position;
+        mUrgentButton = (RadioButton) rootView.findViewById(R.id.urgentRadioButton);
+        mUrgentButton.setChecked(false);
+        mUrgentButton.setOnClickListener(new RadioGroup.OnClickListener() {
+            public void onClick(View v){
+                if (mPreviousPriority != Task.UrgentPriority) {
+                    mPreviousPriority = Task.UrgentPriority;
                     mCallbacks.EnableRevertButton(true);
                     mCallbacks.EnableSaveButton(true);
                     mCallbacks.RedrawOptionsMenu();
                 }
             }
-
-            public void onNothingSelected(AdapterView<?> arg0) {
+        });
+        mNormalRadioButton = (RadioButton) rootView.findViewById(R.id.normalRadioButton);
+        mUrgentButton.setChecked(false);
+        mNormalRadioButton.setOnClickListener(new RadioGroup.OnClickListener() {
+            public void onClick(View v){
+                if (mPreviousPriority != Task.NormalPriority) {
+                    mPreviousPriority = Task.NormalPriority;
+                    mCallbacks.EnableRevertButton(true);
+                    mCallbacks.EnableSaveButton(true);
+                    mCallbacks.RedrawOptionsMenu();
+                }
             }
         });
-        mContractExpiryDateRow = (TableRow) rootView.findViewById(R.id.contractExpiryDateRow);
+
+        mContractExpiryDateLayout = (LinearLayout) rootView.findViewById(R.id.contractExpiryDateLayout);
         mTextContractExpiryDate = ((TextView) rootView.findViewById(R.id.textContractExpiryDate));
-        mRequiredQuantityRow = (TableRow) rootView.findViewById(R.id.requiredQuantityRow);
+        mRequiredQuantityLayout = (LinearLayout) rootView.findViewById(R.id.requiredQuantityLayout);
         mTextRequiredQuantity = ((TextView) rootView.findViewById(R.id.textRequiredQuantity));
 
         // Banner Ad
@@ -545,10 +555,10 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTask.mAssignedTo = mTextAssignedTo.getText().toString();
         if (mTask.mAssignedTo.isEmpty() == false)
             mTask.mAssignedToContactNumber = getPhoneNumber(mTask.mAssignedTo);
-        if (mSpinnerPriority.getSelectedItemId() == 0) {
+        if (mNormalRadioButton.isChecked()) {
             mTask.mPriority = Task.NormalPriority;
         }
-        else {
+        else if (mUrgentButton.isChecked()){
             mTask.mPriority = Task.UrgentPriority;
         }
     }
@@ -576,18 +586,18 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTextTaskType.setText(mTask.getTaskTypeString());
 
         // The following table rows are visible only if task is contract or inventory
-        mContractExpiryDateRow.setVisibility(View.GONE);
-        mRequiredQuantityRow.setVisibility(View.GONE);
+        mContractExpiryDateLayout.setVisibility(View.GONE);
+        mRequiredQuantityLayout.setVisibility(View.GONE);
         if (mTask.mTaskType == Task.Inventory) {
             if (mItem != null) {
-                mRequiredQuantityRow.setVisibility(View.VISIBLE);
+                mRequiredQuantityLayout.setVisibility(View.VISIBLE);
                 long requiredQuantity = mItem.mMinRequiredQuantity - mItem.mCurrentQuantity;
                 mTextRequiredQuantity.setText(String.valueOf(requiredQuantity));
             }
         }
         if (mTask.mTaskType == Task.Contract) {
             if (mItem != null) {
-                mContractExpiryDateRow.setVisibility(View.VISIBLE);
+                mContractExpiryDateLayout.setVisibility(View.VISIBLE);
                 if (mItem.mContractValidTillDate > 0) {
                     Calendar contractDate = Calendar.getInstance();
                     contractDate.setTimeInMillis(mItem.mContractValidTillDate);
@@ -614,12 +624,12 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         }
 
         if (mTask.mPriority == Task.NormalPriority) {
-            mSpinnerPosition = 0;
-            mSpinnerPriority.setSelection(0, false);
+            mPreviousPriority = Task.NormalPriority;
+            mNormalRadioButton.setChecked(true);
         }
         else if (mTask.mPriority == Task.UrgentPriority) {
-            mSpinnerPosition = 1;
-            mSpinnerPriority.setSelection(1, false);
+            mPreviousPriority = Task.UrgentPriority;
+            mUrgentButton.setChecked(true);
         }
 
         // Toggle the action bar buttons appropriately

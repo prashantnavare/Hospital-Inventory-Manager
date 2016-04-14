@@ -83,6 +83,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
      */
     private String mItemID;
     private Item mItem = null;
+    private long mPreviousType = 0;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
@@ -307,19 +308,23 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mInstrumentRadioButton.setChecked(true);
         mInstrumentRadioButton.setOnClickListener(new RadioGroup.OnClickListener() {
             public void onClick(View v){
-                showInstrumentLayout();
-                mCallbacks.EnableRevertButton(true);
-                mCallbacks.EnableSaveButton(true);
-                mCallbacks.RedrawOptionsMenu();
+                if (mPreviousType != Item.InstrumentType) {
+                    showInstrumentLayout();
+                    mCallbacks.EnableRevertButton(true);
+                    mCallbacks.EnableSaveButton(true);
+                    mCallbacks.RedrawOptionsMenu();
+                }
             }
         });
         mConsumableRadioButton = (RadioButton) rootView.findViewById(R.id.consumableRadioButton);
         mConsumableRadioButton.setOnClickListener(new RadioGroup.OnClickListener() {
             public void onClick(View v){
-                showConsummableLayout();
-                mCallbacks.EnableRevertButton(true);
-                mCallbacks.EnableSaveButton(true);
-                mCallbacks.RedrawOptionsMenu();
+                if (mPreviousType != Item.ConsummableType) {
+                    showConsummableLayout();
+                    mCallbacks.EnableRevertButton(true);
+                    mCallbacks.EnableSaveButton(true);
+                    mCallbacks.RedrawOptionsMenu();
+                }
             }
         });
 
@@ -793,6 +798,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Enable the instrument layout
             showInstrumentLayout();
 
+            mPreviousType = Item.InstrumentType;
             mInstrumentRadioButton.setChecked(true);
 
             // Turn on the Instrument action bar menu items
@@ -871,6 +877,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Turn off the Instrument specific views
             showConsummableLayout();
 
+            mPreviousType = Item.ConsummableType;
             mConsumableRadioButton.setChecked(true);
 
             // Turn off the Instrument action bar menu items

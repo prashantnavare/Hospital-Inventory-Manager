@@ -39,6 +39,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:longClickable="true"
+            android:elevation="6dp"
             android:textStyle="bold" />
 
         <Button
