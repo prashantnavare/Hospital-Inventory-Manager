@@ -44,7 +44,7 @@
 
                     <TextView
                         android:layout_weight="3"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Name"
@@ -55,7 +55,7 @@
                         android:id="@+id/textName"
                         android:hint="Item Name"
                         android:layout_weight="1"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -76,7 +76,7 @@
 
                     <TextView
                         android:layout_weight="3"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Type"
@@ -118,7 +118,7 @@
 
                     <TextView
                         android:layout_weight="3"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Location"
@@ -128,7 +128,7 @@
                     <EditText
                         android:id="@+id/textLocation"
                         android:layout_weight="1"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine|textCapWords"
@@ -190,7 +190,7 @@
 
                         <TextView
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/calibration_frequency"
@@ -199,7 +199,7 @@
                         <EditText
                             android:id="@+id/textCalibrationFrequency"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -215,7 +215,7 @@
                         <TextView
                             android:text="@string/calibration_date"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -223,7 +223,7 @@
                         <Button
                             android:id="@+id/btnChangeCalibrationDate"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -240,7 +240,7 @@
                         <TextView
                             android:text="@string/instructions"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -248,7 +248,7 @@
                         <EditText
                             android:id="@+id/textCalibrationInstructions"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -314,7 +314,7 @@
 
                         <TextView
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -324,7 +324,7 @@
                         <EditText
                             android:id="@+id/textMaintenanceFrequency"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -342,7 +342,7 @@
                         <TextView
                             android:text="@string/maintenance_date"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -350,7 +350,7 @@
                         <Button
                             android:id="@+id/btnChangeMaintenanceDate"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -369,7 +369,7 @@
                         <TextView
                             android:text="@string/instructions"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -378,7 +378,7 @@
                         <EditText
                             android:id="@+id/textMaintenanceInstructions"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -448,7 +448,7 @@
                         <TextView
                             android:text="@string/contract_valid_till_date"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -456,7 +456,7 @@
                         <Button
                             android:id="@+id/btnContractValidTillDate"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -476,7 +476,7 @@
                         <TextView
                             android:text="@string/instructions"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -488,7 +488,7 @@
                             android:autoText="true"
                             android:cursorVisible="true"
                             android:layout_weight="1"
-                            android:textSize="10dp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
@@ -527,7 +527,7 @@
                     <TextView
                         android:text="@string/current_quantity"
                         android:layout_weight="1"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -538,7 +538,7 @@
                         android:autoText="true"
                         android:cursorVisible="true"
                         android:layout_weight="1"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -569,7 +569,7 @@
                     <TextView
                         android:text="@string/min_required_quantity"
                         android:layout_weight="1"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -579,7 +579,7 @@
                         android:inputType="numberDecimal"
                         android:cursorVisible="true"
                         android:layout_weight="1"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -611,8 +611,8 @@
 
                     <TextView
                         android:text="Description"
-                        android:layout_weight="4"
-                        android:textSize="10dp"
+                        android:layout_weight="3"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -624,7 +624,7 @@
                         android:autoText="true"
                         android:cursorVisible="true"
                         android:layout_weight="1"
-                        android:textSize="10dp"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
@@ -640,8 +640,8 @@
 
                     <TextView
                         android:text="Image"
-                        android:layout_weight="4"
-                        android:textSize="10dp"
+                        android:layout_weight="3"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"

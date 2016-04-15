@@ -25,14 +25,18 @@ public class ReportDetailCursorAdapter extends SimpleCursorAdapter {
 
         //get reference to the row
         View view = super.getView(position, convertView, parent);
-        //check for odd or even to set alternate colors to the row background
-        if(position % 2 == 0){
-            view.setBackgroundColor(Color.rgb(225, 225, 225));
+
+        // If the priority is Urgent, mark it red
+        TextView textPriority = (TextView) view.findViewById(R.id.textPriority);
+        Cursor cursor = getCursor();
+        cursor.moveToPosition(position);
+        String priority = cursor.getString(cursor.getColumnIndex(Task.COMPLETED_COL_FTS_TASK_PRIORITY));
+        if (priority.equalsIgnoreCase("Urgent")) {
+            textPriority.setTextColor(Color.RED);
         }
         else {
-            view.setBackgroundColor(Color.rgb(245, 245, 245));
+            textPriority.setTextColor(Color.BLACK);
         }
-
         return view;
     }
 }

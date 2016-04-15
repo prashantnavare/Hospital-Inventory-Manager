@@ -28,14 +28,14 @@
             <TextView
                 android:text="@string/item"
                 android:layout_weight="4"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
             <TextView
                 android:id="@+id/textItemName"
                 android:layout_weight="1"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -51,14 +51,14 @@
             <TextView
                 android:text="Location"
                 android:layout_weight="4"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
             />
             <TextView
                 android:id="@+id/textItemLocation"
                 android:layout_weight="1"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -72,14 +72,14 @@
             <TextView
                 android:text="Task Type"
                 android:layout_weight="4"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
             <TextView
                 android:id="@+id/textTaskType"
                 android:layout_weight="1"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -94,14 +94,14 @@
             <TextView
                 android:text="@string/assigned_to"
                 android:layout_weight="4"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
             <TextView
                 android:id="@+id/textAssignedTo"
                 android:layout_weight="1"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -116,14 +116,14 @@
             <TextView
                 android:text="@string/due_date"
                 android:layout_weight="4"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
             />
             <TextView
                 android:id="@+id/textDueDate"
                 android:layout_weight="1"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -138,14 +138,14 @@
             <TextView
                 android:text="@string/priority"
                 android:layout_weight="4"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
             <TextView
                 android:id="@+id/textPriority"
                 android:layout_weight="1"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"

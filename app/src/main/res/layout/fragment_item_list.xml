@@ -4,23 +4,12 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <TextView
-        android:id="@+id/instructions"
-        android:text="Please click on any item to see that item's details:"
-        android:textSize="12sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        />
     <ListView android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:drawSelectorOnTop="false"
         android:divider="@null"
-        android:layout_below="@+id/instructions"
         android:layout_above="@+id/adView"
         />
     <com.google.android.gms.ads.AdView

@@ -188,9 +188,6 @@ public class TaskListActivity extends ActionBarActivity
     public boolean onQueryTextChange(String s) {
         // handles a search query
         mQuery = !TextUtils.isEmpty(s) ? s : null;
-        // get rid of characters that are not alphanumeric etc.
-        if (mQuery != null)
-            mQuery = mQuery.replaceAll("[^A-Za-z0-9 +-_]", "");
         ((TaskListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.task_list)).getNewTaskList(mQuery);
         return true;

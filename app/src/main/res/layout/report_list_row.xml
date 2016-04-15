@@ -5,30 +5,41 @@
     android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/textName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="bold" />
-
-    <Space
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="5dp" />
-    <TextView
-        android:id="@+id/textLocation"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textName"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:layout_gravity="bottom"
+        android:elevation="3dp"
+        android:background="@drawable/raised_background"
+        android:orientation="vertical"
+        android:textAlignment="center"
+        >
+        <TextView
+            android:id="@+id/textName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_below="@id/textDescription"
-        android:layout_height="10dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            />
+        <TextView
+            android:id="@+id/textLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textName"
+            android:textSize="10sp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>
