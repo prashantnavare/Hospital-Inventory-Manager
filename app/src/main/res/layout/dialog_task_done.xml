@@ -17,7 +17,7 @@
             android:fontFamily="sans-serif-light"
             android:text="@string/comments"
             android:textColor="#ff707070"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
         <Space
             android:layout_width="20px"
             android:layout_height="match_parent" />
@@ -26,10 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine|textCapSentences"
-            android:autoText="true"
             android:textColor="#ff222222"
             android:minWidth="250sp"
-            android:textSize="16sp"/>
+            android:textSize="12sp"/>
     </LinearLayout>
 
     <LinearLayout
