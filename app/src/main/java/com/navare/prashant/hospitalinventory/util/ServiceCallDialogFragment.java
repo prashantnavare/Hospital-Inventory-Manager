@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,8 +33,8 @@ public class ServiceCallDialogFragment extends DialogFragment {
 
     private Item mItem;
     private TextView mTextInstrument;
+    private CheckBox mUrgentCheckBox;
     private TextView mTextDescription;
-    private Spinner mSpinnerPriority;
     private Button mBtnReport;
     private Button mBtnCancel;
 
@@ -71,12 +72,24 @@ public class ServiceCallDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getDialog().setTitle("Create a Service Call");
+
         View rootView = inflater.inflate(R.layout.dialog_service_call, container, false);
 
         mTextInstrument = ((TextView) rootView.findViewById(R.id.textInstrument));
         mTextInstrument.setText(mItem.mName);
+
+        mUrgentCheckBox = ((CheckBox) rootView.findViewById(R.id.chkUrgent));
 
         mTextDescription = ((TextView) rootView.findViewById(R.id.textDescription));
         mTextDescription.addTextChangedListener(new TextWatcher() {
@@ -98,12 +111,6 @@ public class ServiceCallDialogFragment extends DialogFragment {
             }
         });
 
-        mSpinnerPriority = (Spinner) rootView.findViewById(R.id.spinnerPriority);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.priorities_array));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerPriority.setAdapter(adapter);
-        mSpinnerPriority.setSelection(0, false);
-
         mBtnReport = ((Button) rootView.findViewById(R.id.btnReport));
         mBtnReport.setOnClickListener(onReport);
         // By default, disable the Report button till Description is non empty.
@@ -112,12 +119,14 @@ public class ServiceCallDialogFragment extends DialogFragment {
         mBtnCancel = ((Button) rootView.findViewById(R.id.btnCancel));
         mBtnCancel.setOnClickListener(onCancel);
 
+        /*
         TextView titleTextView = (TextView) this.getDialog().findViewById(android.R.id.title);
         if(titleTextView != null)
         {
-            titleTextView.setGravity(Gravity.CENTER);
+            titleTextView.setGravity(Gravity.LEFT);
             titleTextView.setText(getResources().getText(R.string.dialog_service_call_title));
         }
+        */
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return rootView;
     }
@@ -152,18 +161,10 @@ public class ServiceCallDialogFragment extends DialogFragment {
         return mItem.mID;
     }
 
-    public String getPriorityString() {
-        if (mSpinnerPriority.getSelectedItemId() == 0)
-            return getResources().getStringArray(R.array.priorities_array)[0];
-        else if (mSpinnerPriority.getSelectedItemId() == 1)
-            return getResources().getStringArray(R.array.priorities_array)[1];
-        else return "Unknown";
-    }
-
     public long getPriority() {
-        if (mSpinnerPriority.getSelectedItemId() == 0)
+        if (mUrgentCheckBox.isChecked() == false)
             return Task.NormalPriority;
-        else if (mSpinnerPriority.getSelectedItemId() == 1)
+        else if (mUrgentCheckBox.isChecked())
             return Task.UrgentPriority;
         else return 0;
     }
