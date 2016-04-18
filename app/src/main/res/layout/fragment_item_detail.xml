@@ -229,6 +229,8 @@
                             android:padding="5dp"
                             android:textStyle="bold"
                             android:text="@string/set_date"
+                            android:elevation="6dp"
+                            android:background="@drawable/raised_background"
                             />
                     </LinearLayout>
                     <LinearLayout
@@ -356,6 +358,8 @@
                             android:padding="5dp"
                             android:textStyle="bold"
                             android:text="@string/set_date"
+                            android:elevation="6dp"
+                            android:background="@drawable/raised_background"
                             />
                     </LinearLayout>
 
@@ -462,6 +466,8 @@
                             android:padding="5dp"
                             android:textStyle="bold"
                             android:text="@string/set_date"
+                            android:elevation="6dp"
+                            android:background="@drawable/raised_background"
                             />
 
                     </LinearLayout>
