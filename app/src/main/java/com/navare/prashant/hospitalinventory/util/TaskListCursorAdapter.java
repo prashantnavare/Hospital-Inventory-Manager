@@ -11,6 +11,10 @@ import android.widget.TextView;
 import com.navare.prashant.hospitalinventory.Database.Task;
 import com.navare.prashant.hospitalinventory.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 //extend the SimpleCursorAdapter to create a custom class where we
 //can override the getView to change the row colors of the list
 public class TaskListCursorAdapter extends SimpleCursorAdapter {
@@ -34,8 +38,21 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
         if (priority.equalsIgnoreCase("Urgent")) {
             textPriority.setTextColor(Color.RED);
         }
-        else {
-            textPriority.setTextColor(Color.BLACK);
+
+        // Show it as overdue if needed
+        Calendar todayDate = Calendar.getInstance();
+        Calendar taskDueDate = Calendar.getInstance();
+        String taskDueDateString = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_DUE_DATE));
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            taskDueDate.setTime(dateFormatter.parse(taskDueDateString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (taskDueDate.getTimeInMillis() < todayDate.getTimeInMillis()) {
+            TextView textDueDate = (TextView) view.findViewById(R.id.textDueDate);
+            textDueDate.setText(taskDueDateString + " (Overdue)");
+            textDueDate.setTextColor(Color.RED);
         }
         return view;
     }

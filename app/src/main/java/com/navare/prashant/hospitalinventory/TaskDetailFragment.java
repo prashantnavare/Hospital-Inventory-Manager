@@ -2,6 +2,7 @@ package com.navare.prashant.hospitalinventory;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,6 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,9 +38,12 @@ import com.google.android.gms.ads.AdView;
 import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;import com.navare.prashant.hospitalinventory.Database.Item;
 import com.navare.prashant.hospitalinventory.Database.ServiceCall;
 import com.navare.prashant.hospitalinventory.Database.Task;
+import com.navare.prashant.hospitalinventory.util.CalibrationDatePickerFragment;
 import com.navare.prashant.hospitalinventory.util.ContractTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.InventoryTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.TaskDoneDialogFragment;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,7 +78,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     private TextView mTextItemType;
     private TextView mTextItemName;
     private TextView mTextItemLocation;
-    private TextView mTextDueDate;
+    private Button mBtnChangeDueDate;
     private TextView mTextAssignedTo;
     private TextView mTextTaskType;
     private TextView mTextInstructionsLabel;
@@ -218,7 +224,15 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         mTextItemType = ((TextView) rootView.findViewById(R.id.textItemType));
         mTextItemName = ((TextView) rootView.findViewById(R.id.textItemName));
         mTextItemLocation = ((TextView) rootView.findViewById(R.id.textItemLocation));
-        mTextDueDate = ((TextView) rootView.findViewById(R.id.textDueDate));
+
+        mBtnChangeDueDate = (Button) rootView.findViewById(R.id.btnChangeDueDate);
+        mBtnChangeDueDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
 
         mTextAssignedTo = ((TextView) rootView.findViewById(R.id.textAssignedTo));
 
@@ -563,6 +577,17 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         else if (mUrgentButton.isChecked()){
             mTask.mPriority = Task.UrgentPriority;
         }
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar dueDate = Calendar.getInstance();
+        String uiDueDate = mBtnChangeDueDate.getText().toString();
+        if (uiDueDate.compareToIgnoreCase("Set") != 0) {
+            try {
+                dueDate.setTime(dateFormatter.parse(uiDueDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            mTask.mDueDate = dueDate.getTimeInMillis();
+        }
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -578,9 +603,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         if (mTask.mDueDate > 0) {
             Date dueDate = new Date();
             dueDate.setTime(mTask.mDueDate);
-            SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd MMMM, yyyy");
+            SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String dueDateString = dueDateFormat.format(dueDate);
-            mTextDueDate.setText(dueDateString);
+            mBtnChangeDueDate.setText(dueDateString);
         }
 
         mTextAssignedTo.setText(mTask.mAssignedTo);
@@ -664,4 +689,33 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             dialog.show(((FragmentActivity)mContext).getSupportFragmentManager(), "TaskDoneDialogFragment");
         }
     }
+
+    private void showDatePicker() {
+        Calendar dateToShow = Calendar.getInstance();
+        if (mTask.mDueDate > 0)
+            dateToShow.setTimeInMillis(mTask.mDueDate);
+        CalibrationDatePickerFragment datePicker = new CalibrationDatePickerFragment();
+        Bundle args = new Bundle();
+        args.putInt("year", dateToShow.get(Calendar.YEAR));
+        args.putInt("month", dateToShow.get(Calendar.MONTH));
+        args.putInt("day", dateToShow.get(Calendar.DAY_OF_MONTH));
+        datePicker.setArguments(args);
+        /**
+         * Set Call back to capture selected date
+         */
+        DatePickerDialog.OnDateSetListener onDateChangeCallback = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                mBtnChangeDueDate.setText(dateFormatter.format(newDate.getTime()));
+                enableRevertAndSaveButtons();
+            }
+        };
+        datePicker.setCallBack(onDateChangeCallback);
+        datePicker.show(((FragmentActivity)mContext).getSupportFragmentManager(), "Task Due Date Picker");
+    }
+
 }

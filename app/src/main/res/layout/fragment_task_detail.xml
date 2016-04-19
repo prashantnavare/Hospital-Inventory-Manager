@@ -35,6 +35,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     >
                     <TextView
                         android:id="@+id/textItemType"
@@ -58,6 +60,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     >
                     <TextView
                         android:text="Location"
@@ -79,6 +83,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     >
                     <TextView
                         android:text="@string/due_date"
@@ -87,12 +93,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         />
-                    <TextView
-                        android:id="@+id/textDueDate"
+                    <Button
+                        android:id="@+id/btnChangeDueDate"
+                        android:text="@string/set_date"
                         android:layout_weight="1"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textStyle="bold"
+                        android:textColor="#ffffff"
+                        android:layout_marginRight="140dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/button_shape"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -100,6 +112,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     >
                     <TextView
                         android:text="@string/assigned_to"
@@ -122,6 +136,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     >
                     <TextView
                         android:text="@string/task"
@@ -144,6 +160,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     >
                     <TextView
                         android:text="Contract Expiry"
@@ -166,6 +184,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     >
                     <TextView
                         android:text="Required Quantity"
@@ -187,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="bottom"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     >
                     <TextView
                         android:text="@string/priority"

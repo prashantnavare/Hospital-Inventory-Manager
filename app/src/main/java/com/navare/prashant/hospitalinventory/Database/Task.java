@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -213,6 +215,17 @@ public class Task {
                 return "Urgent";
         }
         return "Unknown";
+    }
+
+    public String getTaskDueDateString() {
+        String dueDateString = "";
+        if (mDueDate > 0) {
+            Calendar dueDate = Calendar.getInstance();
+            dueDate.setTimeInMillis(mDueDate);
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+            dueDateString = dateFormatter.format(dueDate.getTime());
+        }
+        return dueDateString;
     }
 
     // Task FTS Table - for current tasks

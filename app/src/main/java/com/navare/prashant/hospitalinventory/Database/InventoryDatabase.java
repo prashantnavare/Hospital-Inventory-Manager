@@ -613,6 +613,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 ContentValues ftsValues = new ContentValues();
                 ftsValues.put(Task.COL_FTS_ASSIGNED_TO, values.getAsString(Task.COL_ASSIGNED_TO));
                 ftsValues.put(Task.COL_FTS_TASK_PRIORITY, task.getTaskPriority());
+                ftsValues.put(Task.COL_FTS_DUE_DATE, task.getTaskDueDateString());
                 long ftsRowsUpdated =  db.update(Task.FTS_TABLE_NAME, ftsValues, Task.COL_FTS_TASK_REALID + " MATCH " + taskId, null);
             }
         }
