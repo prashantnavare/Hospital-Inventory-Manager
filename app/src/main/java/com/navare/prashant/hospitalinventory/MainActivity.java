@@ -253,7 +253,7 @@ public class MainActivity extends Activity {
     }
 }
 
-// TODO: Reorder instructions need to be added to item detail fragment
+// TODO: Add Due Date button to Task Detail. Also mark tasks that are overdue
 // TODO: Fix up all buttons with the new style
 // TODO: Change all font sizes to 12sp or higher
 

@@ -619,6 +619,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 mTextInstructions.setText(mItem.mContractInstructions);
             else if (mTask.mTaskType == Task.Maintenance)
                 mTextInstructions.setText(mItem.mMaintenanceInstructions);
+            else if (mTask.mTaskType == Task.Inventory)
+                mTextInstructions.setText(mItem.mReorderInstructions);
         }
         if (mServiceCall != null) {
             mTextInstructionsLabel.setText(getResources().getText(R.string.description));

@@ -122,6 +122,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     private CheckBox mInventoryCheckBox;
     private TextView mTextMinRequiredQuantity;
     private TextView mTextCurrentQuantity;
+    private TextView mTextReorderInstructions;
 
     private ImageView mImageView;
 
@@ -443,6 +444,9 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         mTextMinRequiredQuantity = (TextView) rootView.findViewById(R.id.textMinRequiredQuantity);
         mTextMinRequiredQuantity.addTextChangedListener(this);
+
+        mTextReorderInstructions = (TextView) rootView.findViewById(R.id.textReorderInstructions);
+        mTextReorderInstructions.addTextChangedListener(this);
 
         // image related
         mImageView = ((ImageView) rootView.findViewById(R.id.imageItem));
@@ -781,6 +785,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 }
                 else {
                     mItem.mMinRequiredQuantity = Long.valueOf(mTextMinRequiredQuantity.getText().toString());
+                    mItem.mReorderInstructions = mTextReorderInstructions.getText().toString();
                 }
             }
             else {
@@ -903,6 +908,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mInventoryDetailsLayout.setVisibility(View.VISIBLE);
                 if (mItem.mMinRequiredQuantity > 0)
                     mTextMinRequiredQuantity.setText(String.valueOf(mItem.mMinRequiredQuantity));
+                mTextReorderInstructions.setText(mItem.mReorderInstructions);
             }
             else {
                 mInventoryCheckBox.setChecked(false);
