@@ -103,44 +103,44 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         void EnableRevertButton(boolean bEnable);
         void RedrawOptionsMenu();
         void onTaskDone();
+        void setTitleString(String titleString);
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
 
         @Override
         public void EnableAssignButton(boolean bEnable) {
-
         }
 
         @Override
         public void EnableTaskDoneButton(boolean bEnable) {
-
         }
 
         @Override
         public void EnableCallButton(boolean bEnable) {
-
         }
 
         @Override
         public void EnableRevertButton(boolean bEnable) {
-
         }
 
         @Override
         public void EnableSaveButton(boolean bEnable) {
-
         }
 
         @Override
         public void RedrawOptionsMenu() {
-
         }
 
         @Override
         public void onTaskDone() {
+        }
 
-    }};
+        @Override
+        public void setTitleString(String titleString) {
+        }
+
+    };
 
     /**
      * The fragment's current callback object, which is notified of changes to the item
@@ -320,6 +320,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
                 mTask.setContentFromCursor(dataCursor);
                 updateUIFromTask();
+                String titleString = mTask.getTaskTypeString() + " (" + mTask.mItemName + ")";
+                mCallbacks.setTitleString(titleString);
 
                 if (mTask.mTaskType == Task.ServiceCall) {
                     // Get the service call details.

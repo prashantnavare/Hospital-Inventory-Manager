@@ -254,9 +254,6 @@ public class MainActivity extends Activity {
 }
 
 // TODO: Reorder instructions need to be added to item detail fragment
-// TODO: task Count in task list activity title
-// TODO: Change title of task detail
-// TODO: Change title of item detail
 // TODO: Fix up all buttons with the new style
 // TODO: Change all font sizes to 12sp or higher
 

@@ -261,6 +261,11 @@ public class TaskDetailActivity extends ActionBarActivity
     }
 
     @Override
+    public void setTitleString(String titleString) {
+        setTitle(titleString);
+    }
+
+    @Override
     public void onTaskDoneClick(TaskDoneDialogFragment dialog) {
         String completionComments = dialog.getCompletionComments();
         ((TaskDetailFragment) getSupportFragmentManager()

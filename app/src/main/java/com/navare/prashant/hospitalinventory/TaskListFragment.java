@@ -58,6 +58,7 @@ public class TaskListFragment extends ListFragment {
          */
         void onTaskSelected(String id);
         String getQuery();
+        void setTaskCount(long taskCount);
     }
 
     private AdView mAdView;
@@ -74,6 +75,10 @@ public class TaskListFragment extends ListFragment {
         @Override
         public String getQuery() {
             return null;
+        }
+
+        @Override
+        public void setTaskCount(long taskCount) {
         }
     };
 
@@ -247,6 +252,10 @@ public class TaskListFragment extends ListFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(c);
+                if (c != null)
+                    mCallbacks.setTaskCount(c.getCount());
+                else
+                    mCallbacks.setTaskCount(0);
             }
 
             @Override

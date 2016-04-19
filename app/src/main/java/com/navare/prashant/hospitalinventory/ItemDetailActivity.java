@@ -332,6 +332,11 @@ public class ItemDetailActivity extends ActionBarActivity
     }
 
     @Override
+    public void setTitleString(String titleString) {
+        setTitle(titleString);
+    }
+
+    @Override
     public void onInventoryDialogPositiveClick(InventoryDialogFragment dialog) {
         String stringQuantity = dialog.getQuantity();
         if ((stringQuantity != null) && (stringQuantity.isEmpty() == false)) {

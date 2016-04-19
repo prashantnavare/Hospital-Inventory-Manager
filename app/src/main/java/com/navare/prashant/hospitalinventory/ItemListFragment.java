@@ -78,7 +78,6 @@ public class ItemListFragment extends ListFragment {
 
         @Override
         public void setItemCount(long itemCount) {
-
         }
     };
 

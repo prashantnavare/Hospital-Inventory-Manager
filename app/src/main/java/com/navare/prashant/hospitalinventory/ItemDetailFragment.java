@@ -150,6 +150,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         void RedrawOptionsMenu();
         void EnableServiceCallButton(boolean bEnable);
         void onItemDeleted();
+        void setTitleString(String titleString);
     }
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
@@ -179,6 +180,10 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         }
         @Override
         public void onItemDeleted() {
+        }
+
+        @Override
+        public void setTitleString(String titleString) {
         }
     };
 
@@ -554,6 +559,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
                 mItem.setContentFromCursor(dataCursor);
                 updateUIFromItem();
+                mCallbacks.setTitleString(mItem.mName);
 
                 // Toggle the action bar buttons appropriately
                 mCallbacks.EnableDeleteButton(true);
@@ -636,6 +642,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             mCallbacks.EnableSaveButton(false);
             mCallbacks.EnableRevertButton(false);
             mCallbacks.RedrawOptionsMenu();
+            mCallbacks.setTitleString(mItem.mName);
         }
         return true;
     }

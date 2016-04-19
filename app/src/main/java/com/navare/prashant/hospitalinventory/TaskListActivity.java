@@ -180,6 +180,11 @@ public class TaskListActivity extends ActionBarActivity
     }
 
     @Override
+    public void setTaskCount(long taskCount) {
+        setTitle("Tasks (" + String.valueOf(taskCount) + ")");
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String s) {
         return true;
     }
