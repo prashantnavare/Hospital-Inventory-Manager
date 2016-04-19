@@ -4,8 +4,9 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
-    tools:context=".MainActivity">
+    android:background="#e0e0e0"
+    tools:context=".MainActivity"
+    >
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -13,117 +14,101 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay" android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-        </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        >
 
         <Button
             android:id="@+id/tasks_button"
+            android:text="@string/tasks_button"
             android:onClick="onTasksClick"
-            style="?metaButtonBarButtonStyle"
             android:layout_width="157dp"
             android:layout_height="wrap_content"
-            android:text="@string/tasks_button"
             android:layout_gravity="center_horizontal"
             android:clickable="true"
             android:layout_marginTop="25dp"
-            android:elegantTextHeight="true"
             android:enabled="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:longClickable="true"
-            android:elevation="6dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:background="@drawable/button_shape"
+            />
 
         <Button
             android:id="@+id/inventory_button"
-            android:onClick="onInventoryClick"
-            style="?metaButtonBarButtonStyle"
-            android:layout_width="157dp" android:layout_height="wrap_content"
             android:text="@string/inventory_button"
+            android:onClick="onInventoryClick"
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
             android:clickable="true"
-            android:elegantTextHeight="true"
+            android:layout_marginTop="100dp"
             android:enabled="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:textStyle="bold"
-            android:longClickable="true" />
+            android:longClickable="true"
+            android:background="@drawable/button_shape"
+            />
 
         <Button
             android:id="@+id/reports_button"
-            android:onClick="onReportsClick"
-            style="?metaButtonBarButtonStyle"
-            android:layout_width="157dp" android:layout_height="wrap_content"
             android:text="Reports"
+            android:onClick="onReportsClick"
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="175dp"
             android:clickable="true"
-            android:elegantTextHeight="true"
             android:enabled="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:textStyle="bold"
-            android:longClickable="true" />
+            android:longClickable="true"
+            android:background="@drawable/button_shape"
+            />
 
         <Button
             android:id="@+id/backuprestore_button"
+            android:text="@string/backup_restore_button"
             android:onClick="onBackupRestoreClick"
-            style="?metaButtonBarButtonStyle"
             android:layout_width="157dp"
             android:layout_height="wrap_content"
-            android:text="@string/backup_restore_button"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="250dp"
             android:clickable="true"
             android:enabled="true"
-            android:focusable="true"
             android:textStyle="bold"
             android:longClickable="true"
-            android:focusableInTouchMode="true"
-            android:elegantTextHeight="true" />
+            android:background="@drawable/button_shape"
+            />
 
         <Button
             android:id="@+id/settings_button"
+            android:text="@string/settings_button"
             android:onClick="onSettingsClick"
-            style="?metaButtonBarButtonStyle"
             android:layout_width="157dp"
             android:layout_height="wrap_content"
-            android:text="@string/settings_button"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="325dp"
             android:clickable="true"
             android:enabled="true"
-            android:focusable="true"
             android:textStyle="bold"
             android:longClickable="true"
-            android:focusableInTouchMode="true"
-            android:elegantTextHeight="true" />
+            android:background="@drawable/button_shape"
+            />
 
         <Button
             android:id="@+id/removeads_button"
+            android:text="@string/removeads_button"
             android:onClick="onRemoveAdsClick"
-            style="?metaButtonBarButtonStyle"
             android:layout_width="157dp"
             android:layout_height="wrap_content"
-            android:text="@string/removeads_button"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="400dp"
             android:clickable="true"
             android:enabled="true"
-            android:focusable="true"
             android:textStyle="bold"
             android:longClickable="true"
-            android:focusableInTouchMode="true"
-            android:elegantTextHeight="true" />
+            android:background="@drawable/button_shape"
+            />
     </FrameLayout>
 
     <com.google.android.gms.ads.AdView

@@ -233,6 +233,10 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
+    public void onRemoveAdsClick(View view) {
+        // TODO: Remove Ads button logic - In app purchase logic
+    }
+
     private void setTitleAndTaskandItemCount() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
@@ -249,5 +253,10 @@ public class MainActivity extends Activity {
     }
 }
 
-// TODO: Remove Ads button logic - In app purchase logic
-// TODO: Register with admob.com, generate ad unit IDs for all the interstitials and banners, use them in code
+// TODO: Reorder instructions need to be added to item detail fragment
+// TODO: task Count in task list activity title
+// TODO: Change title of task detail
+// TODO: Change title of item detail
+// TODO: Fix up all buttons with the new style
+// TODO: Change all font sizes to 12sp or higher
+

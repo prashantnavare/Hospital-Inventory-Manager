@@ -198,12 +198,13 @@
                             />
                         <EditText
                             android:id="@+id/textCalibrationFrequency"
-                            android:layout_weight="1"
                             android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:inputType="numberDecimal"
+                            android:layout_weight="1"
+                            android:layout_marginRight="140dp"
                             />
                     </LinearLayout>
                     <LinearLayout
@@ -211,6 +212,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
+                        android:layout_marginTop="10dp"
                         >
                         <TextView
                             android:text="@string/calibration_date"
@@ -223,14 +225,15 @@
                         <Button
                             android:id="@+id/btnChangeCalibrationDate"
                             android:layout_weight="1"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:textStyle="bold"
                             android:text="@string/set_date"
-                            android:elevation="6dp"
-                            android:background="@drawable/raised_background"
+                            android:textColor="#ffffff"
+                            android:layout_marginRight="60dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/button_shape"
                             />
                     </LinearLayout>
                     <LinearLayout
@@ -238,6 +241,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
+                        android:layout_marginTop="10dp"
                         >
                         <TextView
                             android:text="@string/instructions"
@@ -255,7 +259,6 @@
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:inputType="textMultiLine|textCapSentences"
-                            android:capitalize="sentences"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:cursorVisible="true"
                             />
@@ -331,6 +334,7 @@
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:inputType="numberDecimal"
+                            android:layout_marginRight="140dp"
                             />
 
                     </LinearLayout>
@@ -340,6 +344,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
+                        android:layout_marginTop="10dp"
                         >
                         <TextView
                             android:text="@string/maintenance_date"
@@ -352,14 +357,15 @@
                         <Button
                             android:id="@+id/btnChangeMaintenanceDate"
                             android:layout_weight="1"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:textStyle="bold"
                             android:text="@string/set_date"
-                            android:elevation="6dp"
-                            android:background="@drawable/raised_background"
+                            android:textColor="#ffffff"
+                            android:layout_marginRight="60dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/button_shape"
                             />
                     </LinearLayout>
 
@@ -368,6 +374,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
+                        android:layout_marginTop="10dp"
                         >
 
                         <TextView
@@ -387,7 +394,6 @@
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:inputType="textMultiLine|textCapSentences"
-                            android:capitalize="sentences"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:cursorVisible="true"
                             />
@@ -460,14 +466,15 @@
                         <Button
                             android:id="@+id/btnContractValidTillDate"
                             android:layout_weight="1"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:textStyle="bold"
                             android:text="@string/set_date"
-                            android:elevation="6dp"
-                            android:background="@drawable/raised_background"
+                            android:textColor="#ffffff"
+                            android:layout_marginRight="60dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/button_shape"
                             />
 
                     </LinearLayout>
@@ -477,6 +484,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
+                        android:layout_marginTop="10dp"
                         >
 
                         <TextView
