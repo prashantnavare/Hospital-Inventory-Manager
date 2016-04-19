@@ -43,16 +43,18 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
         Calendar todayDate = Calendar.getInstance();
         Calendar taskDueDate = Calendar.getInstance();
         String taskDueDateString = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_DUE_DATE));
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            taskDueDate.setTime(dateFormatter.parse(taskDueDateString));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (taskDueDate.getTimeInMillis() < todayDate.getTimeInMillis()) {
-            TextView textDueDate = (TextView) view.findViewById(R.id.textDueDate);
-            textDueDate.setText(taskDueDateString + " (Overdue)");
-            textDueDate.setTextColor(Color.RED);
+        if (taskDueDateString != null && (taskDueDateString.isEmpty() == false)) {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                taskDueDate.setTime(dateFormatter.parse(taskDueDateString));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (taskDueDate.getTimeInMillis() < todayDate.getTimeInMillis()) {
+                TextView textDueDate = (TextView) view.findViewById(R.id.textDueDate);
+                textDueDate.setText(taskDueDateString + " (Overdue)");
+                textDueDate.setTextColor(Color.RED);
+            }
         }
         return view;
     }
