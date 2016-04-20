@@ -41,7 +41,7 @@
                     <TextView
                         android:id="@+id/textItemType"
                         android:text="@string/item"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                     >
                     <TextView
                         android:text="Location"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                     >
                     <TextView
                         android:text="@string/due_date"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     >
                     <TextView
                         android:text="@string/assigned_to"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                     >
                     <TextView
                         android:text="@string/task"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                     >
                     <TextView
                         android:text="Contract Expiry"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                     >
                     <TextView
                         android:text="Required Quantity"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
                     >
                     <TextView
                         android:text="@string/priority"
-                        android:layout_weight="2.2"
+                        android:layout_weight="3.3"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style='"@android:style/Theme.Dialog"'>
+    style="@android:style/Theme.Dialog"
+    >
 
     <LinearLayout
         android:orientation="horizontal"
@@ -25,10 +26,13 @@
         <Button
             android:id="@+id/btnContractValidTillDate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/set_date" />
+            android:text="@string/set_date"
+            android:background="@drawable/button_shape"
+            android:textColor="#ffffff"
+            />
     </LinearLayout>
     <LinearLayout
             android:layout_width="wrap_content"

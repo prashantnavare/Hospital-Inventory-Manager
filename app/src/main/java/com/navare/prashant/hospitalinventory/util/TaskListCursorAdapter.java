@@ -38,6 +38,9 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
         if (priority.equalsIgnoreCase("Urgent")) {
             textPriority.setTextColor(Color.RED);
         }
+        else {
+            textPriority.setTextColor(Color.BLUE);
+        }
 
         // Show it as overdue if needed
         Calendar todayDate = Calendar.getInstance();

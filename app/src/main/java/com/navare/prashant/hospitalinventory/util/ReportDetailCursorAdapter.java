@@ -35,7 +35,7 @@ public class ReportDetailCursorAdapter extends SimpleCursorAdapter {
             textPriority.setTextColor(Color.RED);
         }
         else {
-            textPriority.setTextColor(Color.BLACK);
+            textPriority.setTextColor(Color.BLUE);
         }
         return view;
     }

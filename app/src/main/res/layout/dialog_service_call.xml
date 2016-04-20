@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@android:style/Theme.Dialog"
     >
 
     <Space
@@ -46,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:layout_weight="2.5"
+            android:layout_weight="2.4"
             />
         <CheckBox
             android:id="@+id/chkUrgent"
@@ -55,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#fd1c15"
+            android:textSize="12sp"
             android:checked="false"
             />
 
