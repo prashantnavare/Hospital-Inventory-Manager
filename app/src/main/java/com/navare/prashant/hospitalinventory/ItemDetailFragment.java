@@ -506,7 +506,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 switch (pickerType) {
@@ -705,7 +705,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                     mItem.mCalibrationFrequency = Long.valueOf(mTextCalibrationFrequency.getText().toString());
                 }
 
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                 Calendar calibrationDate = Calendar.getInstance();
                 String uiCalibrationDate = mBtnChangeCalibrationDate.getText().toString();
                 if (uiCalibrationDate.compareToIgnoreCase("Set") != 0) {
@@ -735,7 +735,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                     mItem.mMaintenanceFrequency = Long.valueOf(mTextMaintenanceFrequency.getText().toString());
                 }
 
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                 Calendar maintenanceDate = Calendar.getInstance();
                 String uiMaintenanceDate = mBtnChangeMaintenanceDate.getText().toString();
                 if (uiMaintenanceDate.compareToIgnoreCase("Set") != 0) {
@@ -756,7 +756,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Contract related
             if (mContractCheckBox.isChecked()) {
                 mItem.mContractReminders = 1;
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                 Calendar contractDate = Calendar.getInstance();
                 String uiContractDate = mBtnContractValidTillDate.getText().toString();
                 if (uiContractDate.compareToIgnoreCase("Set") != 0) {
@@ -833,7 +833,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 if (mItem.mCalibrationDate > 0) {
                     Calendar calibrationDate = Calendar.getInstance();
                     calibrationDate.setTimeInMillis(mItem.mCalibrationDate);
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                     mBtnChangeCalibrationDate.setText(dateFormatter.format(calibrationDate.getTime()));
                 }
                 else {
@@ -855,7 +855,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 if (mItem.mMaintenanceDate > 0) {
                     Calendar maintenanceDate = Calendar.getInstance();
                     maintenanceDate.setTimeInMillis(mItem.mMaintenanceDate);
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                     mBtnChangeMaintenanceDate.setText(dateFormatter.format(maintenanceDate.getTime()));
                 }
                 else {
@@ -875,7 +875,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 if (mItem.mContractValidTillDate > 0) {
                     Calendar contractDate = Calendar.getInstance();
                     contractDate.setTimeInMillis(mItem.mContractValidTillDate);
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                     mBtnContractValidTillDate.setText(dateFormatter.format(contractDate.getTime()));
                 }
                 else {

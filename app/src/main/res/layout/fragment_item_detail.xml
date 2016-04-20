@@ -552,7 +552,7 @@
 
                     <TextView
                         android:text="@string/current_quantity"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -566,7 +566,7 @@
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="120dp"
+                        android:layout_marginRight="160dp"
                         android:padding="5dp"
                         android:background="@drawable/textview_shape"
                         />
@@ -598,10 +598,11 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
+                        android:layout_marginBottom="5dp"
                         >
                         <TextView
                             android:text="@string/min_required_quantity"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -615,7 +616,7 @@
                             android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="120dp"
+                            android:layout_marginRight="160dp"
                             android:padding="5dp"
                             android:background="@drawable/textview_shape"
                             />
@@ -625,10 +626,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
                         >
                         <TextView
                             android:text="Re-order Instructions"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

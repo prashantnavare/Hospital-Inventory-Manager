@@ -577,7 +577,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         else if (mUrgentButton.isChecked()){
             mTask.mPriority = Task.UrgentPriority;
         }
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
         Calendar dueDate = Calendar.getInstance();
         String uiDueDate = mBtnChangeDueDate.getText().toString();
         if (uiDueDate.compareToIgnoreCase("Set") != 0) {
@@ -603,7 +603,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         if (mTask.mDueDate > 0) {
             Date dueDate = new Date();
             dueDate.setTime(mTask.mDueDate);
-            SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd MMM, yyyy");
             String dueDateString = dueDateFormat.format(dueDate);
             mBtnChangeDueDate.setText(dueDateString);
         }
@@ -628,7 +628,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
                 if (mItem.mContractValidTillDate > 0) {
                     Calendar contractDate = Calendar.getInstance();
                     contractDate.setTimeInMillis(mItem.mContractValidTillDate);
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMMM, yyyy");
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                     mTextContractExpiryDate.setText(dateFormatter.format(contractDate.getTime()));
                 }
                 else {
@@ -707,7 +707,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 mBtnChangeDueDate.setText(dateFormatter.format(newDate.getTime()));

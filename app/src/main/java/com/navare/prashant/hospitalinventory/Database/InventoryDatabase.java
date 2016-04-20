@@ -375,7 +375,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 Date dueDate = new Date();
                 dueDate.setTime(task.mDueDate);
 
-                SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd MMMM, yyyy");
+                SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd MMM, yyyy");
                 String dueDateString = dueDateFormat.format(dueDate);
                 ftsValues.put(Task.COL_FTS_DUE_DATE, dueDateString);
             }
@@ -627,7 +627,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
         completedFTSValues.put(Task.COMPLETED_COL_FTS_ASSIGNED_TO, task.mAssignedTo);
 
         Date completedDate = new Date();
-        SimpleDateFormat completedDateFormat = new SimpleDateFormat("dd MMMM, yyyy");
+        SimpleDateFormat completedDateFormat = new SimpleDateFormat("dd MMM, yyyy");
         String dueDateString = completedDateFormat.format(completedDate);
         completedFTSValues.put(Task.COMPLETED_COL_FTS_COMPLETION_DATE, dueDateString);
 
