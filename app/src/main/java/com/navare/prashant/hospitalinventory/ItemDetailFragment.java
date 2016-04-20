@@ -681,6 +681,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         if (mTextName.getText().toString().isEmpty()) {
             showAlertDialog("Item name cannot be empty.");
+            mTextName.requestFocus();
             return false;
         }
         else {
@@ -697,6 +698,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mItem.mCalibrationReminders = 1;
                 if (mTextCalibrationFrequency.getText().toString().isEmpty()) {
                     showAlertDialog("Calibration frequency cannot be empty.");
+                    mTextCalibrationFrequency.requestFocus();
                     return false;
                 }
                 else {
@@ -726,6 +728,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mItem.mMaintenanceReminders = 1;
                 if (mTextMaintenanceFrequency.getText().toString().isEmpty()) {
                     showAlertDialog("Maintenance frequency cannot be empty.");
+                    mTextMaintenanceFrequency.requestFocus();
                     return false;
                 }
                 else {
@@ -781,6 +784,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mItem.mInventoryReminders = 1;
                 if (mTextMinRequiredQuantity.getText().toString().isEmpty()) {
                     showAlertDialog("Minimum quantity cannot be empty.");
+                    mTextMinRequiredQuantity.requestFocus();
                     return false;
                 }
                 else {
