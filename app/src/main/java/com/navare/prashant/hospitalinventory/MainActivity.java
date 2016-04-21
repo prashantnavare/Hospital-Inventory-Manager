@@ -253,5 +253,3 @@ public class MainActivity extends Activity {
     }
 }
 
-// TODO: Fix up all Date buttons with the new style
-
