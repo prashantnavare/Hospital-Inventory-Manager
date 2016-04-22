@@ -1,16 +1,20 @@
 package com.navare.prashant.hospitalinventory;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -141,9 +145,67 @@ public class TaskDetailActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 12;
+    public static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 13;
+
+    private boolean getContactsAndSMSPermissions() {
+        if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(mThisActivity,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            return false;
+        }
+        else {
+            if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(mThisActivity,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            }
+            else {
+            }
+            return true;
+        }
+    }
+
     private void assignTask() {
-        ((TaskDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.task_detail_container)).assignTask();
+        if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(mThisActivity,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted
+                    // Next Check for SEND_SMS permission.
+                    if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(mThisActivity,
+                                new String[]{Manifest.permission.SEND_SMS},
+                                MY_PERMISSIONS_REQUEST_SEND_SMS);
+                    }
+                    else {
+                        ((TaskDetailFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.task_detail_container)).assignTask();
+                    }
+                }
+                else {
+
+                    // permission denied, Disable the Assign task functionality
+                    EnableAssignButton(false);
+                }
+                return;
+            }
+        }
     }
 
     private void doneTask() {
