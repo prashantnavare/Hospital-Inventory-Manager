@@ -28,6 +28,11 @@ import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
 import com.navare.prashant.hospitalinventory.util.InventoryTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.TaskDoneDialogFragment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * An activity representing a single Task detail screen. This
@@ -145,67 +150,161 @@ public class TaskDetailActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 12;
-    public static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 13;
+    public static final int REQUEST_ID_CONTACT_SMS_PERMISSIONS = 12;
+    public static final int REQUEST_ID_CALL_PHONE_PERMISSION = 13;
 
-    private boolean getContactsAndSMSPermissions() {
-        if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(mThisActivity,
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-            return false;
-        }
-        else {
-            if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED) {
-
-                ActivityCompat.requestPermissions(mThisActivity,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-            }
-            else {
-            }
-            return true;
+    private void assignTask() {
+        if(checkAndRequestContactAndSMSPermissions()) {
+            // carry on the normal flow, as READ_CONTACTS and SEND_SMS permissions are granted.
+            ((TaskDetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.task_detail_container)).assignTask();
         }
     }
 
-    private void assignTask() {
-        if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(mThisActivity,
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+    private  boolean checkAndRequestContactAndSMSPermissions() {
+        int readContactsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+        int sendSMSPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (readContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_CONTACTS);
         }
+        if (sendSMSPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.SEND_SMS);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_CONTACT_SMS_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+
+    private  boolean checkAndRequestCallPhonePermission() {
+        int callPhonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (callPhonePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_CALL_PHONE_PERMISSION);
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted
-                    // Next Check for SEND_SMS permission.
-                    if (ContextCompat.checkSelfPermission(mThisActivity, Manifest.permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED) {
+            case REQUEST_ID_CONTACT_SMS_PERMISSIONS: {
 
-                        ActivityCompat.requestPermissions(mThisActivity,
-                                new String[]{Manifest.permission.SEND_SMS},
-                                MY_PERMISSIONS_REQUEST_SEND_SMS);
-                    }
-                    else {
+                Log.d("assignTask()", "Contacts and SMS Permissions callback called");
+                Map<String, Integer> perms = new HashMap<>();
+
+                // Initialize the map with both permissions
+                perms.put(Manifest.permission.READ_CONTACTS, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.SEND_SMS, PackageManager.PERMISSION_GRANTED);
+
+                // Fill with actual results from user
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+
+                    // Check for both permissions
+                    if (perms.get(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+                            && perms.get(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+
+                        Log.d("assignTask()", "contacts & sms permissions granted");
                         ((TaskDetailFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.task_detail_container)).assignTask();
                     }
+                    else {
+                        Log.d("assignTask()", "Some permissions are not granted. Ask again: ");
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS) || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+                            showDialogOK("Contacts and SMS Permissions are required for assigning a task.",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    checkAndRequestContactAndSMSPermissions();
+                                                    break;
+                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                    // disable the assign task functionality
+                                                    EnableAssignButton(false);
+                                                    break;
+                                            }
+                                        }
+                                    });
+                        }
+                        //permission is denied (and never ask again is  checked)
+                        //shouldShowRequestPermissionRationale will return false
+                        else {
+                            Toast.makeText(this, "Go to Settings and enable Contacts and SMS permissions for the Inventory Manager before assigning tasks.", Toast.LENGTH_LONG).show();
+                            // disable the assign task functionality
+                            EnableAssignButton(false);
+                        }
+                    }
                 }
-                else {
+            }
+            case REQUEST_ID_CALL_PHONE_PERMISSION: {
 
-                    // permission denied, Disable the Assign task functionality
-                    EnableAssignButton(false);
+                Log.d("assignTask()", "Call Phone Permission callback called");
+                Map<String, Integer> perms = new HashMap<>();
+
+                // Initialize the map
+                perms.put(Manifest.permission.CALL_PHONE, PackageManager.PERMISSION_GRANTED);
+
+                // Fill with actual results from user
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+
+                    // Check for both permissions
+                    if (perms.get(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+
+                        Log.d("assignTask()", "call phone permission granted");
+                        ((TaskDetailFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.task_detail_container)).callAssignee();
+                    }
+                    else {
+                        Log.d("assignTask()", "Some permissions are not granted. Ask again: ");
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
+                            showDialogOK("Phone Permission is required for calling the assignee of a task.",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    checkAndRequestCallPhonePermission();
+                                                    break;
+                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                    // disable the call assignee functionality
+                                                    EnableCallButton(false);
+                                                    break;
+                                            }
+                                        }
+                                    });
+                        }
+                        //permission is denied (and never ask again is  checked)
+                        //shouldShowRequestPermissionRationale will return false
+                        else {
+                            Toast.makeText(this, "Go to Settings and enable Phone permission for the Inventory Manager before calling assignees from the app.", Toast.LENGTH_LONG).show();
+                            // disable the call assignee functionality
+                            EnableCallButton(false);
+                        }
+                    }
                 }
-                return;
             }
         }
+    }
+
+    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", okListener)
+                .create()
+                .show();
     }
 
     private void doneTask() {
@@ -216,8 +315,10 @@ public class TaskDetailActivity extends ActionBarActivity
 
     private void callAssignee() {
 
-        ((TaskDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.task_detail_container)).callAssignee();
+        if(checkAndRequestCallPhonePermission()) {
+            ((TaskDetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.task_detail_container)).callAssignee();
+        }
     }
 
     private void promptUserForSavingTask() {
