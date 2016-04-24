@@ -4,7 +4,6 @@ package com.navare.prashant.hospitalinventory.Database;
  * Created by prashant on 18-Apr-15.
  */
 
-import android.app.SearchManager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;

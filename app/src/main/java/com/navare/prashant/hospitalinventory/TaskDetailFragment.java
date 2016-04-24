@@ -1,6 +1,5 @@
 package com.navare.prashant.hospitalinventory;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
@@ -23,19 +22,17 @@ import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;import com.navare.prashant.hospitalinventory.Database.Item;
+import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentProvider;
+import com.navare.prashant.hospitalinventory.Database.Item;
 import com.navare.prashant.hospitalinventory.Database.ServiceCall;
 import com.navare.prashant.hospitalinventory.Database.Task;
 import com.navare.prashant.hospitalinventory.util.CalibrationDatePickerFragment;
@@ -606,6 +603,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             SimpleDateFormat dueDateFormat = new SimpleDateFormat("dd MMM, yyyy");
             String dueDateString = dueDateFormat.format(dueDate);
             mBtnChangeDueDate.setText(dueDateString);
+        }
+        else {
+            mBtnChangeDueDate.setText("Set");
         }
 
         mTextAssignedTo.setText(mTask.mAssignedTo);

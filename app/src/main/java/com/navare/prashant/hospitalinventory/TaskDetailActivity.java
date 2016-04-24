@@ -1,22 +1,16 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +18,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.navare.prashant.hospitalinventory.util.ContractTaskDoneDialogFragment;
-import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
 import com.navare.prashant.hospitalinventory.util.InventoryTaskDoneDialogFragment;
 import com.navare.prashant.hospitalinventory.util.TaskDoneDialogFragment;
 
@@ -43,7 +36,7 @@ import java.util.Map;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link TaskDetailFragment}.
  */
-public class TaskDetailActivity extends ActionBarActivity
+public class TaskDetailActivity extends AppCompatActivity
         implements  TaskDetailFragment.Callbacks, TaskDoneDialogFragment.TaskDoneDialogListener,
                     ContractTaskDoneDialogFragment.ContractTaskDoneDialogListener,
                     InventoryTaskDoneDialogFragment.InventoryTaskDoneDialogListener {
@@ -101,11 +94,11 @@ public class TaskDetailActivity extends ActionBarActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.task_detail_actions, menu);
 
-        assignMenuItem = menu.getItem(0);
-        doneMenuItem = menu.getItem(1);
-        callMenuItem = menu.getItem(2);
-        saveMenuItem = menu.getItem(3);
-        revertMenuItem = menu.getItem(4);
+        saveMenuItem = menu.getItem(0);
+        revertMenuItem = menu.getItem(1);
+        assignMenuItem = menu.getItem(2);
+        doneMenuItem = menu.getItem(3);
+        callMenuItem = menu.getItem(4);
 
         // Toggle the options menu buttons as per desired state
         // It is possible that the query has already finished loading before we get here

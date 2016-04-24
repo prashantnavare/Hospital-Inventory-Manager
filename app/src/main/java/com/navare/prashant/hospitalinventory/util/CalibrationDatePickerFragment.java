@@ -1,21 +1,14 @@
 package com.navare.prashant.hospitalinventory.util;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.widget.DatePicker;
-
-import java.util.Calendar;
-
-/**
- * Created by prashant on 21-May-15.
- */
-import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+
+/**
+ * Created by prashant on 21-May-15.
+ */
 
 public class CalibrationDatePickerFragment extends DialogFragment {
 

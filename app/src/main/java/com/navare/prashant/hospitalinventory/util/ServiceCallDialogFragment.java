@@ -1,23 +1,17 @@
 package com.navare.prashant.hospitalinventory.util;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.navare.prashant.hospitalinventory.Database.Item;
@@ -42,8 +36,8 @@ public class ServiceCallDialogFragment extends DialogFragment {
     // implement this interface in order to receive event callbacks.
     // Each method passes the DialogFragment in case the host needs to query it.
     public interface ServiceCallDialogListener {
-        public void onServiceCallDialogReportClick(ServiceCallDialogFragment dialog);
-        public void onServiceCallDialogCancelClick(ServiceCallDialogFragment dialog);
+        void onServiceCallDialogReportClick(ServiceCallDialogFragment dialog);
+        void onServiceCallDialogCancelClick(ServiceCallDialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events

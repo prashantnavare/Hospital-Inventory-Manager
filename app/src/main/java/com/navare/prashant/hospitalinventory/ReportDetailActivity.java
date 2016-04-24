@@ -13,8 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.navare.prashant.hospitalinventory.util.ComputeNewTasksAlarmReceiver;
-
 
 /**
  * An activity representing a list of Tasks. This activity

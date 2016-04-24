@@ -2,27 +2,27 @@ package com.navare.prashant.hospitalinventory;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -30,12 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.app.LoaderManager;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -47,15 +43,8 @@ import com.navare.prashant.hospitalinventory.util.CalibrationDatePickerFragment;
 import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
 import com.navare.prashant.hospitalinventory.util.ServiceCallDialogFragment;
 
-import android.app.DatePickerDialog.OnDateSetListener;
-import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -470,7 +459,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         super.onDestroyView();
     }
 
-    enum DatePickerType {CALIBRATION, MAINTENANCE, CONTRACT};
+    enum DatePickerType {CALIBRATION, MAINTENANCE, CONTRACT}
 
     private void showDatePicker(final DatePickerType pickerType) {
         Calendar dateToShow = Calendar.getInstance();

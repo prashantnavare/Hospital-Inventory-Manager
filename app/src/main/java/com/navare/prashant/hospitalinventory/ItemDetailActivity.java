@@ -6,13 +6,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +35,7 @@ import java.util.Map;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ItemDetailFragment}.
  */
-public class ItemDetailActivity extends ActionBarActivity
+public class ItemDetailActivity extends AppCompatActivity
         implements ItemDetailFragment.Callbacks, InventoryDialogFragment.InventoryDialogListener, ServiceCallDialogFragment.ServiceCallDialogListener {
 
     private MenuItem deleteMenuItem = null;
@@ -100,9 +98,9 @@ public class ItemDetailActivity extends ActionBarActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.item_detail_actions, menu);
 
-        serviceCallMenuItem = menu.getItem(0);
-        saveMenuItem = menu.getItem(1);
-        revertMenuItem = menu.getItem(2);
+        saveMenuItem = menu.getItem(0);
+        revertMenuItem = menu.getItem(1);
+        serviceCallMenuItem = menu.getItem(2);
         inventoryAddMenuItem = menu.getItem(3);
         inventorySubtractMenuItem = menu.getItem(4);
         cameraMenuItem = menu.getItem(5);

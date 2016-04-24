@@ -10,7 +10,6 @@ import android.os.ParcelFileDescriptor;
 import com.navare.prashant.hospitalinventory.Database.InventoryDatabase;
 import com.navare.prashant.hospitalinventory.HospitalInventoryApp;
 
-import java.io.File;
 import java.io.IOException;
 
 /**

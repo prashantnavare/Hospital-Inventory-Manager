@@ -1,9 +1,7 @@
 package com.navare.prashant.hospitalinventory.util;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -23,7 +21,7 @@ import com.navare.prashant.hospitalinventory.R;
  */
 public class InventoryDialogFragment extends DialogFragment {
 
-    public enum InventoryDialogType {ADD, SUBTRACT};
+    public enum InventoryDialogType {ADD, SUBTRACT}
 
     InventoryDialogType mType;
     private TextView mTextMessage;
@@ -35,8 +33,8 @@ public class InventoryDialogFragment extends DialogFragment {
     // implement this interface in order to receive event callbacks.
     // Each method passes the DialogFragment in case the host needs to query it.
     public interface InventoryDialogListener {
-        public void onInventoryDialogPositiveClick(InventoryDialogFragment dialog);
-        public void onInventoryDialogNegativeClick(InventoryDialogFragment dialog);
+        void onInventoryDialogPositiveClick(InventoryDialogFragment dialog);
+        void onInventoryDialogNegativeClick(InventoryDialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events

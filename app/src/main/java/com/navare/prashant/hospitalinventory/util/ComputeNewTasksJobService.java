@@ -16,7 +16,7 @@ import com.navare.prashant.hospitalinventory.Database.HospitalInventoryContentPr
 public class ComputeNewTasksJobService extends JobService {
 
     JobParameters params;
-    ComputeNewTasksTask computeNewTasksTask = new ComputeNewTasksTask();;
+    ComputeNewTasksTask computeNewTasksTask = new ComputeNewTasksTask();
 
     @Override
     public boolean onStartJob(JobParameters params) {

@@ -91,9 +91,6 @@ public class HospitalInventoryApp extends Application {
     static public boolean isAppPurchased() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
         long purchaseValue = prefs.getLong(sPrefPurchaseValue, 0);
-        if (purchaseValue == APP_PURCHASED)
-            return true;
-        else
-            return false;
+        return purchaseValue == APP_PURCHASED;
     }
 }
