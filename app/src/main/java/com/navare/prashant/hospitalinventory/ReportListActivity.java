@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -29,7 +29,7 @@ import android.view.MenuItem;
  * {@link ItemListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class ReportListActivity extends ActionBarActivity
+public class ReportListActivity extends AppCompatActivity
         implements ReportListFragment.Callbacks, SearchView.OnQueryTextListener {
 
     /**

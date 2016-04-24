@@ -4,12 +4,12 @@ import android.app.backup.BackupManager;
 import android.app.backup.RestoreObserver;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class BackupRestoreActivity extends ActionBarActivity {
+public class BackupRestoreActivity extends AppCompatActivity {
 
     private Button backupButton;
     private Button restoreButton;

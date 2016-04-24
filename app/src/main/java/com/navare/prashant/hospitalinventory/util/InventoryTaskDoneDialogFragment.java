@@ -73,10 +73,14 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
 
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if (mTextQuantityAdded.getText().toString().isEmpty())
+                if (mTextQuantityAdded.getText().toString().isEmpty()) {
                     mBtnTaskDone.setEnabled(false);
-                else
+                    mTextCompletionComments.setText("");
+                }
+                else {
                     mBtnTaskDone.setEnabled(true);
+                    mTextCompletionComments.setText("Quantity Added: " + s);
+                }
             }
         });
         mTextCompletionComments = ((TextView) rootView.findViewById(R.id.textCompletionComments));

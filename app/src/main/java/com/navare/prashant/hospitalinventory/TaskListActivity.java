@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -32,7 +32,7 @@ import com.navare.prashant.hospitalinventory.util.ComputeNewTasksAlarmReceiver;
  * {@link TaskListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class TaskListActivity extends ActionBarActivity
+public class TaskListActivity extends AppCompatActivity
         implements TaskListFragment.Callbacks, SearchView.OnQueryTextListener {
 
     /**
