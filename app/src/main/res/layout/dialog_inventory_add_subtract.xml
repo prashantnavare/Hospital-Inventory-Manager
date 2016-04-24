@@ -19,7 +19,7 @@
             android:textColor="#ff707070"
             android:textSize="12sp" />
         <Space
-            android:layout_width="20px"
+            android:layout_width="20dp"
             android:layout_height="match_parent" />
         <EditText
             android:id="@+id/textQuantity"

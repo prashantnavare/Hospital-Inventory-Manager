@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 public class BackupRestoreActivity extends AppCompatActivity {
 
-    private Button backupButton;
-    private Button restoreButton;
     private Context mContext;
 
     @Override
@@ -21,8 +19,6 @@ public class BackupRestoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_backup_restore);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        backupButton = (Button) findViewById(R.id.backupButton);
-        restoreButton = (Button) findViewById(R.id.restoreButton);
         mContext = this;
     }
 

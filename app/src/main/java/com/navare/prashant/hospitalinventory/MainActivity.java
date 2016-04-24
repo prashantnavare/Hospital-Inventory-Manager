@@ -24,8 +24,6 @@ import com.navare.prashant.hospitalinventory.util.SystemUiHider;
 public class MainActivity extends Activity {
     private Button buttonInventory;
     private Button buttonTasks;
-    private Button buttonSettings;
-    private Button buttonRemoveAds;
 
     private AdView mAdView;
     private InterstitialAd mInterstitialAdForTasks;
@@ -53,7 +51,6 @@ public class MainActivity extends Activity {
         // Buttons
         buttonInventory = (Button) findViewById(R.id.inventory_button);
         buttonTasks = (Button) findViewById(R.id.tasks_button);
-        buttonSettings = (Button) findViewById(R.id.settings_button);
 
         // Set the title to the name of the hospital
         setTitleAndTaskandItemCount();
@@ -66,7 +63,7 @@ public class MainActivity extends Activity {
     }
 
     private void doAdsInit() {
-        buttonRemoveAds = (Button) findViewById(R.id.removeads_button);
+        Button buttonRemoveAds = (Button) findViewById(R.id.removeads_button);
         // Banner Ad
         mAdView = (AdView) findViewById(R.id.adView);
 

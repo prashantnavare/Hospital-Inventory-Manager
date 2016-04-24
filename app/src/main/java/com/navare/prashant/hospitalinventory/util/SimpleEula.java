@@ -22,7 +22,6 @@ import java.io.InputStreamReader;
  */
 public class SimpleEula {
 
-    private String EULA_PREFIX = "eula_";
     private Activity mActivity;
 
     public SimpleEula(Activity context) {
@@ -40,6 +39,7 @@ public class SimpleEula {
     }
 
     public void show() {
+        String EULA_PREFIX = "eula_";
         PackageInfo versionInfo = getPackageInfo();
 
         // the eulaKey changes every time you increment the version number in the AndroidManifest.xml

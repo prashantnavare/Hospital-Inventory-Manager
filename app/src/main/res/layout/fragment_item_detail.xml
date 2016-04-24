@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             >
             <!-- Item Name, location, type -->
@@ -688,8 +688,7 @@
 
                     <EditText
                         android:id="@+id/textDescription"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:autoText="true"
+                        android:inputType="textMultiLine|textCapSentences|textAutoComplete|textAutoCorrect"
                         android:cursorVisible="true"
                         android:layout_weight="1"
                         android:textSize="12sp"

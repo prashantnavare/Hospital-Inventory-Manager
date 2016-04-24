@@ -23,8 +23,6 @@ import com.navare.prashant.hospitalinventory.R;
  */
 public class ServiceCallDialogFragment extends DialogFragment {
 
-    private Context mContext = null;
-
     private Item mItem;
     private TextView mTextInstrument;
     private CheckBox mUrgentCheckBox;
@@ -51,7 +49,6 @@ public class ServiceCallDialogFragment extends DialogFragment {
         try {
             // Instantiate the ServiceCallDialogListener so we can send events to the host
             mListener = (ServiceCallDialogListener) activity;
-            mContext = activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
