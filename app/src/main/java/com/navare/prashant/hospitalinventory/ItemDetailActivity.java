@@ -1,5 +1,6 @@
 package com.navare.prashant.hospitalinventory;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,8 +9,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +21,11 @@ import android.widget.Toast;
 
 import com.navare.prashant.hospitalinventory.util.InventoryDialogFragment;
 import com.navare.prashant.hospitalinventory.util.ServiceCallDialogFragment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -157,9 +166,92 @@ public class ItemDetailActivity extends ActionBarActivity
         }
     }
 
+    public static final int REQUEST_ID_STORAGE_PERMISSION = 13;
+
+    private  boolean checkAndRequestStoragePermission() {
+        int storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        if (storagePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_ID_STORAGE_PERMISSION);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+
+            case REQUEST_ID_STORAGE_PERMISSION: {
+
+                Log.d("handleCamera()", "Storage Permission callback called");
+                Map<String, Integer> perms = new HashMap<>();
+
+                // Initialize the map
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+
+                // Fill with actual results from user
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+
+                    // Check for both permissions
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+
+                        Log.d("handleCamera()", "Storage permission granted");
+                        ((ItemDetailFragment) getSupportFragmentManager()
+                                .findFragmentById(R.id.item_detail_container)).handleCamera();
+                    }
+                    else {
+                        Log.d("handleCamera()", "Storage permission not granted. Ask again: ");
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            showDialogOK("Storage Permission is required for taking a photo of the item.",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    checkAndRequestStoragePermission();
+                                                    break;
+                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                    // disable the photo functionality
+                                                    EnableCameraButton(false);
+                                                    break;
+                                            }
+                                        }
+                                    });
+                        }
+                        // permission is denied (and never ask again is  checked)
+                        // shouldShowRequestPermissionRationale will return false
+                        else {
+                            Toast.makeText(this, "Go to Settings and enable Storage permission for the Inventory Manager before taking photos of items.", Toast.LENGTH_LONG).show();
+                            // disable the call assignee functionality
+                            EnableCameraButton(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", okListener)
+                .create()
+                .show();
+    }
+
     private void handleCamera() {
-        ((ItemDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.item_detail_container)).handleCamera();
+
+        if(checkAndRequestStoragePermission()) {
+            ((ItemDetailFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.item_detail_container)).handleCamera();
+        }
     }
 
     private void showServiceCallDialog() {

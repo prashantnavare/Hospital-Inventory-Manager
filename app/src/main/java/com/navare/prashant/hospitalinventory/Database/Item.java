@@ -232,7 +232,7 @@ public class Item {
         this.mCurrentQuantity = cursor.getLong(18);
         this.mReorderInstructions = cursor.getString(19);
 
-        this.mImage = cursor.getBlob(19);
+        this.mImage = cursor.getBlob(20);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
