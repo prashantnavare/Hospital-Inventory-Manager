@@ -1,6 +1,7 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -29,7 +30,7 @@ import com.navare.prashant.hospitalinventory.Database.Item;
  */
 public class ItemListFragment extends ListFragment {
 
-    public static final int LOADER_ID_ITEM_LIST = 1;
+    private static final int LOADER_ID_ITEM_LIST = 1;
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -132,7 +133,7 @@ public class ItemListFragment extends ListFragment {
 
         // Banner Ad
         mAdView = (AdView) rootView.findViewById(R.id.adView);
-        if (HospitalInventoryApp.isAppPurchased() == true) {
+        if (HospitalInventoryApp.isAppPurchased()) {
             mAdView.setVisibility(View.GONE);
             mAdView = null;
         }
@@ -156,9 +157,10 @@ public class ItemListFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        Activity activity = getActivity();
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");

@@ -46,7 +46,7 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
         Calendar todayDate = Calendar.getInstance();
         Calendar taskDueDate = Calendar.getInstance();
         String taskDueDateString = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_DUE_DATE));
-        if (taskDueDateString != null && (taskDueDateString.isEmpty() == false)) {
+        if (taskDueDateString != null && (!taskDueDateString.isEmpty())) {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
             try {
                 taskDueDate.setTime(dateFormatter.parse(taskDueDateString));

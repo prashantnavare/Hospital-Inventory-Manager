@@ -153,7 +153,7 @@ public class ServiceCallDialogFragment extends DialogFragment {
     }
 
     public long getPriority() {
-        if (mUrgentCheckBox.isChecked() == false)
+        if (!mUrgentCheckBox.isChecked())
             return Task.NormalPriority;
         else if (mUrgentCheckBox.isChecked())
             return Task.UrgentPriority;

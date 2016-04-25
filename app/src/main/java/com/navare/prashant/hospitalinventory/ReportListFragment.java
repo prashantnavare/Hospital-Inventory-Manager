@@ -1,6 +1,7 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -127,7 +128,7 @@ public class ReportListFragment extends ListFragment {
 
         // Banner Ad
         mAdView = (AdView) rootView.findViewById(R.id.adView);
-        if (HospitalInventoryApp.isAppPurchased() == true) {
+        if (HospitalInventoryApp.isAppPurchased()) {
             mAdView.setVisibility(View.GONE);
             mAdView = null;
         }
@@ -151,9 +152,10 @@ public class ReportListFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        Activity activity = getActivity();
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");

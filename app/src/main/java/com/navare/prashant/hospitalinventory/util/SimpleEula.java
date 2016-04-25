@@ -46,7 +46,7 @@ public class SimpleEula {
         final String eulaKey = EULA_PREFIX + versionInfo.versionCode;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
         boolean hasBeenShown = prefs.getBoolean(eulaKey, false);
-        if(hasBeenShown == false) {
+        if(!hasBeenShown) {
 
             // Show the Eula
             String title = mActivity.getString(R.string.app_name) + " v" + versionInfo.versionName;

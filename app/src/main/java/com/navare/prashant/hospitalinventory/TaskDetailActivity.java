@@ -117,7 +117,7 @@ public class TaskDetailActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                if (mbSaveMenuEnable == true) {
+                if (mbSaveMenuEnable) {
                     promptUserForSavingTask();
                 }
                 else {
@@ -209,6 +209,7 @@ public class TaskDetailActivity extends AppCompatActivity
                         Log.d("assignTask()", "contacts & sms permissions granted");
                         ((TaskDetailFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.task_detail_container)).assignTask();
+                        break;
                     }
                     else {
                         Log.d("assignTask()", "Some permissions are not granted. Ask again: ");
@@ -235,6 +236,7 @@ public class TaskDetailActivity extends AppCompatActivity
                             Toast.makeText(this, "Go to Settings and enable Contacts and SMS permissions for the Inventory Manager before assigning tasks.", Toast.LENGTH_LONG).show();
                             // disable the assign task functionality
                             EnableAssignButton(false);
+                            break;
                         }
                     }
                 }

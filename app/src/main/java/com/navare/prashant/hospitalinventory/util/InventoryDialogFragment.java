@@ -23,7 +23,7 @@ public class InventoryDialogFragment extends DialogFragment {
 
     public enum InventoryDialogType {ADD, SUBTRACT}
 
-    InventoryDialogType mType;
+    private InventoryDialogType mType;
     private TextView mTextMessage;
     private TextView mTextQuantity;
     private Button mBtnYes;
@@ -38,7 +38,7 @@ public class InventoryDialogFragment extends DialogFragment {
     }
 
     // Use this instance of the interface to deliver action events
-    InventoryDialogListener mListener;
+    private InventoryDialogListener mListener;
 
     // Override the Fragment.onAttach() method to instantiate the InventoryDialogListener
     @Override
@@ -108,7 +108,7 @@ public class InventoryDialogFragment extends DialogFragment {
         return rootView;
     }
 
-    View.OnClickListener onCancel=
+    private View.OnClickListener onCancel=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -117,7 +117,7 @@ public class InventoryDialogFragment extends DialogFragment {
                 }
             };
 
-    View.OnClickListener onYes=
+    private View.OnClickListener onYes=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View view){

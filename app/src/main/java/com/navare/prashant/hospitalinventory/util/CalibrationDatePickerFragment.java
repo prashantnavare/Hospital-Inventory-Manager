@@ -13,7 +13,7 @@ import android.support.v4.app.DialogFragment;
 
 public class CalibrationDatePickerFragment extends DialogFragment {
 
-    OnDateSetListener mOnDateSetCallback;
+    private OnDateSetListener mOnDateSetCallback;
     private int mYear, mMonth, mDay;
 
     public CalibrationDatePickerFragment() {

@@ -97,21 +97,17 @@
         android:layout_marginBottom="5dp"
         >
         <Button
-            android:id="@+id/btnReport"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/report" />
-        <Button
             android:id="@+id/btnCancel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:text="@string/cancel" />
+        <Button
+            android:id="@+id/btnReport"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/report" />
     </LinearLayout>
 
 </LinearLayout>

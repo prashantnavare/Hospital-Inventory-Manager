@@ -37,7 +37,7 @@ public class ContractTaskDoneDialogFragment extends DialogFragment {
     }
 
     // Use this instance of the interface to deliver action events
-    ContractTaskDoneDialogListener mListener;
+    private ContractTaskDoneDialogListener mListener;
 
     // Override the Fragment.onAttach() method to instantiate the InventoryDialogListener
     @Override
@@ -115,7 +115,7 @@ public class ContractTaskDoneDialogFragment extends DialogFragment {
         datePicker.show(((FragmentActivity)mListener).getSupportFragmentManager(), "Contract Date Picker");
     }
 
-    View.OnClickListener onCancel=
+    private View.OnClickListener onCancel=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -124,7 +124,7 @@ public class ContractTaskDoneDialogFragment extends DialogFragment {
                 }
             };
 
-    View.OnClickListener onTaskDone=
+    private View.OnClickListener onTaskDone=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View view){

@@ -117,7 +117,7 @@ public class ItemDetailActivity extends AppCompatActivity
         EnableInventorySubtractButton(mbInventorySubtractMenuEnable);
         EnableServiceCallButton(mbServiceCallMenuEnable);
 
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) == false) {
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             EnableCameraButton(false);
         }
         else {
@@ -131,7 +131,7 @@ public class ItemDetailActivity extends AppCompatActivity
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (mbSaveMenuEnable == true) {
+                if (mbSaveMenuEnable) {
                     promptUserForSavingItem();
                 }
                 else {
@@ -164,7 +164,7 @@ public class ItemDetailActivity extends AppCompatActivity
         }
     }
 
-    public static final int REQUEST_ID_STORAGE_PERMISSION = 13;
+    private static final int REQUEST_ID_STORAGE_PERMISSION = 13;
 
     private  boolean checkAndRequestStoragePermission() {
         int storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -206,7 +206,7 @@ public class ItemDetailActivity extends AppCompatActivity
                     else {
                         Log.d("handleCamera()", "Storage permission not granted. Ask again: ");
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                            showDialogOK("Storage Permission is required for taking a photo of the item.",
+                            showDialogOK(
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -235,9 +235,9 @@ public class ItemDetailActivity extends AppCompatActivity
         }
     }
 
-    private void showDialogOK(String message, DialogInterface.OnClickListener okListener) {
+    private void showDialogOK(DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
-                .setMessage(message)
+                .setMessage("Storage Permission is required for taking a photo of the item.")
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", okListener)
                 .create()
@@ -400,7 +400,7 @@ public class ItemDetailActivity extends AppCompatActivity
         }
     }
 
-    public void EnableCameraButton(boolean bEnable) {
+    private void EnableCameraButton(boolean bEnable) {
         mbCameraMenuEnable = bEnable;
         if (cameraMenuItem != null) {
             cameraMenuItem.setEnabled(bEnable);
@@ -429,7 +429,7 @@ public class ItemDetailActivity extends AppCompatActivity
     @Override
     public void onInventoryDialogPositiveClick(InventoryDialogFragment dialog) {
         String stringQuantity = dialog.getQuantity();
-        if ((stringQuantity != null) && (stringQuantity.isEmpty() == false)) {
+        if ((stringQuantity != null) && (!stringQuantity.isEmpty())) {
             long lQuantity = Long.valueOf(stringQuantity);
             if (dialog.getDialogType() == InventoryDialogFragment.InventoryDialogType.ADD) {
                 ((ItemDetailFragment) getSupportFragmentManager()

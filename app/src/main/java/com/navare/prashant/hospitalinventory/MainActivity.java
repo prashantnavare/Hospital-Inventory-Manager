@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
         // Banner Ad
         mAdView = (AdView) findViewById(R.id.adView);
 
-        if (HospitalInventoryApp.isAppPurchased() == true) {
+        if (HospitalInventoryApp.isAppPurchased()) {
             buttonRemoveAds.setVisibility(View.GONE);
             mAdView.setVisibility(View.GONE);
             return;

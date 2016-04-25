@@ -167,16 +167,17 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        Activity activity = getActivity();
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement task detail fragment's callbacks.");
         }
 
         mCallbacks = (Callbacks) activity;
-        mContext = activity;
+        mContext = context;
     }
 
     @Override
@@ -270,7 +271,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
         // Banner Ad
         mAdView = (AdView) rootView.findViewById(R.id.adView);
-        if (HospitalInventoryApp.isAppPurchased() == true) {
+        if (HospitalInventoryApp.isAppPurchased()) {
             mAdView.setVisibility(View.GONE);
             mAdView = null;
         }
@@ -284,7 +285,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        if ((mTaskID != null) && (mTaskID.isEmpty() == false)) {
+        if ((mTaskID != null) && (!mTaskID.isEmpty())) {
             getLoaderManager().initLoader(LOADER_ID_TASK_DETAILS, null, this);
         }
     }
@@ -436,8 +437,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         int result = getActivity().getContentResolver().update(taskURI, mTask.getContentValues(), null, null);
 
         // Next update the item with the new added quantity
-        long newCurrentQuantity = mItem.mCurrentQuantity + addedQuantity;
-        mItem.mCurrentQuantity = newCurrentQuantity;
+        mItem.mCurrentQuantity = mItem.mCurrentQuantity + addedQuantity;
         Uri itemURI = Uri.withAppendedPath(HospitalInventoryContentProvider.ITEM_URI,
                 String.valueOf(mItem.mID));
         result = getActivity().getContentResolver().update(itemURI, mItem.getContentValues(), null, null);
@@ -462,9 +462,9 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
     private void sendTaskSMSs() {
-        if (mNewAssignee.isEmpty() == false) {
+        if (!mNewAssignee.isEmpty()) {
             // If the current and new assignees are the same, don't do anytrhing.
-            if (mNewAssignee.equalsIgnoreCase(mCurrentAssignee) == true)
+            if (mNewAssignee.equalsIgnoreCase(mCurrentAssignee))
                 return;
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -472,11 +472,11 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             titleString = titleString + " Inventory Manager: ";
             // First send SMS to the new assignee
             String smsAssignMessage = titleString + "You have been assigned a " + mTask.getTaskTypeString() + " task for " + mTask.mItemName;
-            if (mTask.mItemLocation.isEmpty() == false) {
+            if (!mTask.mItemLocation.isEmpty()) {
                 smsAssignMessage = smsAssignMessage + " located at " + mTask.mItemLocation;
             }
             String assigneePhoneNumber = getPhoneNumber(mNewAssignee);
-            if (assigneePhoneNumber.isEmpty() == false) {
+            if (!assigneePhoneNumber.isEmpty()) {
                 sendAssigneeSMS(assigneePhoneNumber, smsAssignMessage);
             }
         }
@@ -495,16 +495,16 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        if (mCurrentAssignee.isEmpty() == false) {
+                        if (!mCurrentAssignee.isEmpty()) {
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
                             String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
                             titleString = titleString + " Inventory Manager: ";
                             String smsUnAssignMessage = titleString + "You have been unassigned from a " + mTask.getTaskTypeString() + " task for " + mTask.mItemName;
-                            if (mTask.mItemLocation.isEmpty() == false) {
+                            if (!mTask.mItemLocation.isEmpty()) {
                                 smsUnAssignMessage = smsUnAssignMessage + " located at " + mTask.mItemLocation;
                             }
                             String unAssigneePhoneNumber = getPhoneNumber(mCurrentAssignee);
-                            if (unAssigneePhoneNumber.isEmpty() == false) {
+                            if (!unAssigneePhoneNumber.isEmpty()) {
                                 sms.sendTextMessage(unAssigneePhoneNumber, null, smsUnAssignMessage, null, null);
                             }
                         }
@@ -566,7 +566,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mTask = new Task();
 
         mTask.mAssignedTo = mTextAssignedTo.getText().toString();
-        if (mTask.mAssignedTo.isEmpty() == false)
+        if (!mTask.mAssignedTo.isEmpty())
             mTask.mAssignedToContactNumber = getPhoneNumber(mTask.mAssignedTo);
         if (mNormalRadioButton.isChecked()) {
             mTask.mPriority = Task.NormalPriority;
@@ -664,8 +664,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         // Toggle the action bar buttons appropriately
         mCallbacks.EnableAssignButton(true);
 
-        if (mTask.mAssignedTo.isEmpty() == false) {
-            if (mTask.mAssignedToContactNumber.isEmpty() == false) {
+        if (!mTask.mAssignedTo.isEmpty()) {
+            if (!mTask.mAssignedToContactNumber.isEmpty()) {
                 mCallbacks.EnableCallButton(true);
             }
         }

@@ -18,13 +18,13 @@ import java.io.IOException;
 public class BackupRestoreAgent extends BackupAgentHelper {
 
     // The name of the SharedPreferences file
-    static final String PREFS_FILE = HospitalInventoryApp.sContext.getPackageName() + "_preferences";
-    static final String DB_FILE = "../databases/" + InventoryDatabase.DATABASE_NAME;
+    private static final String PREFS_FILE = HospitalInventoryApp.sContext.getPackageName() + "_preferences";
+    private static final String DB_FILE = "../databases/" + InventoryDatabase.DATABASE_NAME;
 
 
     // A key to uniquely identify the set of preferences backup data
-    static final String PREFS_BACKUP_KEY = "preferences";
-    static final String DB_BACKUP_KEY = "database";
+    private static final String PREFS_BACKUP_KEY = "preferences";
+    private static final String DB_BACKUP_KEY = "database";
 
     // Allocate a helper and add it to the backup agent
     @Override
