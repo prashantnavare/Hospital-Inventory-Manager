@@ -150,7 +150,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
      * Add an item.
      * @return rowId or -1 if failed
      */
-    public long addItem(Item item) {
+    private long addItem(Item item) {
         final SQLiteDatabase db = this.getWritableDatabase();
         long realID = 0;
         synchronized (HospitalInventoryApp.sDatabaseLock) {
@@ -357,7 +357,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
      * Add a task.
      * @return rowId or -1 if failed
      */
-    public long addTask(Task task) {
+    private long addTask(Task task) {
         final SQLiteDatabase db = this.getWritableDatabase();
         long realID = -1;
         synchronized (HospitalInventoryApp.sDatabaseLock) {
@@ -569,7 +569,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
 
         String selectionArgsString;
         String selection = Task.COMPLETED_FTS_TABLE_NAME + " MATCH ?";
-        if (searchString.isEmpty() == false) {
+        if (!searchString.isEmpty()) {
             selectionArgsString = Task.SPECIAL_ITEM_ID_STRING_FOR_COMPLETED_TASKS + itemID + "  " + searchString + "*";
         }
         else {

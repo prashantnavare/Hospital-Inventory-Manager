@@ -17,12 +17,12 @@ public class HospitalInventoryApp extends Application {
 
     public static Context sContext;
 
-    public static String sPrefTaskAlarmInitialized = "TaskAlarmInitialized";
+    private static String sPrefTaskAlarmInitialized = "TaskAlarmInitialized";
     public static String sPrefOrganizationName = "OrganizationName";
     public static String sPrefTaskRefreshTime = "TaskRefreshTime";
     public static String sPrefTaskCount = "TaskCount";
     public static String sPrefItemCount = "ItemCount";
-    public static String sPrefPurchaseValue = "PurchaseValue";
+    private static String sPrefPurchaseValue = "PurchaseValue";
 
     public static long APP_PURCHASED = 0xdeadbeef;
 

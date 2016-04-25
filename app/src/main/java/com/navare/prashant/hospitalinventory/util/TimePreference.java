@@ -5,6 +5,7 @@ package com.navare.prashant.hospitalinventory.util;
  */
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
@@ -45,8 +46,14 @@ public class TimePreference extends DialogPreference {
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
 
-        picker.setCurrentHour(lastHour);
-        picker.setCurrentMinute(lastMinute);
+        if (Build.VERSION.SDK_INT >= 23 ) {
+            picker.setHour(lastHour);
+            picker.setMinute(lastMinute);
+        }
+        else {
+            picker.setCurrentHour(lastHour);
+            picker.setCurrentMinute(lastMinute);
+        }
     }
 
     @Override
@@ -54,8 +61,14 @@ public class TimePreference extends DialogPreference {
         super.onDialogClosed(positiveResult);
 
         if (positiveResult) {
-            lastHour=picker.getCurrentHour();
-            lastMinute=picker.getCurrentMinute();
+            if (Build.VERSION.SDK_INT >= 23 ) {
+                lastHour=picker.getHour();
+                lastMinute=picker.getMinute();
+            }
+            else {
+                lastHour=picker.getCurrentHour();
+                lastMinute=picker.getCurrentMinute();
+            }
             String lastHourString = String.format("%02d", lastHour);
             String lastMinString = String.format("%02d", lastMinute);
 

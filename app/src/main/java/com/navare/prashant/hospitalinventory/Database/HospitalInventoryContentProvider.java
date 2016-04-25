@@ -14,11 +14,11 @@ import android.util.Log;
 public class HospitalInventoryContentProvider extends ContentProvider {
 
     private static String SCHEME = "content://";
-    public static String PROVIDER_NAME = "com.navare.prashant.HospitalInventory.provider";
+    private static String PROVIDER_NAME = "com.navare.prashant.HospitalInventory.provider";
 
     // FTS Items related
     private static final String FTS_ITEMS_SUB_SCHEME = "/fts_items";
-    static final String FTS_ITEM_URL = SCHEME + PROVIDER_NAME + FTS_ITEMS_SUB_SCHEME;
+    private static final String FTS_ITEM_URL = SCHEME + PROVIDER_NAME + FTS_ITEMS_SUB_SCHEME;
     public static final Uri FTS_ITEM_URI = Uri.parse(FTS_ITEM_URL);
     // UriMatcher stuff
     private static final int SEARCH_FTS_ITEMS = 1;
@@ -27,7 +27,7 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     // Actual ItemTable related
     // get_item related
     private static final String ITEM_SUB_SCHEME = "/item";
-    static final String ITEM_URL = SCHEME + PROVIDER_NAME + ITEM_SUB_SCHEME;
+    private static final String ITEM_URL = SCHEME + PROVIDER_NAME + ITEM_SUB_SCHEME;
     public static final Uri ITEM_URI = Uri.parse(ITEM_URL);
     // UriMatcher stuff
     private static final int ITEMS = 3;
@@ -35,7 +35,7 @@ public class HospitalInventoryContentProvider extends ContentProvider {
 
     // ServiceCall Table related
     private static final String SERVICE_CALL_SUB_SCHEME = "/service_call";
-    static final String SERVICE_CALL_URL = SCHEME + PROVIDER_NAME + SERVICE_CALL_SUB_SCHEME;
+    private static final String SERVICE_CALL_URL = SCHEME + PROVIDER_NAME + SERVICE_CALL_SUB_SCHEME;
     public static final Uri SERVICE_CALL_URI = Uri.parse(SERVICE_CALL_URL);
     // UriMatcher stuff
     private static final int SERVICE_CALLS = 5;
@@ -43,7 +43,7 @@ public class HospitalInventoryContentProvider extends ContentProvider {
 
     // FTS Tasks related
     private static final String FTS_TASKS_SUB_SCHEME = "/fts_tasks";
-    static final String FTS_TASK_URL = SCHEME + PROVIDER_NAME + FTS_TASKS_SUB_SCHEME;
+    private static final String FTS_TASK_URL = SCHEME + PROVIDER_NAME + FTS_TASKS_SUB_SCHEME;
     public static final Uri FTS_TASK_URI = Uri.parse(FTS_TASK_URL);
     // UriMatcher stuff
     private static final int SEARCH_FTS_TASKS = 7;
@@ -52,7 +52,7 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     // Actual TaskTable related
     // get_task related
     private static final String TASK_SUB_SCHEME = "/task";
-    static final String TASK_URL = SCHEME + PROVIDER_NAME + TASK_SUB_SCHEME;
+    private static final String TASK_URL = SCHEME + PROVIDER_NAME + TASK_SUB_SCHEME;
     public static final Uri TASK_URI = Uri.parse(TASK_URL);
     // UriMatcher stuff
     private static final int TASKS = 9;
@@ -60,14 +60,14 @@ public class HospitalInventoryContentProvider extends ContentProvider {
 
     // computeNewTasks related
     private static final String COMPUTE_NEW_TASKS_SUB_SCHEME = "/computeNewTasks";
-    static final String COMPUTE_NEW_TASKS_URL = SCHEME + PROVIDER_NAME + TASK_SUB_SCHEME;
+    private static final String COMPUTE_NEW_TASKS_URL = SCHEME + PROVIDER_NAME + TASK_SUB_SCHEME;
     public static final Uri COMPUTE_NEW_TASKS_URI = Uri.parse(COMPUTE_NEW_TASKS_URL);
     // UriMatcher stuff
     private static final int COMPUTE_NEW_TASKS = 11;
 
     // Completed FTS Tasks related
     private static final String COMPLETED_FTS_TASKS_SUB_SCHEME = "/completed_fts_tasks";
-    static final String COMPLETED_FTS_TASK_URL = SCHEME + PROVIDER_NAME + COMPLETED_FTS_TASKS_SUB_SCHEME;
+    private static final String COMPLETED_FTS_TASK_URL = SCHEME + PROVIDER_NAME + COMPLETED_FTS_TASKS_SUB_SCHEME;
     public static final Uri COMPLETED_FTS_TASK_URI = Uri.parse(COMPLETED_FTS_TASK_URL);
     // UriMatcher stuff
     private static final int SEARCH_COMPLETED_FTS_TASKS = 12;
@@ -112,9 +112,9 @@ public class HospitalInventoryContentProvider extends ContentProvider {
     }
 
     // MIME types used for searching items or looking up a single item
-    public static final String ITEMS_MIME_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
+    private static final String ITEMS_MIME_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
             "/vnd.navare.prashant.HospitalInventory.Item";
-    public static final String ITEM_DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
+    private static final String ITEM_DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
             "/vnd.navare.prashant.HospitalInventory.Item";
 
     private InventoryDatabase mInventoryDB;
@@ -289,8 +289,7 @@ public class HospitalInventoryContentProvider extends ContentProvider {
         // If record is added successfully
         if (rowID > 0)
         {
-            Uri newItemUri = ContentUris.withAppendedId(SERVICE_CALL_URI, rowID);
-            return newItemUri;
+            return ContentUris.withAppendedId(SERVICE_CALL_URI, rowID);
         }
         return null;
     }

@@ -117,7 +117,7 @@ public class TaskDetailActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
-                if (mbSaveMenuEnable == true) {
+                if (mbSaveMenuEnable) {
                     promptUserForSavingTask();
                 }
                 else {

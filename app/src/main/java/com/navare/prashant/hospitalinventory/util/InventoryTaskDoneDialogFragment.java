@@ -32,7 +32,7 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
     }
 
     // Use this instance of the interface to deliver action events
-    InventoryTaskDoneDialogListener mListener;
+    private InventoryTaskDoneDialogListener mListener;
 
     // Override the Fragment.onAttach() method to instantiate the InventoryDialogListener
     @Override
@@ -100,7 +100,7 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
         return rootView;
     }
 
-    View.OnClickListener onCancel=
+    private View.OnClickListener onCancel=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -109,7 +109,7 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
                 }
             };
 
-    View.OnClickListener onTaskDone=
+    private View.OnClickListener onTaskDone=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -123,7 +123,6 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
     }
 
     public long getAddedQuantity() {
-        long addedQuantity = Long.valueOf(mTextQuantityAdded.getText().toString());
-        return addedQuantity;
+        return Long.valueOf(mTextQuantityAdded.getText().toString());
     }
 }

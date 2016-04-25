@@ -57,7 +57,7 @@ import java.util.Calendar;
  */
 public class ItemDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, TextWatcher {
 
-    public static final int LOADER_ID_ITEM_DETAILS = 2;
+    private static final int LOADER_ID_ITEM_DETAILS = 2;
 
     /**
      * The fragment argument representing the item ID that this fragment
@@ -115,10 +115,10 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
     private ImageView mImageView;
 
-    String mImageFileName;
-    File mImageFile;
-    Uri mImageFileUri;
-    Bitmap mImageBitmap = null;
+    private String mImageFileName;
+    private File mImageFile;
+    private Uri mImageFileUri;
+    private Bitmap mImageBitmap = null;
 
     private AdView mAdView;
 
@@ -199,16 +199,17 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        Activity activity = getActivity();
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement item detail fragment's callbacks.");
         }
 
         mCallbacks = (Callbacks) activity;
-        mContext = activity;
+        mContext = context;
     }
 
     @Override
@@ -442,7 +443,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
         // Banner Ad
         mAdView = (AdView) rootView.findViewById(R.id.adView);
-        if (HospitalInventoryApp.isAppPurchased() == true) {
+        if (HospitalInventoryApp.isAppPurchased()) {
             mAdView.setVisibility(View.GONE);
             mAdView = null;
         }
@@ -518,7 +519,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        if ((mItemID != null) && (mItemID.isEmpty() == false)) {
+        if ((mItemID != null) && (!mItemID.isEmpty())) {
             getLoaderManager().initLoader(LOADER_ID_ITEM_DETAILS, null, this);
         }
         else {
@@ -612,7 +613,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
 
     public boolean saveItem() {
         boolean bAllDataOK = updateItemFromUI();
-        if (bAllDataOK == false)
+        if (!bAllDataOK)
             return false;
 
         boolean bSuccess = false;
@@ -767,7 +768,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Consummable
             mItem.mType = Item.ConsummableType;
             // Inventory related
-            if (mTextCurrentQuantity.getText().toString().isEmpty() == false)
+            if (!mTextCurrentQuantity.getText().toString().isEmpty())
                 mItem.mCurrentQuantity = Long.valueOf(mTextCurrentQuantity.getText().toString());
             if (mInventoryCheckBox.isChecked()) {
                 mItem.mInventoryReminders = 1;
@@ -1015,7 +1016,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public void handleCamera() {
 
