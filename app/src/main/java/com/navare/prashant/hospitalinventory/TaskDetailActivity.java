@@ -209,6 +209,7 @@ public class TaskDetailActivity extends AppCompatActivity
                         Log.d("assignTask()", "contacts & sms permissions granted");
                         ((TaskDetailFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.task_detail_container)).assignTask();
+                        break;
                     }
                     else {
                         Log.d("assignTask()", "Some permissions are not granted. Ask again: ");
@@ -228,6 +229,7 @@ public class TaskDetailActivity extends AppCompatActivity
                                             }
                                         }
                                     });
+                            break;
                         }
                         //permission is denied (and never ask again is  checked)
                         //shouldShowRequestPermissionRationale will return false
@@ -235,6 +237,7 @@ public class TaskDetailActivity extends AppCompatActivity
                             Toast.makeText(this, "Go to Settings and enable Contacts and SMS permissions for the Inventory Manager before assigning tasks.", Toast.LENGTH_LONG).show();
                             // disable the assign task functionality
                             EnableAssignButton(false);
+                            break;
                         }
                     }
                 }
@@ -258,6 +261,7 @@ public class TaskDetailActivity extends AppCompatActivity
                         Log.d("assignTask()", "call phone permission granted");
                         ((TaskDetailFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.task_detail_container)).callAssignee();
+                        break;
                     }
                     else {
                         Log.d("assignTask()", "Some permissions are not granted. Ask again: ");
@@ -277,6 +281,7 @@ public class TaskDetailActivity extends AppCompatActivity
                                             }
                                         }
                                     });
+                            break;
                         }
                         //permission is denied (and never ask again is  checked)
                         //shouldShowRequestPermissionRationale will return false
@@ -284,6 +289,7 @@ public class TaskDetailActivity extends AppCompatActivity
                             Toast.makeText(this, "Go to Settings and enable Phone permission for the Inventory Manager before calling assignees from the app.", Toast.LENGTH_LONG).show();
                             // disable the call assignee functionality
                             EnableCallButton(false);
+                            break;
                         }
                     }
                 }
