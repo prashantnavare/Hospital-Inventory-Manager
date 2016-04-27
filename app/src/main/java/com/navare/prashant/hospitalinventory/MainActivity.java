@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
         setTitleAndTaskandItemCount();
 
         // TODO: Remove this after testing
-        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
+        HospitalInventoryApp.setPurchaseValue(0);
 
         // Ads related
         doAdsInit();
@@ -231,7 +231,7 @@ public class MainActivity extends Activity {
     }
 
     public void onRemoveAdsClick(View view) {
-        // TODO: Remove Ads button logic - In app purchase logic
+        startActivity(new Intent(this, RemoveAdsActivity.class));
     }
 
     private void setTitleAndTaskandItemCount() {

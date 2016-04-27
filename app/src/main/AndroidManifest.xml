@@ -161,6 +161,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.navare.prashant.hospitalinventory.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".RemoveAdsActivity"
+            android:label="@string/title_activity_remove_ads"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.navare.prashant.hospitalinventory.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

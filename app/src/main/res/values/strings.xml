@@ -102,4 +102,6 @@
     <string name="banner_task_list_ad_unit_id">ca-app-pub-1181736027907915/7784502986</string>
     <string name="removeads_button">Remove Ads</string>
 
+    <string name="title_activity_remove_ads">Remove Ads</string>
+
 </resources>
