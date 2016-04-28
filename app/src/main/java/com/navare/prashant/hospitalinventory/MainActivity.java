@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +15,15 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.navare.prashant.hospitalinventory.InAppBilling.IabHelper;
+import com.navare.prashant.hospitalinventory.InAppBilling.IabResult;
+import com.navare.prashant.hospitalinventory.InAppBilling.IabBroadcastReceiver;
+import com.navare.prashant.hospitalinventory.InAppBilling.IabBroadcastReceiver.IabBroadcastListener;
+import com.navare.prashant.hospitalinventory.InAppBilling.IabHelper;
+import com.navare.prashant.hospitalinventory.InAppBilling.IabHelper.IabAsyncInProgressException;
+import com.navare.prashant.hospitalinventory.InAppBilling.IabResult;
+import com.navare.prashant.hospitalinventory.InAppBilling.Inventory;
+import com.navare.prashant.hospitalinventory.InAppBilling.Purchase;
 import com.navare.prashant.hospitalinventory.util.SimpleEula;
 import com.navare.prashant.hospitalinventory.util.SystemUiHider;
 
@@ -25,19 +34,26 @@ import com.navare.prashant.hospitalinventory.util.SystemUiHider;
  * @see SystemUiHider
  */
 public class MainActivity extends Activity {
-    private Button buttonInventory;
-    private Button buttonTasks;
-
+    private Button mButtonInventory;
+    private Button mButtonTasks;
+    private Button mButtonRemoveAds;
     private AdView mAdView;
     private InterstitialAd mInterstitialAdForTasks;
     private InterstitialAd mInterstitialAdForInventory;
     private InterstitialAd mInterstitialAdForReports;
     private InterstitialAd mInterstitialAdForBackupRestore;
+    private IabHelper mHelper;
+    private Activity mThisActivity;
+
+    static final String SKU_INVENTORY_MANAGER = "InventoryManager";
+    // (arbitrary) request code for the purchase flow
+    static final int PURCHASE_REQUEST = 10001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mThisActivity = this;
         // To solve the documented problem of multiple instances of Main activity (see https://code.google.com/p/android/issues/detail?id=2373)
         if (!isTaskRoot()) {
             Intent intent = getIntent();
@@ -52,8 +68,8 @@ public class MainActivity extends Activity {
         new SimpleEula(this).show();
 
         // Buttons
-        buttonInventory = (Button) findViewById(R.id.inventory_button);
-        buttonTasks = (Button) findViewById(R.id.tasks_button);
+        mButtonInventory = (Button) findViewById(R.id.inventory_button);
+        mButtonTasks = (Button) findViewById(R.id.tasks_button);
 
         // Set the title to the name of the hospital
         setTitleAndTaskandItemCount();
@@ -62,17 +78,21 @@ public class MainActivity extends Activity {
         HospitalInventoryApp.setPurchaseValue(0);
 
         // Ads related
-        doAdsInit();
-    }
-
-    private void doAdsInit() {
-        Button buttonRemoveAds = (Button) findViewById(R.id.removeads_button);
+        mButtonRemoveAds = (Button) findViewById(R.id.removeads_button);
         // Banner Ad
         mAdView = (AdView) findViewById(R.id.adView);
 
+        doAdsInit();
+    }
+
+    private void removeAdStuff() {
+        mButtonRemoveAds.setVisibility(View.GONE);
+        mAdView.setVisibility(View.GONE);
+    }
+    private void doAdsInit() {
+
         if (HospitalInventoryApp.isAppPurchased()) {
-            buttonRemoveAds.setVisibility(View.GONE);
-            mAdView.setVisibility(View.GONE);
+            removeAdStuff();
             return;
         }
 
@@ -166,10 +186,15 @@ public class MainActivity extends Activity {
     // Called before the activity is destroyed
     @Override
     public void onDestroy() {
+        super.onDestroy();
         if (mAdView != null) {
             mAdView.destroy();
+            mAdView = null;
         }
-        super.onDestroy();
+        if (mHelper != null) {
+            mHelper.disposeWhenFinished();
+            mHelper = null;
+        }
     }
 
     private void requestNewInterstitialForTasks() {
@@ -267,6 +292,92 @@ public class MainActivity extends Activity {
 
     private void initiatePurchase() {
 
+        // TODO: compute your public key and store it in base64EncodedPublicKey
+        String base64EncodedPublicKey = "Foo";
+
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    // Oh noes, there was a problem.
+                    Log.d("initiatePurchase()", "Problem setting up In-app Billing: " + result);
+                    // TODO: Show error message to the user
+                    return;
+                }
+                // Have we been disposed of in the meantime? If so, quit.
+                if (mHelper == null) {
+                    // TODO: Show error message to the user
+                    return;
+                }
+                // Hooray, IAB is fully set up!
+                Log.d("initiatePurchase()", "Launching purchase flow...");
+                setWaitScreen(true);
+
+                String payload = "";
+                try {
+                    mHelper.launchPurchaseFlow(mThisActivity, SKU_INVENTORY_MANAGER, PURCHASE_REQUEST,
+                            mPurchaseFinishedListener, payload);
+                } catch (IabAsyncInProgressException e) {
+                    showPurchaseErrorAlert("Another purchase operation may be in progress. Please try again later.");
+                    setWaitScreen(false);
+                }
+            }
+        });
+    }
+
+    private void showPurchaseErrorAlert(String message) {
+        showPurchaseAlertInternal(message, true);
+    }
+
+    private void showPurchaseSuccessAlert(String message) {
+        showPurchaseAlertInternal(message, false);
+    }
+
+    private void showPurchaseAlertInternal(String message, boolean bError) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        if (bError) {
+            alertDialog.setTitle("Purchase Error");
+            alertDialog.setIcon(R.drawable.ic_error);
+        }
+        else {
+            alertDialog.setTitle("Purchase Successful");
+            alertDialog.setIcon(R.drawable.ic_success);
+        }
+        alertDialog.setMessage(message);
+        alertDialog.setNeutralButton("OK", null);
+        alertDialog.create().show();
+    }
+
+    // Callback for when a purchase is finished
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Log.d("initiatePurchase()", "Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null)
+                return;
+
+            if (result.isFailure()) {
+                showPurchaseErrorAlert("There was an error while completing the purchase. Please try and again later.");
+                setWaitScreen(false);
+                return;
+            }
+
+            Log.d("initiatePurchase()", "Purchase successful.");
+
+            if (purchase.getSku().equals(SKU_INVENTORY_MANAGER)) {
+                // bought the Inventory Manager app!
+                Log.d("initiatePurchase()", "Purchase is premium upgrade. Congratulating user.");
+                showPurchaseSuccessAlert("Thank you for for the purchase.");
+                HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
+                removeAdStuff();
+                setWaitScreen(false);
+            }
+        }
+    };
+
+    void setWaitScreen(boolean set) {
+        // TODO: Implement purchase Wait screen
     }
 
     private void setTitleAndTaskandItemCount() {
@@ -277,11 +388,11 @@ public class MainActivity extends Activity {
 
         long taskCount = preferences.getLong(HospitalInventoryApp.sPrefTaskCount, 0);
         String taskButtonString = "Tasks (" + String.valueOf(taskCount) + ")";
-        buttonTasks.setText(taskButtonString);
+        mButtonTasks.setText(taskButtonString);
 
         long itemCount = preferences.getLong(HospitalInventoryApp.sPrefItemCount, 0);
         String itemButtonString = "Inventory (" + String.valueOf(itemCount) + ")";
-        buttonInventory.setText(itemButtonString);
+        mButtonInventory.setText(itemButtonString);
     }
 }
 
