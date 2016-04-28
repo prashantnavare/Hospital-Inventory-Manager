@@ -1,10 +1,13 @@
 package com.navare.prashant.hospitalinventory;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -231,7 +234,39 @@ public class MainActivity extends Activity {
     }
 
     public void onRemoveAdsClick(View view) {
-        startActivity(new Intent(this, RemoveAdsActivity.class));
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Remove Ads");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Would you like to purchase Inventory Manager and remove the ads?");
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.ic_hospital_inventory);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("Purchase", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+
+                initiatePurchase();
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    private void initiatePurchase() {
+
     }
 
     private void setTitleAndTaskandItemCount() {
