@@ -42,7 +42,7 @@
     <string name="menu_mark_as_complete">Mark as complete</string>
     <string name="item">Item</string>
     <string name="task">Task</string>
-    <string name="consummable">Consummable</string>
+    <string name="consumable">Consumable</string>
     <string name="task_done">Task Done</string>
     <string name="comments">Comments</string>
     <string name="priority">Priority</string>

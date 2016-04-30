@@ -590,7 +590,7 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void updateUIFromTask() {
         if (mTask.mTaskType == Task.Inventory)
-            mTextItemType.setText(getResources().getText(R.string.consummable));
+            mTextItemType.setText(getResources().getText(R.string.consumable));
         else
             mTextItemType.setText(getResources().getText(R.string.instrument));
 

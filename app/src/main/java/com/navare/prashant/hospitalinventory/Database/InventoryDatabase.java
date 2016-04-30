@@ -101,8 +101,8 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                 String type = strings[2].trim();
                 if (type.compareToIgnoreCase("Instrument")== 0)
                     item.mType = Item.InstrumentType;
-                else if (type.compareToIgnoreCase("Consummable")==0)
-                    item.mType = Item.ConsummableType;
+                else if (type.compareToIgnoreCase("Consumable")==0)
+                    item.mType = Item.ConsumableType;
                 long newID = addItem(item);
                 if (newID == -1) {
                     Log.e(TAG, "unable to add item: " + strings[0].trim());
@@ -852,7 +852,7 @@ public class InventoryDatabase extends SQLiteOpenHelper {
                     }
                 }
             }
-            else if (item.mType == Item.ConsummableType) {
+            else if (item.mType == Item.ConsumableType) {
                 if (item.mInventoryReminders > 0) {
                     if (item.mCurrentQuantity < item.mMinRequiredQuantity) {
                         // There is no due date for Inventory tasks

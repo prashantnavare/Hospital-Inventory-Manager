@@ -234,7 +234,7 @@
                         <Button
                             android:id="@+id/btnChangeCalibrationDate"
                             android:layout_weight="1"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:padding="5dp"
                             android:textStyle="bold"
@@ -368,7 +368,7 @@
                         <Button
                             android:id="@+id/btnChangeMaintenanceDate"
                             android:layout_weight="1"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:padding="5dp"
                             android:textStyle="bold"
@@ -478,7 +478,7 @@
                         <Button
                             android:id="@+id/btnContractValidTillDate"
                             android:layout_weight="1"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:layout_width="match_parent"
                             android:padding="5dp"
                             android:textStyle="bold"

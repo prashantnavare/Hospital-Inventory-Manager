@@ -61,8 +61,18 @@ public class ContractTaskDoneDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getDialog().setTitle("Contract Task Done");
         View rootView = inflater.inflate(R.layout.dialog_contract_task_done, container, false);
         mBtnContractValidTillDate = (Button) rootView.findViewById(R.id.btnContractValidTillDate);
         mBtnContractValidTillDate.setOnClickListener(new View.OnClickListener() {
@@ -82,9 +92,6 @@ public class ContractTaskDoneDialogFragment extends DialogFragment {
         mBtnCancel = ((Button) rootView.findViewById(R.id.btnCancel));
         mBtnCancel.setOnClickListener(onCancel);
 
-        // Tweak the UI as per the type getResources().getText(R.string.main_title)
-        Dialog myDialog = getDialog();
-        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return rootView;
     }

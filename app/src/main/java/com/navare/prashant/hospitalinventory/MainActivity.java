@@ -45,7 +45,8 @@ public class MainActivity extends Activity {
     private IabHelper mHelper;
     private Activity mThisActivity;
 
-    static final String SKU_INVENTORY_MANAGER = "InventoryManager";
+    // TODO: replace this with the real SKU
+    static final String SKU_INVENTORY_MANAGER = "android.test.purchased";
     // (arbitrary) request code for the purchase flow
     static final int PURCHASE_REQUEST = 10001;
 
@@ -75,7 +76,7 @@ public class MainActivity extends Activity {
         setTitleAndTaskandItemCount();
 
         // TODO: Remove this after testing
-        HospitalInventoryApp.setPurchaseValue(0);
+        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
 
         // Ads related
         mButtonRemoveAds = (Button) findViewById(R.id.removeads_button);

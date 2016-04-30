@@ -52,9 +52,9 @@ public class Item {
 
     // Defines related to item type
     public static final long InstrumentType = 1;
-    public static final long ConsummableType = 2;
+    public static final long ConsumableType = 2;
     public static final String InstrumentString = "Instrument";
-    public static final String ConsummableString = "Consummable";
+    public static final String ConsumableString = "Consumable";
 
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

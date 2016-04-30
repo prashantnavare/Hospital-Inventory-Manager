@@ -41,7 +41,7 @@
                     <TextView
                         android:id="@+id/textItemType"
                         android:text="@string/item"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                     >
                     <TextView
                         android:text="Location"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                     >
                     <TextView
                         android:text="@string/due_date"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                         android:padding="5dp"
                         android:textStyle="bold"
                         android:textColor="#ffffff"
-                        android:layout_marginRight="140dp"
+                        android:layout_marginRight="100dp"
                         android:layout_height="30dp"
                         android:background="@drawable/button_shape"
                         />
@@ -117,7 +117,7 @@
                     >
                     <TextView
                         android:text="@string/assigned_to"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                     >
                     <TextView
                         android:text="@string/task"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                     >
                     <TextView
                         android:text="Contract Expiry"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                     >
                     <TextView
                         android:text="Required Quantity"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
                     >
                     <TextView
                         android:text="@string/priority"
-                        android:layout_weight="3.3"
+                        android:layout_weight="1.9"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -222,6 +222,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_weight="1"
+                        android:layout_marginTop="5dp"
                         >
                         <RadioButton
                             android:text="Urgent"
@@ -252,7 +253,7 @@
                     <TextView
                         android:id="@+id/textInstructionsLabel"
                         android:text="@string/instructions"
-                        android:layout_weight="3"
+                        android:layout_weight="1.7"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

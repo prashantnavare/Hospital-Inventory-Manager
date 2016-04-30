@@ -45,7 +45,7 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
-                    + " must implement TaskDoneDialogListener");
+                    + " must implement InventoryTaskDoneDialogListener");
         }
     }
 
@@ -56,8 +56,18 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getDialog().setTitle("Inventory Task Done");
         View rootView = inflater.inflate(R.layout.dialog_inventory_task_done, container, false);
 
         mTextQuantityAdded = (TextView) rootView.findViewById(R.id.textQuantityAdded);
@@ -93,9 +103,6 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
         mBtnCancel = ((Button) rootView.findViewById(R.id.btnCancel));
         mBtnCancel.setOnClickListener(onCancel);
 
-        // Tweak the UI as per the type getResources().getText(R.string.main_title)
-        Dialog myDialog = getDialog();
-        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return rootView;
     }

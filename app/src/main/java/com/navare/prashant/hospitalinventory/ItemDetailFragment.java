@@ -269,7 +269,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mConsumableLayout.setVisibility(View.GONE);
     }
 
-    private void showConsummableLayout() {
+    private void showConsumableLayout() {
         mCalibrationRemindersLayout.setVisibility(View.GONE);
         mCalibrationDetailsLayout.setVisibility(View.GONE);
         mMaintenanceRemindersLayout.setVisibility(View.GONE);
@@ -315,8 +315,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mConsumableRadioButton = (RadioButton) rootView.findViewById(R.id.consumableRadioButton);
         mConsumableRadioButton.setOnClickListener(new RadioGroup.OnClickListener() {
             public void onClick(View v){
-                if (mPreviousType != Item.ConsummableType) {
-                    showConsummableLayout();
+                if (mPreviousType != Item.ConsumableType) {
+                    showConsumableLayout();
                     mCallbacks.EnableRevertButton(true);
                     mCallbacks.EnableSaveButton(true);
                     mCallbacks.RedrawOptionsMenu();
@@ -412,7 +412,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
         mTextContractInstructions = (TextView) rootView.findViewById(R.id.textContractInstructions);
         mTextContractInstructions.addTextChangedListener(this);
 
-        // Consummable related
+        // Consumable related
         mConsumableLayout = (LinearLayout) rootView.findViewById(R.id.consumableLayout);
         mInventoryDetailsLayout = (LinearLayout) rootView.findViewById(R.id.inventoryDetailsLayout);
 
@@ -765,8 +765,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             }
         }
         else if (mConsumableRadioButton.isChecked()){
-            // Consummable
-            mItem.mType = Item.ConsummableType;
+            // Consumable
+            mItem.mType = Item.ConsumableType;
             // Inventory related
             if (!mTextCurrentQuantity.getText().toString().isEmpty())
                 mItem.mCurrentQuantity = Long.valueOf(mTextCurrentQuantity.getText().toString());
@@ -810,7 +810,7 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             // Turn on the Instrument action bar menu items
             mCallbacks.EnableServiceCallButton(true);
 
-            // Turn off the Consummable action bar menu items
+            // Turn off the Consumable action bar menu items
             mCallbacks.EnableInventoryAddButton(false);
             mCallbacks.EnableInventorySubtractButton(false);
 
@@ -878,18 +878,18 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
                 mContractDetailsLayout.setVisibility(View.GONE);
             }
         }
-        else if (mItem.mType == Item.ConsummableType) {
+        else if (mItem.mType == Item.ConsumableType) {
 
             // Turn off the Instrument specific views
-            showConsummableLayout();
+            showConsumableLayout();
 
-            mPreviousType = Item.ConsummableType;
+            mPreviousType = Item.ConsumableType;
             mConsumableRadioButton.setChecked(true);
 
             // Turn off the Instrument action bar menu items
             mCallbacks.EnableServiceCallButton(false);
 
-            // Turn on the Consummable action bar menu items
+            // Turn on the Consumable action bar menu items
             mCallbacks.EnableInventoryAddButton(true);
             mCallbacks.EnableInventorySubtractButton(true);
 
