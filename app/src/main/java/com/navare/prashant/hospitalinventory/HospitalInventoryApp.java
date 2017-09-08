@@ -15,7 +15,7 @@ public class HospitalInventoryApp extends Application {
     // Object for intrinsic database lock
     public static final Object sDatabaseLock = new Object();
 
-    public static Context sContext;
+    public static Context mAppContext;
 
     private static String sPrefTaskAlarmInitialized = "TaskAlarmInitialized";
     public static String sPrefOrganizationName = "OrganizationName";
@@ -26,23 +26,26 @@ public class HospitalInventoryApp extends Application {
 
     public static long APP_PURCHASED = 0xdeadbeef;
 
+    private static SharedPreferences mPrefs;
+    private static SharedPreferences.Editor mEditor;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        sContext = getApplicationContext();
+        mAppContext = getApplicationContext();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean(sPrefTaskAlarmInitialized, false)) {
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mPrefs.edit();
+        if (!mPrefs.getBoolean(sPrefTaskAlarmInitialized, false)) {
             // Set the preferences flag to true
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(sPrefTaskAlarmInitialized, true);
-            editor.putString(HospitalInventoryApp.sPrefTaskRefreshTime, "01:00");
-            editor.commit();
+            mEditor.putBoolean(sPrefTaskAlarmInitialized, true);
+            mEditor.putString(HospitalInventoryApp.sPrefTaskRefreshTime, "01:00");
+            mEditor.commit();
 
             ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
             // Set up the daily alarm for computing new tasks
-            alarmReceiver.setAlarm(sContext, true);
+            alarmReceiver.setAlarm(mAppContext, true);
 
         }
     }
@@ -56,12 +59,10 @@ public class HospitalInventoryApp extends Application {
     }
 
     static private void changeTaskCount(long numTasks) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
-        long taskCount = prefs.getLong(sPrefTaskCount, 0);
+        long taskCount = mPrefs.getLong(sPrefTaskCount, 0);
         taskCount = taskCount + numTasks;
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong(sPrefTaskCount, taskCount);
-        editor.commit();
+        mEditor.putLong(sPrefTaskCount, taskCount);
+        mEditor.commit();
     }
 
     static public void incrementItemCount() {
@@ -73,24 +74,44 @@ public class HospitalInventoryApp extends Application {
     }
 
     static private void changeItemCount(long numItems) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
-        long itemCount = prefs.getLong(sPrefItemCount, 0);
+        long itemCount = mPrefs.getLong(sPrefItemCount, 0);
         itemCount = itemCount + numItems;
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong(sPrefItemCount, itemCount);
-        editor.commit();
+        mEditor.putLong(sPrefItemCount, itemCount);
+        mEditor.commit();
     }
 
     static public void setPurchaseValue(long purchaseValue) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong(sPrefPurchaseValue, purchaseValue);
-        editor.commit();
+        mEditor.putLong(sPrefPurchaseValue, purchaseValue);
+        mEditor.commit();
     }
 
     static public boolean isAppPurchased() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
-        long purchaseValue = prefs.getLong(sPrefPurchaseValue, 0);
+        long purchaseValue = mPrefs.getLong(sPrefPurchaseValue, 0);
         return purchaseValue == APP_PURCHASED;
     }
+
+    static public String getOrgName() {
+        return mPrefs.getString(HospitalInventoryApp.sPrefOrganizationName, "");
+    }
+
+    static public void setOrgName(String orgName) {
+        mEditor.putString(HospitalInventoryApp.sPrefOrganizationName, orgName);
+    }
+
+    static public long getTaskCount() {
+        return mPrefs.getLong(HospitalInventoryApp.sPrefTaskCount, 0);
+    }
+
+    static public void setTaskCount(long taskCount) {
+        mEditor.putLong(HospitalInventoryApp.sPrefTaskCount, taskCount);
+    }
+
+    static public long getItemCount() {
+        return mPrefs.getLong(HospitalInventoryApp.sPrefItemCount, 0);
+    }
+
+    static public void setItemCount(long itemCount) {
+        mEditor.putLong(HospitalInventoryApp.sPrefItemCount, itemCount);
+    }
+
 }

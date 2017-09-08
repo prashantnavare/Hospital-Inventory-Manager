@@ -196,7 +196,7 @@ public class SettingsActivity extends PreferenceActivity {
                 public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                     if(key.equals(HospitalInventoryApp.sPrefTaskRefreshTime)) {
                         ComputeNewTasksAlarmReceiver alarmReceiver = new ComputeNewTasksAlarmReceiver();
-                        alarmReceiver.setAlarm(HospitalInventoryApp.sContext, true);
+                        alarmReceiver.setAlarm(HospitalInventoryApp.mAppContext, true);
                     }
                 }
             };

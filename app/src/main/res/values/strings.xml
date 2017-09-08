@@ -103,5 +103,11 @@
     <string name="removeads_button">Remove Ads</string>
 
     <string name="title_activity_remove_ads">Remove Ads</string>
+    <string name="tasks">Tasks</string>
+    <string name="inventory">Inventory</string>
+    <string name="reports">Reports</string>
+    <string name="backup_restore">Backup/Restore</string>
+    <string name="settings">Settings</string>
+    <string name="remove_ads">Remove Ads</string>
 
 </resources>

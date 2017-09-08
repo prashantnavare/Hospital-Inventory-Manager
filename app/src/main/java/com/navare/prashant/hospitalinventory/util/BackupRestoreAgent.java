@@ -18,7 +18,7 @@ import java.io.IOException;
 public class BackupRestoreAgent extends BackupAgentHelper {
 
     // The name of the SharedPreferences file
-    private static final String PREFS_FILE = HospitalInventoryApp.sContext.getPackageName() + "_preferences";
+    private static final String PREFS_FILE = HospitalInventoryApp.mAppContext.getPackageName() + "_preferences";
     private static final String DB_FILE = "../databases/" + InventoryDatabase.DATABASE_NAME;
 
 

@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -33,11 +36,10 @@ import com.navare.prashant.hospitalinventory.util.SystemUiHider;
  *
  * @see SystemUiHider
  */
-public class MainActivity extends Activity {
-    private Button mButtonInventory;
-    private Button mButtonTasks;
-    private Button mButtonRemoveAds;
+public class MainActivity extends AppCompatActivity {
+    private GridView    mGridView;
     private AdView mAdView;
+
     private InterstitialAd mInterstitialAdForTasks;
     private InterstitialAd mInterstitialAdForInventory;
     private InterstitialAd mInterstitialAdForReports;
@@ -52,9 +54,14 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // TODO: Remove this after testing
+        // HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
+
         super.onCreate(savedInstanceState);
 
         mThisActivity = this;
+
         // To solve the documented problem of multiple instances of Main activity (see https://code.google.com/p/android/issues/detail?id=2373)
         if (!isTaskRoot()) {
             Intent intent = getIntent();
@@ -68,26 +75,76 @@ public class MainActivity extends Activity {
 
         new SimpleEula(this).show();
 
-        // Buttons
-        mButtonInventory = (Button) findViewById(R.id.inventory_button);
-        mButtonTasks = (Button) findViewById(R.id.tasks_button);
+        setTitle(HospitalInventoryApp.getOrgName() + " Inventory Manager");
 
-        // Set the title to the name of the hospital
-        setTitleAndTaskandItemCount();
+        mGridView =(GridView)findViewById(R.id.grid);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        // TODO: Remove this after testing
-        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position){
+                    case 0:
+                        onTasksClick();
+                        break;
+                    case 1:
+                        onInventoryClick();
+                        break;
+                    case 2:
+                        onReportsClick();
+                        break;
+                    case 3:
+                        onBackupRestoreClick();
+                        break;
+                    case 4:
+                        onSettingsClick();
+                        break;
+                    case 5:
+                        onRemoveAdsClick();
+                        break;
+                }
+            }
+        });
 
-        // Ads related
-        mButtonRemoveAds = (Button) findViewById(R.id.removeads_button);
-        // Banner Ad
+        initGridAdapater();
+
         mAdView = (AdView) findViewById(R.id.adView);
 
         doAdsInit();
     }
 
+    private void initGridAdapater() {
+        int numButtons = 0;
+        if (HospitalInventoryApp.isAppPurchased()) {
+            numButtons = 5;
+        }
+        else {
+            numButtons = 6;
+        }
+        String[]    tileTextArray = new String[numButtons];
+        int[]       tileImageArray = new int[numButtons];
+
+        tileTextArray[0] = getString(R.string.tasks) + " (" + String.valueOf(HospitalInventoryApp.getTaskCount()) + ")";
+        tileTextArray[1]=getString(R.string.inventory) + " (" + String.valueOf(HospitalInventoryApp.getItemCount()) + ")";;
+        tileTextArray[2]=getString(R.string.reports);
+        tileTextArray[3]=getString(R.string.backup_restore);
+        tileTextArray[4]=getString(R.string.settings);
+
+        tileImageArray[0] = R.drawable.ic_tasks;
+        tileImageArray[1] = R.drawable.ic_tasks;
+        tileImageArray[2] = R.drawable.ic_tasks;
+        tileImageArray[3] = R.drawable.ic_tasks;
+        tileImageArray[4] = R.drawable.ic_tasks;
+
+        if (numButtons == 6) {
+            tileTextArray[5] = getString(R.string.remove_ads);
+            tileImageArray[5] = R.drawable.ic_tasks;
+        }
+
+        NavigationGridAdapter adapter = new NavigationGridAdapter(this, tileTextArray, tileImageArray);
+        mGridView.setAdapter(adapter);
+    }
+
     private void removeAdStuff() {
-        mButtonRemoveAds.setVisibility(View.GONE);
         mAdView.setVisibility(View.GONE);
     }
     private void doAdsInit() {
@@ -108,7 +165,7 @@ public class MainActivity extends Activity {
             @Override
             public void onAdClosed() {
                 requestNewInterstitialForTasks();
-                onTasksClick(null);
+                onTasksClick();
             }
         });
 
@@ -120,7 +177,7 @@ public class MainActivity extends Activity {
             @Override
             public void onAdClosed() {
                 requestNewInterstitialForInventory();
-                onInventoryClick(null);
+                onInventoryClick();
             }
         });
 
@@ -132,7 +189,7 @@ public class MainActivity extends Activity {
             @Override
             public void onAdClosed() {
                 requestNewInterstitialForReports();
-                onReportsClick(null);
+                onReportsClick();
             }
         });
 
@@ -144,7 +201,7 @@ public class MainActivity extends Activity {
             @Override
             public void onAdClosed() {
                 requestNewInterstitialForBackupRestore();
-                onBackupRestoreClick(null);
+                onBackupRestoreClick();
             }
         });
     }
@@ -177,7 +234,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        setTitleAndTaskandItemCount();
+        initGridAdapater();
         if (mAdView != null) {
             mAdView.resume();
         }
@@ -218,7 +275,7 @@ public class MainActivity extends Activity {
         mInterstitialAdForBackupRestore.loadAd(adRequest);
     }
 
-    public void onTasksClick(View view)
+    public void onTasksClick()
     {
         if (mInterstitialAdForTasks != null && mInterstitialAdForTasks.isLoaded()) {
             mInterstitialAdForTasks.show();
@@ -228,7 +285,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void onInventoryClick(View view) {
+    public void onInventoryClick() {
         if (mInterstitialAdForInventory != null && mInterstitialAdForInventory.isLoaded()) {
             mInterstitialAdForInventory.show();
         }
@@ -237,7 +294,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void onReportsClick(View view) {
+    public void onReportsClick() {
         if (mInterstitialAdForReports != null && mInterstitialAdForReports.isLoaded()) {
             mInterstitialAdForReports.show();
         }
@@ -246,7 +303,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void onBackupRestoreClick(View view) {
+    public void onBackupRestoreClick() {
         if (mInterstitialAdForBackupRestore != null && mInterstitialAdForBackupRestore.isLoaded()) {
             mInterstitialAdForBackupRestore.show();
         }
@@ -255,11 +312,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void onSettingsClick(View view) {
+    public void onSettingsClick() {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    public void onRemoveAdsClick(View view) {
+    public void onRemoveAdsClick() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
@@ -372,6 +429,7 @@ public class MainActivity extends Activity {
                 showPurchaseSuccessAlert("Thank you for for the purchase.");
                 HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
                 removeAdStuff();
+                initGridAdapater();
                 setWaitScreen(false);
             }
         }
@@ -379,21 +437,6 @@ public class MainActivity extends Activity {
 
     void setWaitScreen(boolean set) {
         // TODO: Implement purchase Wait screen
-    }
-
-    private void setTitleAndTaskandItemCount() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String titleString = preferences.getString(HospitalInventoryApp.sPrefOrganizationName, "");
-        titleString = titleString + " Inventory Manager";
-        setTitle(titleString);
-
-        long taskCount = preferences.getLong(HospitalInventoryApp.sPrefTaskCount, 0);
-        String taskButtonString = "Tasks (" + String.valueOf(taskCount) + ")";
-        mButtonTasks.setText(taskButtonString);
-
-        long itemCount = preferences.getLong(HospitalInventoryApp.sPrefItemCount, 0);
-        String itemButtonString = "Inventory (" + String.valueOf(itemCount) + ")";
-        mButtonInventory.setText(itemButtonString);
     }
 }
 
