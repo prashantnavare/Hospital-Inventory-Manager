@@ -130,14 +130,14 @@ public class MainActivity extends AppCompatActivity {
         tileTextArray[4]=getString(R.string.settings);
 
         tileImageArray[0] = R.drawable.ic_tasks;
-        tileImageArray[1] = R.drawable.ic_tasks;
-        tileImageArray[2] = R.drawable.ic_tasks;
-        tileImageArray[3] = R.drawable.ic_tasks;
-        tileImageArray[4] = R.drawable.ic_tasks;
+        tileImageArray[1] = R.drawable.ic_inventory;
+        tileImageArray[2] = R.drawable.ic_reports;
+        tileImageArray[3] = R.drawable.ic_backup;
+        tileImageArray[4] = R.drawable.ic_settings;
 
         if (numButtons == 6) {
             tileTextArray[5] = getString(R.string.remove_ads);
-            tileImageArray[5] = R.drawable.ic_tasks;
+            tileImageArray[5] = R.drawable.ic_remove_ads;
         }
 
         NavigationGridAdapter adapter = new NavigationGridAdapter(this, tileTextArray, tileImageArray);

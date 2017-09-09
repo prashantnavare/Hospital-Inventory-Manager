@@ -13,8 +13,11 @@
         android:layout_height="match_parent"
         android:numColumns="2"
         android:gravity="center"
-        android:columnWidth="200dp"
+        android:columnWidth="130dp"
         android:stretchMode="columnWidth"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
         android:layout_weight="1"
         />
 
