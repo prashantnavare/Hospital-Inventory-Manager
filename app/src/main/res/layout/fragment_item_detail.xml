@@ -16,6 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             >
             <!-- Item Name, location, type -->
             <LinearLayout
@@ -49,6 +51,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Name"
+                        android:textColor="@color/colorBlack"
                         android:padding="5dp"
                         />
 
@@ -84,6 +87,7 @@
                         android:layout_height="wrap_content"
                         android:text="Type"
                         android:padding="5dp"
+                        android:textColor="@color/colorBlack"
                         />
 
                     <RadioGroup
@@ -129,6 +133,7 @@
                         android:layout_height="wrap_content"
                         android:text="Location"
                         android:padding="5dp"
+                        android:textColor="@color/colorBlack"
                         />
 
                     <EditText
@@ -582,7 +587,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:padding="5dp"
-                    android:textStyle="bold"
                     android:checked="false"
                     />
 
@@ -731,11 +735,11 @@
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
+        ads:adSize="SMART_BANNER"
         ads:adUnitId="@string/banner_item_detail_ad_unit_id">
     </com.google.android.gms.ads.AdView>
 

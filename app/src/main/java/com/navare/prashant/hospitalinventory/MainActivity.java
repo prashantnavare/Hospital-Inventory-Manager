@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.navare.prashant.hospitalinventory.InAppBilling.IabHelper;
 import com.navare.prashant.hospitalinventory.InAppBilling.IabResult;
 import com.navare.prashant.hospitalinventory.InAppBilling.IabBroadcastReceiver;
@@ -107,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
         initGridAdapater();
 
-        mAdView = (AdView) findViewById(R.id.adView);
-
         doAdsInit();
     }
 
@@ -147,13 +146,19 @@ public class MainActivity extends AppCompatActivity {
     private void removeAdStuff() {
         mAdView.setVisibility(View.GONE);
     }
+
     private void doAdsInit() {
+
+        mAdView = (AdView) findViewById(R.id.adView);
 
         if (HospitalInventoryApp.isAppPurchased()) {
             removeAdStuff();
             return;
         }
 
+        MobileAds.initialize(this, "ca-app-pub-1181736027907915~6447370585");
+
+        mAdView.setVisibility(View.VISIBLE);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
