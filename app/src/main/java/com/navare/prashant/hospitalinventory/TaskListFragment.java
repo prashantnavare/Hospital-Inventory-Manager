@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -43,6 +44,7 @@ public class TaskListFragment extends ListFragment {
      * clicks.
      */
     private Callbacks mCallbacks = sDummyCallbacks;
+    private Context     mContext;
 
     /**
      * The current activated item position. Only used on tablets.
@@ -176,6 +178,7 @@ public class TaskListFragment extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        mContext = context;
         Activity activity = getActivity();
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
@@ -259,6 +262,11 @@ public class TaskListFragment extends ListFragment {
                     mCallbacks.setTaskCount(c.getCount());
                 else
                     mCallbacks.setTaskCount(0);
+
+                if (c.getCount() > 0) {
+                    Toast toast = Toast.makeText(mContext, "Click on any task to see the task details.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
 
             @Override
