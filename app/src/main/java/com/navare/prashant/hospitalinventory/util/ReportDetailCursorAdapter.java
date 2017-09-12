@@ -23,13 +23,20 @@ public class ReportDetailCursorAdapter extends SimpleCursorAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Cursor cursor = getCursor();
+        cursor.moveToPosition(position);
+
         //get reference to the row
         View view = super.getView(position, convertView, parent);
 
+        String assignedTo = cursor.getString(cursor.getColumnIndex(Task.COMPLETED_COL_FTS_ASSIGNED_TO));
+        if (assignedTo == null || assignedTo.isEmpty()) {
+            TextView textAssignedTo = (TextView) view.findViewById(R.id.textAssignedTo);
+            textAssignedTo.setText("Unassigned");
+        }
+
         // If the priority is Urgent, mark it red
         TextView textPriority = (TextView) view.findViewById(R.id.textPriority);
-        Cursor cursor = getCursor();
-        cursor.moveToPosition(position);
         String priority = cursor.getString(cursor.getColumnIndex(Task.COMPLETED_COL_FTS_TASK_PRIORITY));
         if (priority.equalsIgnoreCase("Urgent")) {
             textPriority.setTextColor(Color.RED);
@@ -37,6 +44,13 @@ public class ReportDetailCursorAdapter extends SimpleCursorAdapter {
         else {
             textPriority.setTextColor(Color.BLUE);
         }
+
+        String comments = cursor.getString(cursor.getColumnIndex(Task.COMPLETED_COL_FTS_COMPLETION_COMMENTS));
+        if (comments == null || comments.isEmpty()) {
+            TextView textComments = (TextView) view.findViewById(R.id.textComments);
+            textComments.setText("None");
+        }
+
         return view;
     }
 }
