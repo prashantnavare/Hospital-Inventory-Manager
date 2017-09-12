@@ -595,7 +595,13 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mTextItemType.setText(getResources().getText(R.string.instrument));
 
         mTextItemName.setText(mTask.mItemName);
-        mTextItemLocation.setText(mTask.mItemLocation);
+
+        if (mTask.mItemLocation == null || mTask.mItemLocation.isEmpty()) {
+            mTextItemLocation.setText("Unspecified");
+        }
+        else {
+            mTextItemLocation.setText(mTask.mItemLocation);
+        }
 
         if (mTask.mDueDate > 0) {
             Date dueDate = new Date();
@@ -608,7 +614,12 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mBtnChangeDueDate.setText("Set");
         }
 
-        mTextAssignedTo.setText(mTask.mAssignedTo);
+        if (mTask.mAssignedTo == null || mTask.mAssignedTo.isEmpty()) {
+            mTextAssignedTo.setText("Unassigned");
+        }
+        else {
+            mTextAssignedTo.setText(mTask.mAssignedTo);
+        }
 
         mTextTaskType.setText(mTask.getTaskTypeString());
 
@@ -637,19 +648,30 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             }
         }
 
+        String instructionsString = null;
         if (mItem != null) {
-            if (mTask.mTaskType == Task.Calibration)
-                mTextInstructions.setText(mItem.mCalibrationInstructions);
-            else if (mTask.mTaskType == Task.Contract)
-                mTextInstructions.setText(mItem.mContractInstructions);
-            else if (mTask.mTaskType == Task.Maintenance)
-                mTextInstructions.setText(mItem.mMaintenanceInstructions);
-            else if (mTask.mTaskType == Task.Inventory)
-                mTextInstructions.setText(mItem.mReorderInstructions);
+            if (mTask.mTaskType == Task.Calibration) {
+                instructionsString = mItem.mCalibrationInstructions;
+            }
+            else if (mTask.mTaskType == Task.Contract) {
+                instructionsString = mItem.mContractInstructions;
+            }
+            else if (mTask.mTaskType == Task.Maintenance) {
+                instructionsString = mItem.mMaintenanceInstructions;
+            }
+            else if (mTask.mTaskType == Task.Inventory) {
+                instructionsString = mItem.mReorderInstructions;
+            }
         }
         if (mServiceCall != null) {
             mTextInstructionsLabel.setText(getResources().getText(R.string.description));
-            mTextInstructions.setText(mServiceCall.mDescription);
+            instructionsString = mServiceCall.mDescription;
+        }
+        if (instructionsString == null || instructionsString.isEmpty()) {
+            mTextInstructions.setText("None");
+        }
+        else {
+            mTextInstructions.setText(instructionsString);
         }
 
         if (mTask.mPriority == Task.NormalPriority) {

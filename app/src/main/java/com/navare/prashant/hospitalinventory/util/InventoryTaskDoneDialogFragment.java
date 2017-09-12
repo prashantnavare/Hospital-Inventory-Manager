@@ -67,7 +67,7 @@ public class InventoryTaskDoneDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getDialog().setTitle("Inventory Task Done");
+        getDialog().setTitle("Inventory Task Due");
         View rootView = inflater.inflate(R.layout.dialog_inventory_task_done, container, false);
 
         mTextQuantityAdded = (TextView) rootView.findViewById(R.id.textQuantityAdded);

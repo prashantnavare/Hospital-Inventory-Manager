@@ -51,7 +51,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Name"
-                        android:textColor="@color/colorBlack"
                         android:padding="5dp"
                         />
 
@@ -87,7 +86,6 @@
                         android:layout_height="wrap_content"
                         android:text="Type"
                         android:padding="5dp"
-                        android:textColor="@color/colorBlack"
                         />
 
                     <RadioGroup
@@ -133,7 +131,6 @@
                         android:layout_height="wrap_content"
                         android:text="Location"
                         android:padding="5dp"
-                        android:textColor="@color/colorBlack"
                         />
 
                     <EditText

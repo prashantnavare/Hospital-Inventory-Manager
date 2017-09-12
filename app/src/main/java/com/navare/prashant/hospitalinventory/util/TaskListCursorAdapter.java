@@ -30,10 +30,47 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
         //get reference to the row
         View view = super.getView(position, convertView, parent);
 
-        // If the priority is Urgent, mark it red
-        TextView textPriority = (TextView) view.findViewById(R.id.textPriority);
         Cursor cursor = getCursor();
         cursor.moveToPosition(position);
+
+        // If the location is not given, mark it as unspecified.
+        TextView textLocation = (TextView) view.findViewById(R.id.textItemLocation);
+        String location = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_ITEM_LOCATION));
+        if ((location == null) || location.isEmpty()) {
+            textLocation.setText("Unspecified");
+        }
+
+        // If the assigned to is not given, mark it as unspecified.
+        TextView textAssignedTo = (TextView) view.findViewById(R.id.textAssignedTo);
+        String assignedTo = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_ASSIGNED_TO));
+        if ((assignedTo == null) || assignedTo.isEmpty()) {
+            textAssignedTo.setText("Unassigned");
+        }
+
+        // If the due date is not given, mark it as unspecified. Show it as overdue if needed.
+        TextView textDueDate = (TextView) view.findViewById(R.id.textDueDate);
+        String dueDateString = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_DUE_DATE));
+        if ((dueDateString == null) || dueDateString.isEmpty()) {
+            textDueDate.setText("None");
+        }
+        else {
+            Calendar todayDate = Calendar.getInstance();
+            Calendar taskDueDate = Calendar.getInstance();
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
+            try {
+                taskDueDate.setTime(dateFormatter.parse(dueDateString));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (taskDueDate.getTimeInMillis() < todayDate.getTimeInMillis()) {
+                textDueDate.setText(dueDateString + " (Overdue)");
+                textDueDate.setTextColor(Color.RED);
+            }
+
+        }
+
+        // If the priority is Urgent, mark it red
+        TextView textPriority = (TextView) view.findViewById(R.id.textPriority);
         String priority = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_TASK_PRIORITY));
         if (priority.equalsIgnoreCase("Urgent")) {
             textPriority.setTextColor(Color.RED);
@@ -43,21 +80,8 @@ public class TaskListCursorAdapter extends SimpleCursorAdapter {
         }
 
         // Show it as overdue if needed
-        Calendar todayDate = Calendar.getInstance();
-        Calendar taskDueDate = Calendar.getInstance();
         String taskDueDateString = cursor.getString(cursor.getColumnIndex(Task.COL_FTS_DUE_DATE));
         if (taskDueDateString != null && (!taskDueDateString.isEmpty())) {
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM, yyyy");
-            try {
-                taskDueDate.setTime(dateFormatter.parse(taskDueDateString));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if (taskDueDate.getTimeInMillis() < todayDate.getTimeInMillis()) {
-                TextView textDueDate = (TextView) view.findViewById(R.id.textDueDate);
-                textDueDate.setText(taskDueDateString + " (Overdue)");
-                textDueDate.setTextColor(Color.RED);
-            }
         }
         return view;
     }

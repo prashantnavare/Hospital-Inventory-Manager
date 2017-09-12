@@ -258,15 +258,16 @@ public class TaskListFragment extends ListFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(c);
-                if (c != null)
+                if (c != null) {
                     mCallbacks.setTaskCount(c.getCount());
+                    if (c.getCount() > 0) {
+                        Toast toast = Toast.makeText(mContext, "Click on any task to see the task details.", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }
                 else
                     mCallbacks.setTaskCount(0);
 
-                if (c.getCount() > 0) {
-                    Toast toast = Toast.makeText(mContext, "Click on any task to see the task details.", Toast.LENGTH_LONG);
-                    toast.show();
-                }
             }
 
             @Override
