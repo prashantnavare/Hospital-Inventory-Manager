@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -33,7 +34,7 @@ public class ReportDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_ITEM_NAME = "item_name";
 
-    private static final int LOADER_ID_TASK_LIST = 11;
+    private static final int LOADER_ID_REPORT_LIST = 11;
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -45,6 +46,7 @@ public class ReportDetailFragment extends Fragment {
      * clicks.
      */
     private Callbacks mCallbacks = sDummyCallbacks;
+    private Context mContext = null;
 
     /**
      * The current activated item position. Only used on tablets.
@@ -61,6 +63,7 @@ public class ReportDetailFragment extends Fragment {
          * Callback for when an item has been selected.
          */
         String getQuery();
+        void setItemCount(long itemCount);
     }
 
     /**
@@ -72,6 +75,9 @@ public class ReportDetailFragment extends Fragment {
         @Override
         public String getQuery() {
             return null;
+        }
+        @Override
+        public void setItemCount(long itemCount) {
         }
     };
 
@@ -116,7 +122,7 @@ public class ReportDetailFragment extends Fragment {
         mListAdapter = new ReportDetailCursorAdapter(getActivity(),
                 R.layout.report_detail_row, null, columns, views, 0);
 
-        getNewTaskList(null);
+        getNewReportList(null);
     }
 
     @Override
@@ -173,6 +179,7 @@ public class ReportDetailFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        mContext = context;
         Activity activity = getActivity();
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
@@ -191,10 +198,10 @@ public class ReportDetailFragment extends Fragment {
         mCallbacks = sDummyCallbacks;
     }
 
-    public void getNewTaskList(final String searchString){
+    public void getNewReportList(final String searchString){
 
         // Load the content
-        getLoaderManager().restartLoader(LOADER_ID_TASK_LIST, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+        getLoaderManager().restartLoader(LOADER_ID_REPORT_LIST, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 String [] selectionArgs;
@@ -213,6 +220,14 @@ public class ReportDetailFragment extends Fragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                 mListAdapter.swapCursor(c);
+                if (c != null) {
+                    mCallbacks.setItemCount(c.getCount());
+                }
+                else {
+                    mCallbacks.setItemCount(0);
+                    Toast toast = Toast.makeText(mContext, "There are no reports for this item.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
 
             @Override

@@ -81,7 +81,7 @@ public class ReportDetailActivity extends AppCompatActivity
             // handles a search query
             mQuery = intent.getStringExtra(SearchManager.QUERY);
             ((ReportDetailFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.report_detail_container)).getNewTaskList(mQuery);
+                    .findFragmentById(R.id.report_detail_container)).getNewReportList(mQuery);
         }
     }
 
@@ -130,6 +130,11 @@ public class ReportDetailActivity extends AppCompatActivity
     }
 
     @Override
+    public void setItemCount(long itemCount) {
+        setTitle(getTitle() + " (" + String.valueOf(itemCount) + ")");
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String s) {
         return true;
     }
@@ -139,7 +144,7 @@ public class ReportDetailActivity extends AppCompatActivity
         // handles a search query
         mQuery = !TextUtils.isEmpty(s) ? s : null;
         ((ReportDetailFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.report_detail_container)).getNewTaskList(mQuery);
+                .findFragmentById(R.id.report_detail_container)).getNewReportList(mQuery);
         return true;
     }
 }

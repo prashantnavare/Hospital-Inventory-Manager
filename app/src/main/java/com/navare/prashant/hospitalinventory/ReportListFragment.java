@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -42,6 +43,7 @@ public class ReportListFragment extends ListFragment {
      * clicks.
      */
     private Callbacks mCallbacks = sDummyCallbacks;
+    private Context mContext = null;
 
     /**
      * The current activated item position. Only used on tablets.
@@ -155,6 +157,7 @@ public class ReportListFragment extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        mContext = context;
         Activity activity = getActivity();
         // Activities containing this fragment must implement its callbacks.
         if (!(activity instanceof Callbacks)) {
@@ -234,6 +237,12 @@ public class ReportListFragment extends ListFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(c);
+                if (c != null) {
+                    if (c.getCount() > 0) {
+                        Toast toast = Toast.makeText(mContext, "Click on any inventory item to see the item reports.", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }
             }
 
             @Override

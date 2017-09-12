@@ -156,7 +156,7 @@ public class ItemListActivity extends AppCompatActivity
 
     @Override
     public void setItemCount(long itemCount) {
-        setTitle("Inventory (" + String.valueOf(itemCount) + ")");
+        setTitle(getTitle() + " (" + String.valueOf(itemCount) + ")");
     }
 
     @Override
