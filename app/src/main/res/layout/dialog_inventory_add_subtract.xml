@@ -17,7 +17,7 @@
             android:fontFamily="sans-serif-light"
             android:text="@string/add_quantity"
             android:textColor="#ff707070"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
         <Space
             android:layout_width="20dp"
             android:layout_height="match_parent" />

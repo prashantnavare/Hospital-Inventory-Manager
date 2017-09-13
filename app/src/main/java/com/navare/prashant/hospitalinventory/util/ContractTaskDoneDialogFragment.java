@@ -72,7 +72,7 @@ public class ContractTaskDoneDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getDialog().setTitle("Contract Task Done");
+        getDialog().setTitle("Contract Task");
         View rootView = inflater.inflate(R.layout.dialog_contract_task_done, container, false);
         mBtnContractValidTillDate = (Button) rootView.findViewById(R.id.btnContractValidTillDate);
         mBtnContractValidTillDate.setOnClickListener(new View.OnClickListener() {

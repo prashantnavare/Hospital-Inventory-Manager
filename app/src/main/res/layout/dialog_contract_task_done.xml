@@ -25,6 +25,7 @@
             android:textStyle="bold"
             android:textSize="12sp"
             android:layout_weight="1"
+            android:layout_marginRight="20dp"
             />
         <Button
             android:id="@+id/btnContractValidTillDate"

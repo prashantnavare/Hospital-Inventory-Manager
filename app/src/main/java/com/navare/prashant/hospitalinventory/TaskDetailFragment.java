@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -458,6 +459,8 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
             mCallbacks.EnableSaveButton(false);
             mCallbacks.EnableRevertButton(false);
             mCallbacks.RedrawOptionsMenu();
+            Toast toast = Toast.makeText(mContext, "Your changes have been saved.", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 

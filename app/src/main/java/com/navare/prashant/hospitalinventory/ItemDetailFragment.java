@@ -637,6 +637,8 @@ public class ItemDetailFragment extends Fragment implements LoaderManager.Loader
             mCallbacks.EnableRevertButton(false);
             mCallbacks.RedrawOptionsMenu();
             mCallbacks.setTitleString(mItem.mName);
+            Toast toast = Toast.makeText(mContext, "Your changes have been saved.", Toast.LENGTH_SHORT);
+            toast.show();
         }
         return true;
     }
