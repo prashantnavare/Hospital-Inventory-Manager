@@ -1,52 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.navare.prashant.hospitalinventory.BackupRestoreActivity"
+    android:background="@color/colorGrey"
+    android:orientation="vertical"
     >
 
-    <Space
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/space" />
-
-    <Button
-        android:id="@+id/backupButton"
-        android:text="Backup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:layout_below="@+id/space"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
-        android:clickable="true"
-        android:enabled="true"
-        android:longClickable="true"
-        android:onClick="onBackupClick"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/button_shape"
+    <GridView
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:gravity="center"
+        android:columnWidth="130dp"
+        android:stretchMode="columnWidth"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
         />
 
-    <Button
-        android:id="@+id/restoreButton"
-        android:text="Restore"
-        android:layout_width="wrap_content"
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:layout_below="@+id/backupButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
-        android:clickable="true"
-        android:enabled="true"
-        android:longClickable="true"
-        android:onClick="onRestoreClick"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/button_shape"
-        />
-</RelativeLayout>
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/banner_main_ad_unit_id"
+        >
+    </com.google.android.gms.ads.AdView>
+
+</LinearLayout>

@@ -11,6 +11,7 @@
     <color name="colorSecondaryText">#757575</color>
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorExpired">#BDBDBD</color>
+    <color name="colorGrey">#848484</color>
     <color name="colorExpiredOld">#E0E0E0</color>
     <color name="windowBackground">#FDF9F2</color>
     <color name="navigationViewColor1">#CFDADE</color>
