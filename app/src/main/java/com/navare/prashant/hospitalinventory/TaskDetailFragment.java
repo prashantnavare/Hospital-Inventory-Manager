@@ -565,7 +565,12 @@ public class TaskDetailFragment extends Fragment implements LoaderManager.Loader
         if (mTask == null)
             mTask = new Task();
 
-        mTask.mAssignedTo = mTextAssignedTo.getText().toString();
+        if (mTextAssignedTo.getText().toString().equalsIgnoreCase("Unassigned")) {
+            mTask.mAssignedTo = "";
+        }
+        else {
+            mTask.mAssignedTo = mTextAssignedTo.getText().toString();
+        }
         if (!mTask.mAssignedTo.isEmpty())
             mTask.mAssignedToContactNumber = getPhoneNumber(mTask.mAssignedTo);
         if (mNormalRadioButton.isChecked()) {
