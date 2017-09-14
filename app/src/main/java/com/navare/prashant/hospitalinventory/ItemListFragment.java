@@ -245,7 +245,7 @@ public class ItemListFragment extends ListFragment {
                 if (c != null) {
                     mCallbacks.setItemCount(c.getCount());
                     if (c.getCount() > 0) {
-                        Toast toast = Toast.makeText(mContext, "Click on any inventory item to see the item details.", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(mContext, "Tap any inventory item to see the item details.", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }

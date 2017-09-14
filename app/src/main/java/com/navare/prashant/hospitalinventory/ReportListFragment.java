@@ -239,7 +239,7 @@ public class ReportListFragment extends ListFragment {
                 ((SimpleCursorAdapter) getListAdapter()).swapCursor(c);
                 if (c != null) {
                     if (c.getCount() > 0) {
-                        Toast toast = Toast.makeText(mContext, "Click on any inventory item to see the item reports.", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(mContext, "Tap any inventory item to see the item reports.", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }

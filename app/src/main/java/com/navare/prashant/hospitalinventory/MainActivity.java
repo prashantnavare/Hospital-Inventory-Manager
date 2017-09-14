@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -102,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
                         onBackupRestoreClick();
                         break;
                     case 4:
-                        onSettingsClick();
-                        break;
-                    case 5:
                         onRemoveAdsClick();
                         break;
                 }
@@ -116,13 +116,34 @@ public class MainActivity extends AppCompatActivity {
         doAdsInit();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu_actions, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                onSettingsClick();
+                return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void initGridAdapater() {
         int numButtons = 0;
         if (HospitalInventoryApp.isAppPurchased()) {
-            numButtons = 5;
+            numButtons = 4;
         }
         else {
-            numButtons = 6;
+            numButtons = 5;
         }
         String[]    tileTextArray = new String[numButtons];
         int[]       tileImageArray = new int[numButtons];
@@ -131,17 +152,15 @@ public class MainActivity extends AppCompatActivity {
         tileTextArray[1]=getString(R.string.inventory) + " (" + String.valueOf(HospitalInventoryApp.getItemCount()) + ")";;
         tileTextArray[2]=getString(R.string.reports);
         tileTextArray[3]=getString(R.string.backup_restore);
-        tileTextArray[4]=getString(R.string.settings);
 
         tileImageArray[0] = R.drawable.ic_tasks;
         tileImageArray[1] = R.drawable.ic_inventory;
         tileImageArray[2] = R.drawable.ic_reports;
         tileImageArray[3] = R.drawable.ic_backup;
-        tileImageArray[4] = R.drawable.ic_settings;
 
-        if (numButtons == 6) {
-            tileTextArray[5] = getString(R.string.remove_ads);
-            tileImageArray[5] = R.drawable.ic_remove_ads;
+        if (numButtons == 5) {
+            tileTextArray[4] = getString(R.string.remove_ads);
+            tileImageArray[4] = R.drawable.ic_remove_ads;
         }
 
         NavigationGridAdapter adapter = new NavigationGridAdapter(this, tileTextArray, tileImageArray);

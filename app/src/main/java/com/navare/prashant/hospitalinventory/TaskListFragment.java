@@ -261,7 +261,7 @@ public class TaskListFragment extends ListFragment {
                 if (c != null) {
                     mCallbacks.setTaskCount(c.getCount());
                     if (c.getCount() > 0) {
-                        Toast toast = Toast.makeText(mContext, "Click on any task to see the task details.", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(mContext, "Tap any task to see the task details.", Toast.LENGTH_LONG);
                         toast.show();
                     }
                 }
