@@ -35,16 +35,6 @@ public class ReportDetailCursorAdapter extends SimpleCursorAdapter {
             textAssignedTo.setText("Unassigned");
         }
 
-        // If the priority is Urgent, mark it red
-        TextView textPriority = (TextView) view.findViewById(R.id.textPriority);
-        String priority = cursor.getString(cursor.getColumnIndex(Task.COMPLETED_COL_FTS_TASK_PRIORITY));
-        if (priority.equalsIgnoreCase("Urgent")) {
-            textPriority.setTextColor(Color.RED);
-        }
-        else {
-            textPriority.setTextColor(Color.BLUE);
-        }
-
         String comments = cursor.getString(cursor.getColumnIndex(Task.COMPLETED_COL_FTS_COMPLETION_COMMENTS));
         if (comments == null || comments.isEmpty()) {
             TextView textComments = (TextView) view.findViewById(R.id.textComments);

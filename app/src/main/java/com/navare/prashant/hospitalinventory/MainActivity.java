@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         // TODO: Remove this after testing
-        // HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
+        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
 
         super.onCreate(savedInstanceState);
 
@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         new SimpleEula(this).show();
+
+        if (HospitalInventoryApp.getOrgName().isEmpty()) {
+            startActivity(new Intent(this, OrgNameActivity.class));
+        }
 
         setTitle(HospitalInventoryApp.getOrgName() + " Inventory Manager");
 
@@ -239,6 +243,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        setTitle(HospitalInventoryApp.getOrgName() + " Inventory Manager");
+
         initGridAdapater();
         if (mAdView != null) {
             mAdView.resume();
