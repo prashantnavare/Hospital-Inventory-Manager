@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (HospitalInventoryApp.getOrgName().isEmpty()) {
             startActivity(new Intent(this, OrgNameActivity.class));
+            finish();
         }
 
         setTitle(HospitalInventoryApp.getOrgName() + " Inventory Manager");
@@ -247,10 +248,16 @@ public class MainActivity extends AppCompatActivity {
         setTitle(HospitalInventoryApp.getOrgName() + " Inventory Manager");
 
         initGridAdapater();
-        if (mAdView != null) {
-            mAdView.resume();
+
+        if (HospitalInventoryApp.isAppPurchased()) {
+            removeAdStuff();
         }
-        doAdsReload();
+        else {
+            if (mAdView != null) {
+                mAdView.resume();
+            }
+            doAdsReload();
+        }
     }
 
     // Called before the activity is destroyed
