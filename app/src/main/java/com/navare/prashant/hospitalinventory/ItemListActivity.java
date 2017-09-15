@@ -110,7 +110,7 @@ public class ItemListActivity extends AppCompatActivity
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
                 //
-                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 return true;
             case R.id.menu_search:
                 return true;

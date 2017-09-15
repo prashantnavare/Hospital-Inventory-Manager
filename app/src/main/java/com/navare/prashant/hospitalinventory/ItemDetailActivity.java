@@ -127,16 +127,21 @@ public class ItemDetailActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+        if (mbSaveMenuEnable) {
+            promptUserForSavingItem();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (mbSaveMenuEnable) {
-                    promptUserForSavingItem();
-                }
-                else {
-                    NavUtils.navigateUpTo(this, new Intent(this, ItemListActivity.class));
-                }
+                onBackPressed();
                 return true;
             case R.id.menu_revert:
                 revertUI();
