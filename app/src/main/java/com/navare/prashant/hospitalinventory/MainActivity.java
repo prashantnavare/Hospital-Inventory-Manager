@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // TODO: Remove this after testing
-        HospitalInventoryApp.setPurchaseValue(HospitalInventoryApp.APP_PURCHASED);
-
         super.onCreate(savedInstanceState);
 
         mThisActivity = this;
@@ -79,10 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
         new SimpleEula(this).show();
 
+        /*
         if (HospitalInventoryApp.getOrgName().isEmpty()) {
             startActivity(new Intent(this, OrgNameActivity.class));
             finish();
         }
+        */
 
         setTitle(HospitalInventoryApp.getOrgName() + " Inventory Manager");
 
