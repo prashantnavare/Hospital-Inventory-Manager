@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'Hospital Inventory Key'
             keyPassword 'mohana123!!'
-            storeFile file('c:/hosiptalinventory/hospital-inventory.jks')
+            storeFile file('c:/android/keystore/hospital-inventory.jks')
             storePassword 'mohana123!!'
         }
     }
@@ -15,7 +15,7 @@ android {
         applicationId "com.navare.prashant.hospitalinventory"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName "1.0"
     }
     buildTypes {

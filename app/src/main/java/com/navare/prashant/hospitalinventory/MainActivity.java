@@ -51,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private IabHelper mHelper;
     private Activity mThisActivity;
 
-    // TODO: replace this with the real SKU
-    static final String SKU_INVENTORY_MANAGER = "android.test.purchased";
+    static final String SKU_INVENTORY_MANAGER = "adfree.hospital.inventory.manager";
     // (arbitrary) request code for the purchase flow
     static final int PURCHASE_REQUEST = 10001;
 
