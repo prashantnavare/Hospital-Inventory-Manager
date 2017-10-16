@@ -385,6 +385,21 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass on the activity result to Iab helper to see if it handles it
+        if (mHelper != null) {
+            if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
     private void initiatePurchase() {
 
         // TODO: compute your public key and store it in base64EncodedPublicKey
